@@ -473,6 +473,9 @@ body {
 .navbar {
     background-color: #FFFFFF;
     padding: 15px 40px ;
+    position: sticky;
+    top: 0;
+
 }
 
 .navbar-brand{
