@@ -1,0 +1,221 @@
+:root {
+  --ap-cream: #F6F3EA;
+  --ap-dark-green: #4D5C2D;
+  --ap-medium-green: #7C9A4A;
+  --ap-light-green: #A8C48A;
+  --ap-tan: #E7D9B5;
+}
+
+body {
+  background-color: var(--ap-cream);
+  color: var(--ap-dark-green);
+  font-family: "Montserrat", sans-serif;
+}
+
+/* ── Intro ── */
+.about-hero {
+  background-color: var(--ap-cream);
+  padding: 4rem 0 3rem;
+}
+
+.about-hero__title {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+}
+
+.about-hero__title--dark {
+  color: var(--ap-dark-green);
+}
+
+.about-hero__title--accent {
+  color: var(--ap-medium-green);
+}
+
+.about-hero__text {
+  color: var(--ap-dark-green);
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  line-height: 1.75;
+  max-width: 900px;
+}
+
+/* ── Misión ── */
+.about-mission {
+  background: linear-gradient(90deg, var(--ap-tan) 0%, var(--ap-cream) 65%);
+  padding: 3.5rem 0;
+}
+
+/* ── Visión ── */
+.about-vision {
+  background-color: var(--ap-cream);
+  padding: 3.5rem 0 3.5rem;
+}
+
+/* ── Equipo ── */
+.team-section {
+  background-color: var(--ap-cream);
+  padding: 3.5rem 0 5rem;
+}
+
+.team-section__title {
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+}
+
+.team-section__title--dark {
+  color: var(--ap-dark-green);
+}
+
+.team-section__title--accent {
+  color: var(--ap-medium-green);
+}
+
+.team-card {
+  background-color: #fff;
+  border: 1px solid var(--ap-light-green);
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 18px rgba(77, 92, 45, 0.08);
+  padding: 2rem 1.5rem 1.75rem;
+}
+
+.team-card__photo-wrapper {
+  margin: 0 auto 1.25rem;
+  max-width: 220px;
+  position: relative;
+}
+
+.team-card__photo {
+  display: block;
+  height: 260px;
+  margin: 0 auto;
+  object-fit: cover;
+  object-position: center top;
+  width: 100%;
+}
+
+.team-card__avatar {
+  align-items: center;
+  background: linear-gradient(180deg, var(--ap-tan) 0%, var(--ap-light-green) 100%);
+  border-radius: 0.75rem;
+  color: var(--ap-dark-green);
+  display: flex;
+  font-size: 2.5rem;
+  font-weight: 700;
+  height: 260px;
+  justify-content: center;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.team-card__name {
+  color: var(--ap-dark-green);
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.team-card__role {
+  color: var(--ap-medium-green);
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.team-card__description {
+  color: var(--ap-dark-green);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  margin-bottom: 1.25rem;
+  opacity: 0.9;
+}
+
+.team-card__social {
+  display: flex;
+  gap: 0.65rem;
+  justify-content: center;
+  padding-top: 0.25rem;
+}
+
+.team-card__social-link {
+  align-items: center;
+  background-color: var(--ap-dark-green);
+  border-radius: 0.45rem;
+  color: #fff;
+  display: inline-flex;
+  font-size: 1rem;
+  height: 2.25rem;
+  justify-content: center;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  width: 2.25rem;
+}
+
+.team-card__social-link:hover {
+  background-color: var(--ap-medium-green);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* ── Cards Misión / Visión ── */
+.about-card {
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 18px rgba(77, 92, 45, 0.08);
+  padding: 2.5rem 2rem;
+}
+
+.about-card__title {
+  color: var(--ap-medium-green);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+}
+
+.about-card__text {
+  color: var(--ap-dark-green);
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+/* ── Imágenes ── */
+.about-image {
+  border-radius: 1.25rem;
+  box-shadow: 0 6px 20px rgba(77, 92, 45, 0.12);
+  display: block;
+  width: 100%;
+}
+
+.about-row {
+  align-items: center;
+}
+
+@media (max-width: 767.98px) {
+  .about-hero {
+    padding: 3rem 0 2rem;
+  }
+
+  .about-mission,
+  .about-vision,
+  .team-section {
+    padding: 2.5rem 0;
+  }
+
+  .team-card__photo,
+  .team-card__avatar {
+    height: 220px;
+  }
+
+  .team-section .offset-lg-2 {
+    margin-left: 0;
+  }
+
+  .about-card {
+    margin-top: 1.5rem;
+    padding: 2rem 1.5rem;
+  }
+}
