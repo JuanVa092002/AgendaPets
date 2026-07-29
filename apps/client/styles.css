@@ -1,0 +1,30 @@
+.footer{
+    font-family: "Comfortaa";
+    background-color: #4D5C2D;
+    color: white;
+}
+
+.footer h4,
+.footer h5{
+    color: white;
+    font-weight: 700;
+}
+
+.footer p, .footer span{
+    color: white;
+}
+
+.footer .nav-link{
+    color: white;
+    transition: .3s;
+}
+
+.footer .nav-link:hover{
+    color: #A9C97A;
+}
+
+
+.footer .descripcion{
+    max-width: 280px;
+    line-height: 1.6;
+}
