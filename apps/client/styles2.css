@@ -1,0 +1,31 @@
+.contacto {
+    position: relative;
+    overflow: hidden;
+    background-color: #f7f3e8;
+    min-height: 500px;
+}
+
+/* Curva amarilla */
+.contacto::before {
+    content: "";
+    position: absolute;
+    width: 120%;
+    height: 355px;
+    left: -10%;
+    top: 150px;
+
+    background-color: #e8d18b;
+
+    border-radius: 45% 55% 0 0 / 25% 30% 0 0;
+
+    transform: rotate(-2deg);
+
+    z-index: 0;
+}
+
+/* Contenido */
+.contacto h1,
+.contenido-contacto {
+    position: relative;
+    z-index: 1;
+}
