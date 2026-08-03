@@ -538,3 +538,21 @@ body {
   background-color: #4a5d2c;
   color: white;
 } 
+
+/*Contactanos*/
+
+.fondoContaco {
+   background-image: url("assets/contactanos/fondo.png");
+   background-size: cover;
+}
+
+.Fotogato {
+  display: none; 
+}
+
+
+@media (min-width: 768px) {
+  .Fotogato {
+    display: block;
+  }
+}
