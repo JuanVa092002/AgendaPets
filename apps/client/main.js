@@ -1,7 +1,4 @@
-const nombre = document.getElementById("nombre");
-const correo = document.getElementById("correo");
-const telefono = document.getElementById("telefono");
-
+// INICIO FORMULARIO CONTACTENOS
 const form = document.getElementById("formulario");
 
 
@@ -50,3 +47,7 @@ form.addEventListener("submit", async (e) => {
     Swal.fire("Error", "No se pudo enviar", "error");
   }
 });
+// FIN FORMULARIO CONTACTENOS///////////////////////////
+
+
+
