@@ -1,4 +1,4 @@
-// INICIO FORMULARIO CONTACTENOS
+// INICIO FORMULARIO CONTACTENOS pendiente reFACTORIZAR
 const form = document.getElementById("formulario");
 
 
