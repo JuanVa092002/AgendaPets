@@ -1,10 +1,11 @@
  
 
  <p align="center">
-  <img src="assets/logo.png" width="50"/>
+  <img src="assets/logo.png" width="100"/>
 </p>
  
  <h1 align="center"> 🐾 AGENDAPETS - RESERVAS PETGROOMING🐶</h1>
+
 ---
 
 ## 🚧 Proyecto en construcción 🚧
