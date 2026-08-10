@@ -547,14 +547,29 @@ body {
 }
 
 .Fotogato {
-  display: none; 
+    display: none;
 }
 
-
 @media (min-width: 768px) {
-  .Fotogato {
-    display: block;
-  }
+    .Fotogato {
+        display: block;
+        width: 100%;
+        max-width: 520px;
+        height: 500px;
+        object-fit: contain;
+        object-position: bottom;
+
+        -webkit-mask-image: linear-gradient(
+            to bottom,
+            black 80%,
+            transparent 100%
+        );
+        mask-image: linear-gradient(
+            to bottom,
+            black 80%,
+            transparent 100%
+        );
+    }
 }
 
 .botonEnviar {
@@ -568,3 +583,5 @@ body {
 .botonEnviar {
   margin-bottom: 15px;
 }
+
+
