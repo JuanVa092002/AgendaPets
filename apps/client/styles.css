@@ -10,16 +10,12 @@ body {
   background-color: var(--ap-cream);
   color: var(--ap-dark-green);
   font-family: "Montserrat", sans-serif;
-  padding-top: 80px; 
-
 }
 
 /* ── Intro ── */
 .about-hero {
   background-color: var(--ap-cream);
   padding: 4rem 0 3rem;
-  padding-top: 80px;
-    min-height: 285px;
 }
 
 .about-hero__title {
@@ -267,16 +263,19 @@ body {
   --ap-tan: #E7D9B5;
 }
 
+body {
+  background-color: var(--ap-cream);
+  color: var(--ap-dark-green);
+  font-family: "Montserrat", sans-serif;
+}
 
 /* ── Intro ── */
 .about-hero {
-  
   background-color: var(--ap-cream);
   padding: 4rem 0 3rem;
 }
 
 .about-hero__title {
-
   font-size: clamp(2rem, 5vw, 3.25rem);
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -284,17 +283,14 @@ body {
 }
 
 .about-hero__title--dark {
-    font-family: "Original Surfer", sans-serif;
   color: var(--ap-dark-green);
 }
 
 .about-hero__title--accent {
-    font-family: "Original Surfer", sans-serif;
   color: var(--ap-medium-green);
 }
 
 .about-hero__text {
-  
   color: var(--ap-dark-green);
   font-size: clamp(0.95rem, 2vw, 1.1rem);
   line-height: 1.75;
@@ -481,6 +477,87 @@ body {
   }
 }
 
+.navbar {
+  background-color: #FFFFFF;
+  padding: 15px 40px;
+  position: sticky;
+  top: 0;
+
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.navbarNav {
+  justify-content: center;
+}
+
+.navbar-nav {
+  margin: auto;
+  gap: 20px;
+}
+
+.btn-reserva {
+  border: 2px solid #4a5d2c;
+  border-radius: 50px;
+  padding: 10px 25px;
+  background-color: transparent;
+  color: #2b2b2b;
+  font-size: 18px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-reserva:hover {
+  background-color: #4a5d2c;
+  color: white;
+}
+
+.navbar {
+  background-color: #FFFFFF;
+  padding: 15px 40px;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.navbarNav {
+  justify-content: center;
+}
+
+.navbar-nav {
+  margin: auto;
+  gap: 20px;
+}
+
+.btn-reserva {
+  border: 2px solid #4a5d2c;
+  border-radius: 50px;
+  padding: 10px 25px;
+  background-color: transparent;
+  color: #2b2b2b;
+  font-size: 18px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-reserva:hover {
+  background-color: #4a5d2c;
+  color: white;
+}
+
+/*ARREGLOS SOBRE NOSOTROS*/
+
+.imgYtexHistoria {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
 .perro_feliz {
   width: 50%;
   border-radius: 10%;
@@ -496,29 +573,40 @@ body {
   align-items: center;
   gap: 40px;
  
-}}
+}
 
-
-.perro_feliz {
-  width: 50%;
-  border-radius: 10%;
+  
 }
 
 .texHistoria {
-  text-align: center;
+  text-align: left;
 
 }
 
 .imgYtexHistoria h3 {
-  font-family: "Original Surfer", sans-serif;
-  padding-top: 15px;
   font-size: 1.8rem;
   margin-bottom: 15px;
-  text-align: center;
+  text-align: left;
 }
 
 .imgYtexHistoria .about-hero__text {
   margin: 0;
+}
+
+
+.team-card__photo-wrapper {
+  margin: 0 auto 1.25rem;
+  max-width: 80px;
+  position: relative;
+}
+
+.team-card__photo {
+  display: block;
+  height: 80px;
+  margin: 0 auto;
+  object-fit: cover;
+  object-position: center top;
+  width: 100%;
 }
 
 
