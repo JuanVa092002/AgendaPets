@@ -210,45 +210,51 @@ body {
     height: 220px;
   }
 
-  .team-section .offset-lg-2 {
+  /*.team-section .offset-lg-2 {
     margin-left: 0;
-  }
+  } */
 
   .about-card {
     margin-top: 1.5rem;
     padding: 2rem 1.5rem;
   }
 }
-.footer{
-    font-family: "Comfortaa";
-    background-color: #4D5C2D;
-    color: white;
+
+.footer {
+  font-family: "Comfortaa";
+  background-color: #4D5C2D;
+  color: white;
 }
 
 .footer h4,
-.footer h5{
-    color: white;
-    font-weight: 700;
+.footer h5 {
+  color: white;
+  font-weight: 700;
 }
 
-.footer p, .footer span{
-    color: white;
+.footer p,
+.footer span {
+  color: white;
 }
 
-.footer .nav-link{
-    color: white;
-    transition: .3s;
+.footer .nav-link {
+  color: white;
+  transition: .3s;
 }
 
-.footer .nav-link:hover{
-    color: #A9C97A;
+.footer .nav-link:hover {
+  color: #A9C97A;
 }
 
 
-.footer .descripcion{
-    max-width: 280px;
-    line-height: 1.6;
+.footer .descripcion {
+  max-width: 280px;
+  line-height: 1.6;
 }
+
+
+
+
 :root {
   --ap-cream: #F6F3EA;
   --ap-dark-green: #4D5C2D;
@@ -411,7 +417,7 @@ body {
 }
 
 /* ── Cards Misión / Visión ── */
-.about-card {
+/*.about-card {
   background-color: #fff;
   border: 1px solid #d9d9d9;
   border-radius: 1.25rem;
@@ -431,7 +437,7 @@ body {
   font-size: clamp(0.95rem, 2vw, 1.05rem);
   line-height: 1.7;
   margin-bottom: 0;
-}
+} */
 
 /* ── Imágenes ── */
 .about-image {
@@ -461,41 +467,43 @@ body {
     height: 220px;
   }
 
-  .team-section .offset-lg-2 {
+  /*.team-section .offset-lg-2 {
     margin-left: 0;
-  }
+  }*/
 
   .about-card {
     margin-top: 1.5rem;
     padding: 2rem 1.5rem;
   }
 }
+
 .navbar {
-    background-color: #FFFFFF;
-    padding: 15px 40px ;
-    position: sticky;
-    top: 0;
+  background-color: #FFFFFF;
+  padding: 15px 40px;
+  position: sticky;
+  top: 0;
 
 }
 
-.navbar-brand{
-    display: flex;
-    align-items: center; 
-}
-.navbarNav{
-    justify-content: center;
+.navbar-brand {
+  display: flex;
+  align-items: center;
 }
 
-.navbar-nav{
-    margin: auto;
-    gap: 20px;
+.navbarNav {
+  justify-content: center;
+}
+
+.navbar-nav {
+  margin: auto;
+  gap: 20px;
 }
 
 .btn-reserva {
   border: 2px solid #4a5d2c;
   border-radius: 50px;
   padding: 10px 25px;
-  background-color: transparent; 
+  background-color: transparent;
   color: #2b2b2b;
   font-size: 18px;
   font-weight: 500;
@@ -505,29 +513,32 @@ body {
 .btn-reserva:hover {
   background-color: #4a5d2c;
   color: white;
-} .navbar {
-    background-color: #FFFFFF;
-    padding: 15px 40px ;
 }
 
-.navbar-brand{
-    display: flex;
-    align-items: center; 
-}
-.navbarNav{
-    justify-content: center;
+.navbar {
+  background-color: #FFFFFF;
+  padding: 15px 40px;
 }
 
-.navbar-nav{
-    margin: auto;
-    gap: 20px;
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.navbarNav {
+  justify-content: center;
+}
+
+.navbar-nav {
+  margin: auto;
+  gap: 20px;
 }
 
 .btn-reserva {
   border: 2px solid #4a5d2c;
   border-radius: 50px;
   padding: 10px 25px;
-  background-color: transparent; 
+  background-color: transparent;
   color: #2b2b2b;
   font-size: 18px;
   font-weight: 500;
@@ -537,39 +548,99 @@ body {
 .btn-reserva:hover {
   background-color: #4a5d2c;
   color: white;
-} 
+}
+
+/*ARREGLOS SOBRE NOSOTROS*/
+
+.imgYtexHistoria {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.perro_feliz {
+  width: 50%;
+  border-radius: 10%;
+}
+
+.texHistoria {
+  text-align: left;
+
+}
+
+.imgYtexHistoria h3 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.imgYtexHistoria .about-hero__text {
+  margin: 0;
+}
+
+
+.team-card__photo-wrapper {
+  margin: 0 auto 1.25rem;
+  max-width: 80px;
+  position: relative;
+}
+
+.team-card__photo {
+  display: block;
+  height: 80px;
+  margin: 0 auto;
+  object-fit: cover;
+  object-position: center top;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .perro_feliz{
+    width: 100%;
+    margin-bottom: 35px;
+  }
+
+  .imgYtexHistoria {
+  display: block;
+  align-items: center;
+  gap: 40px;
+ 
+}
+
+  
+}
+
+
 
 /*Contactanos*/
 
 .fondoContaco {
-   background-image: url("assets/contactanos/fondo.png");
-   background-size: cover;
+  background-image: url("assets/contactanos/fondo.png");
+  background-size: cover;
 }
 
 .Fotogato {
-    display: none;
+  display: none;
 }
 
 @media (min-width: 768px) {
-    .Fotogato {
-        display: block;
-        width: 100%;
-        max-width: 520px;
-        height: 500px;
-        object-fit: contain;
-        object-position: bottom;
+  .Fotogato {
+    display: block;
+    width: 100%;
+    max-width: 520px;
+    height: 500px;
+    object-fit: contain;
+    object-position: bottom;
 
-        -webkit-mask-image: linear-gradient(
-            to bottom,
-            black 80%,
-            transparent 100%
-        );
-        mask-image: linear-gradient(
-            to bottom,
-            black 80%,
-            transparent 100%
-        );
-    }
+    -webkit-mask-image: linear-gradient(to bottom,
+        black 80%,
+        transparent 100%);
+    mask-image: linear-gradient(to bottom,
+        black 80%,
+        transparent 100%);
+  }
+
+  
 }
 
 .botonEnviar {
@@ -578,10 +649,10 @@ body {
 }
 
 .botonEnviar:hover {
-  background-color:#A8C48A ;
+  background-color: #A8C48A;
 }
+
 .botonEnviar {
   margin-bottom: 15px;
 }
-
 
