@@ -270,11 +270,13 @@ body {
 
 /* ── Intro ── */
 .about-hero {
+  
   background-color: var(--ap-cream);
   padding: 4rem 0 3rem;
 }
 
 .about-hero__title {
+
   font-size: clamp(2rem, 5vw, 3.25rem);
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -282,14 +284,17 @@ body {
 }
 
 .about-hero__title--dark {
+    font-family: "Original Surfer", sans-serif;
   color: var(--ap-dark-green);
 }
 
 .about-hero__title--accent {
+    font-family: "Original Surfer", sans-serif;
   color: var(--ap-medium-green);
 }
 
 .about-hero__text {
+  
   color: var(--ap-dark-green);
   font-size: clamp(0.95rem, 2vw, 1.1rem);
   line-height: 1.75;
@@ -476,12 +481,45 @@ body {
   }
 }
 
+.perro_feliz {
+  width: 50%;
+  border-radius: 10%;
+}
+@media (max-width: 768px) {
+  .perro_feliz{
+    width: 100%;
+    margin-bottom: 35px;
+  }
 
-/* =========================
-   NAVBAR
-========================= */
+  .imgYtexHistoria {
+  display: block;
+  align-items: center;
+  gap: 40px;
+ 
+}}
 
 
+.perro_feliz {
+  width: 50%;
+  border-radius: 10%;
+}
+
+.texHistoria {
+  text-align: center;
+
+}
+
+.imgYtexHistoria h3 {
+  font-family: "Original Surfer", sans-serif;
+  padding-top: 15px;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.imgYtexHistoria .about-hero__text {
+  margin: 0;
+}
 
 
 
