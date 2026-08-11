@@ -214,45 +214,51 @@ body {
     height: 220px;
   }
 
-  .team-section .offset-lg-2 {
+  /*.team-section .offset-lg-2 {
     margin-left: 0;
-  }
+  } */
 
   .about-card {
     margin-top: 1.5rem;
     padding: 2rem 1.5rem;
   }
 }
-.footer{
-    font-family: "Comfortaa";
-    background-color: #4D5C2D;
-    color: white;
+
+.footer {
+  font-family: "Comfortaa";
+  background-color: #4D5C2D;
+  color: white;
 }
 
 .footer h4,
-.footer h5{
-    color: white;
-    font-weight: 700;
+.footer h5 {
+  color: white;
+  font-weight: 700;
 }
 
-.footer p, .footer span{
-    color: white;
+.footer p,
+.footer span {
+  color: white;
 }
 
-.footer .nav-link{
-    color: white;
-    transition: .3s;
+.footer .nav-link {
+  color: white;
+  transition: .3s;
 }
 
-.footer .nav-link:hover{
-    color: #A9C97A;
+.footer .nav-link:hover {
+  color: #A9C97A;
 }
 
 
-.footer .descripcion{
-    max-width: 280px;
-    line-height: 1.6;
+.footer .descripcion {
+  max-width: 280px;
+  line-height: 1.6;
 }
+
+
+
+
 :root {
   --ap-cream: #F6F3EA;
   --ap-dark-green: #4D5C2D;
@@ -410,7 +416,7 @@ body {
 }
 
 /* ── Cards Misión / Visión ── */
-.about-card {
+/*.about-card {
   background-color: #fff;
   border: 1px solid #d9d9d9;
   border-radius: 1.25rem;
@@ -430,7 +436,7 @@ body {
   font-size: clamp(0.95rem, 2vw, 1.05rem);
   line-height: 1.7;
   margin-bottom: 0;
-}
+} */
 
 /* ── Imágenes ── */
 .about-image {
@@ -460,9 +466,9 @@ body {
     height: 220px;
   }
 
-  .team-section .offset-lg-2 {
+  /*.team-section .offset-lg-2 {
     margin-left: 0;
-  }
+  }*/
 
   .about-card {
     margin-top: 1.5rem;
@@ -483,36 +489,32 @@ body {
 /*Contactanos*/
 
 .fondoContaco {
-  padding-top: 86px;
-   
-   background-image: url("assets/contactanos/fondo.png");
-   background-size: cover;
+  background-image: url("assets/contactanos/fondo.png");
+  background-size: cover;
 }
 
 .Fotogato {
-    display: none;
+  display: none;
 }
 
 @media (min-width: 768px) {
-    .Fotogato {
-        display: block;
-        width: 100%;
-        max-width: 520px;
-        height: 500px;
-        object-fit: contain;
-        object-position: bottom;
+  .Fotogato {
+    display: block;
+    width: 100%;
+    max-width: 520px;
+    height: 500px;
+    object-fit: contain;
+    object-position: bottom;
 
-        -webkit-mask-image: linear-gradient(
-            to bottom,
-            black 80%,
-            transparent 100%
-        );
-        mask-image: linear-gradient(
-            to bottom,
-            black 80%,
-            transparent 100%
-        );
-    }
+    -webkit-mask-image: linear-gradient(to bottom,
+        black 80%,
+        transparent 100%);
+    mask-image: linear-gradient(to bottom,
+        black 80%,
+        transparent 100%);
+  }
+
+  
 }
 
 .botonEnviar {
@@ -521,10 +523,10 @@ body {
 }
 
 .botonEnviar:hover {
-  background-color:#A8C48A ;
+  background-color: #A8C48A;
 }
+
 .botonEnviar {
   margin-bottom: 15px;
 }
-
 
