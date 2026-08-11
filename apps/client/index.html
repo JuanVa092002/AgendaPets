@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="AgendaPets — Reserva citas de peluquería canina en Bogotá en segundos. Confirmación inmediata, cancelación gratis y atención profesional.">
+    <title>AgendaPets — Reserva citas para tu mascota</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Montserrat:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+ <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Montserrat:wght@100..900&display=swap"
+        rel="stylesheet">
+    
+     <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="styles.css">
+   
+</head>
+
+<body class="home-page">
+
+    <!-- TRAE NAVBAR -->
+<div id="navbar-container"></div>
+
+   
+<main id="contenido-principal">
+        <!-- Hero: valor + CTA principal (above the fold) -->
+        <section class="home-hero" aria-labelledby="hero-heading">
+            <div class="home-hero__bg" aria-hidden="true"></div>
+            <div class="home-container">
+                <div class="home-hero__grid">
+                    <div class="home-reveal">
+                        <div class="home-eyebrow">
+                            <span class="home-eyebrow__dot" aria-hidden="true"></span>
+                            #1 en cuidado de mascotas en Colombia
+                        </div>
+                        <h1 class="home-display" id="hero-heading">
+                            Agenda la cita <em>perfecta</em> para tu mascota
+                        </h1>
+                        <p class="home-lead">
+                            Reserva en segundos. Peluquería canina profesional en Bogotá — con amor, sin estrés ni
+                            llamadas interminables.
+                        </p>
+                        <div class="home-actions" id="reservar">
+                            <a href="#" class="home-btn home-btn--primary">
+                                Reservar ahora
+                                <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                            </a>
+                            <a href="#" class="home-btn home-btn--ghost">Ver mis citas</a>
+                        </div>
+                        <ul class="home-trust" aria-label="Beneficios de reservar">
+                            <li><i class="bi bi-check-lg" aria-hidden="true"></i> Confirmación inmediata</li>
+                            <li><i class="bi bi-check-lg" aria-hidden="true"></i> Cancelación gratis</li>
+                            <li><i class="bi bi-check-lg" aria-hidden="true"></i> Aviso por correo</li>
+                        </ul>
+                    </div>
+                    <div class="home-hero__visual home-reveal">
+                        <div class="home-hero__glow" aria-hidden="true"></div>
+                        <img src="https://images.unsplash.com/photo-1745130179738-e9a8eafaf989?q=80&w=1160&auto=format&fit=crop"
+                            alt="Perro feliz disfrutando al aire libre" class="home-hero__frame" width="580"
+                            height="680" fetchpriority="high">
+                        <div class="home-float home-float--rating" role="status" aria-label="Calificación 4.9 de 5">
+                            <i class="bi bi-star-fill" aria-hidden="true"></i>
+                            <div>
+                                <strong>4.9 / 5</strong>
+                                <span>280 reseñas verificadas</span>
+                            </div>
+                        </div>
+                        <div class="home-float home-float--appointment">
+                            <i class="bi bi-check-lg" aria-hidden="true"></i>
+                            <div>
+                                <strong>Cita confirmada</strong>
+                                <span>Luna — Hoy, 3:00 PM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social proof: métricas de confianza -->
+        <section class="home-stats home-section--tight" aria-label="Indicadores de confianza">
+            <div class="home-container">
+                <div class="home-stats__grid">
+                    <div class="home-stats__item home-reveal">
+                        <p class="home-stats__value">+500</p>
+                        <p class="home-stats__label">Mascotas atendidas</p>
+                    </div>
+                    <div class="home-stats__item home-reveal">
+                        <p class="home-stats__value">4.9</p>
+                        <p class="home-stats__label">Calificación</p>
+                    </div>
+                    <div class="home-stats__item home-reveal">
+                        <p class="home-stats__value">5 años</p>
+                        <p class="home-stats__label">Experiencia</p>
+                    </div>
+                    <div class="home-stats__item home-reveal">
+                        <p class="home-stats__value">2 h</p>
+                        <p class="home-stats__label">Respuesta máx.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Servicios: progressive disclosure por tarjeta -->
+        <section class="home-services home-section" id="servicios" aria-labelledby="services-heading">
+            <div class="home-container">
+                <header class="home-section-header home-section-header--center home-reveal">
+                    <h2 class="home-display" id="services-heading">Nuestros servicios</h2>
+                    <p>Elige lo que tu peludo necesita hoy. Precios claros, sin sorpresas.</p>
+                </header>
+                <div class="home-services__grid home-services__grid--five">
+                    <article class="home-service home-reveal">
+                        <div class="home-service__icon" aria-hidden="true"><i class="bi bi-droplet"></i></div>
+                        <h3 class="home-service__title">Baño y Secado</h3>
+                        <p class="home-service__text">Shampoo especial, acondicionador y secado profesional para un
+                            pelaje suave y saludable.</p>
+                        <div class="home-service__footer">
+                            <div>
+                                <span class="home-service__price-label">Desde</span>
+                                <p class="home-service__price">$ 45.000</p>
+                            </div>
+                            <a href="#" class="home-btn home-btn--ghost home-btn--sm">Reservar</a>
+                        </div>
+                    </article>
+                    <article class="home-service home-reveal">
+                        <div class="home-service__icon" aria-hidden="true"><i class="bi bi-scissors"></i></div>
+                        <h3 class="home-service__title">Corte de Pelo</h3>
+                        <p class="home-service__text">Corte personalizado según raza, estilo y comodidad de tu mascota.
+                        </p>
+                        <div class="home-service__footer">
+                            <div>
+                                <span class="home-service__price-label">Desde</span>
+                                <p class="home-service__price">$ 60.000</p>
+                            </div>
+                            <a href="#" class="home-btn home-btn--ghost home-btn--sm">Reservar</a>
+                        </div>
+                    </article>
+                    <article class="home-service home-service--featured home-reveal">
+                        <span class="home-service__badge">Más popular</span>
+                        <div class="home-service__icon" aria-hidden="true"><i class="bi bi-stars"></i></div>
+                        <h3 class="home-service__title">Baño + Corte</h3>
+                        <p class="home-service__text">El combo favorito: baño, secado y corte profesional en una sola
+                            visita.</p>
+                        <div class="home-service__footer">
+                            <div>
+                                <span class="home-service__price-label">Desde</span>
+                                <p class="home-service__price">$ 95.000</p>
+                            </div>
+                            <a href="#" class="home-btn home-btn--primary home-btn--sm">Reservar</a>
+                        </div>
+                    </article>
+                    <article class="home-service home-reveal">
+                        <div class="home-service__icon" aria-hidden="true"><i class="bi bi-heart"></i></div>
+                        <h3 class="home-service__title">Spa Completo</h3>
+                        <p class="home-service__text">Baño, corte, mascarilla, aromaterapia y accesorios para mimar a tu
+                            peludo.</p>
+                        <div class="home-service__footer">
+                            <div>
+                                <span class="home-service__price-label">Desde</span>
+                                <p class="home-service__price">$ 130.000</p>
+                            </div>
+                            <a href="#" class="home-btn home-btn--ghost home-btn--sm">Reservar</a>
+                        </div>
+                    </article>
+                    <article class="home-service home-reveal">
+                        <div class="home-service__icon" aria-hidden="true"><i class="bi bi-award"></i></div>
+                        <h3 class="home-service__title">Corte de Uñas</h3>
+                        <p class="home-service__text">Limado y corte seguro para mayor comodidad y bienestar.</p>
+                        <div class="home-service__footer">
+                            <div>
+                                <span class="home-service__price-label">Desde</span>
+                                <p class="home-service__price">$ 25.000</p>
+                            </div>
+                            <a href="#" class="home-btn home-btn--ghost home-btn--sm">Reservar</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Proceso: reducir fricción cognitiva (3 pasos) -->
+        <section class="home-process home-section" id="como-funciona" aria-labelledby="process-heading">
+            <div class="home-container">
+                <header class="home-section-header home-section-header--center home-reveal">
+                    <h2 class="home-display" id="process-heading">¿Cómo funciona?</h2>
+                    <p>Tres pasos. Menos de dos minutos. Sin complicaciones.</p>
+                </header>
+                <div class="home-process__grid">
+                    <article class="home-step home-reveal">
+                        <span class="home-step__eyebrow">Paso 1</span>
+                        <div class="home-step__icon-wrap" aria-hidden="true">
+                            <i class="bi bi-grid"></i>
+                        </div>
+                        <h3 class="home-step__title">Elige el servicio</h3>
+                        <p class="home-step__text">Selecciona el baño, corte o spa que necesita tu mascota.</p>
+                    </article>
+                    <article class="home-step home-reveal">
+                        <span class="home-step__eyebrow">Paso 2</span>
+                        <div class="home-step__icon-wrap" aria-hidden="true">
+                            <i class="bi bi-calendar-check"></i>
+                        </div>
+                        <h3 class="home-step__title">Ingresa tus datos</h3>
+                        <p class="home-step__text">Nombre de tu mascota, tamaño y datos de contacto. Nada más.</p>
+                    </article>
+                    <article class="home-step home-reveal">
+                        <span class="home-step__eyebrow">Paso 3</span>
+                        <div class="home-step__icon-wrap" aria-hidden="true">
+                            <i class="bi bi-envelope-check"></i>
+                        </div>
+                        <h3 class="home-step__title">¡Listo!</h3>
+                        <p class="home-step__text">Recibirás un correo con la confirmación y los detalles de tu cita.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonial: prueba social, PENDIENTE VOLVERLO CARRUSEL O INCORPORAR ANIMACIÓN -->
+        <section class="home-proof home-section--tight" aria-label="Opinión de cliente">
+            <div class="home-container">
+                <blockquote class="home-proof__card home-reveal">
+                    <div class="home-proof__stars" aria-hidden="true">★★★★★</div>
+                    <p class="home-proof__quote">
+                        "Reservé en menos de un minuto y al día siguiente ya tenía confirmación. Luna salió feliz y
+                        el pelaje increíble."
+                    </p>
+                    <footer class="home-proof__author">
+                        <div class="home-proof__avatar" aria-hidden="true">MC</div>
+                        <div>
+                            <p class="home-proof__name">María Camila R.</p>
+                            <p class="home-proof__meta">Dueña de Luna · Chapinero</p>
+                        </div>
+                    </footer>
+                </blockquote>
+            </div>
+        </section>
+
+        <section class="home-proof home-section--tight" aria-label="Opinión de cliente">
+            <div class="home-container">
+                <blockquote class="home-proof__card home-reveal">
+                    <div class="home-proof__stars" aria-hidden="true">★★★★★</div>
+                    <p class="home-proof__quote">
+                        "Reservar en Agenda Pets fue muy facil y atendieron excelente a mi gatito Romeo."
+                    </p>
+                    <footer class="home-proof__author">
+                        <div class="home-proof__avatar" aria-hidden="true">MC</div>
+                        <div>
+                            <p class="home-proof__name">Estefany Trujillo</p>
+                            <p class="home-proof__meta">Dueña de Romeo · Fontibrons</p>
+                        </div>
+                    </footer>
+                </blockquote>
+            </div>
+        </section>
+<!-- Testimonial: prueba social, PENDIENTE VOLVERLO CARRUSEL O INCORPORAR ANIMACIÓN -->
+
+
+        <!-- CTA final: peak-end rule -->
+        <section class="home-cta" aria-labelledby="cta-heading">
+            <div class="home-container">
+                <div class="home-cta__panel home-reveal">
+                    <div class="home-cta__content">
+                        <h2 class="home-cta__title" id="cta-heading">¿Tu peludo necesita una cita?</h2>
+                        <p class="home-cta__text">Reserva ahora y recibe confirmación inmediata en tu correo. Sin
+                            llamadas, sin esperas.</p>
+                        <a href="#" class="home-btn home-btn--inverse">
+                            Reservar mi cita
+                            <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+    <!-- INCLUYE EL FOOTER -->
+     <div id="footer-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+
+    <script src="js/home.js"></script>
+     <script src="./js/nav-footer.js" defer></script>
+</body>
+
+</html>

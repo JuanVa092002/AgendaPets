@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nosotros | AgendaPets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Montserrat:wght@100..900&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+       <!-- TRAE NAVBAR -->
+<div id="navbar-container"></div>
+
+
+
+    <!-- INICIO DEL MENÚ (navbar — VALERIA) -->
+    <!-- FIN DEL MENÚ -->
+
+    <!--Formulario de contacto-->
+
+    <main class="contacto fondoContaco ">
+
+        <!-- Encabezado -->
+        <section class="hero-contacto ">
+            <div class="container text-center">
+                <h1 class="about-hero__title mb-4">
+                    <span class="about-hero__title--dark">¿NECESITAS</span>
+                    <span class="about-hero__title--accent"> AYUDA?</span>
+                </h1>
+
+            </div>
+        </section>
+
+        <!-- Contenido -->
+        <section class="contenido-contacto ">
+
+            <div class="container  ">
+
+                <div class="row align-items-center ">
+
+                    <!-- Imagen -->
+                    <div class="col-lg-6">
+                        <img src="assets/contactanos/FotoGatoContactanos.png" class="Fotogato">
+                    </div>
+
+                    <!-- Formulario -->
+                    <div class="col-lg-5">
+
+                        <form action="https://formspree.io/f/mgoggjbr" method="post" id="formulario" class="row g-3">
+
+                            <div class="col-12">
+                                <label for="nombre" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingresa tu nombre"
+                                    >
+                            </div>
+
+                            <div class="col-12">
+                                <label for="correo" class="form-label">Correo electrónico</label>
+                                <input type="email" class="form-control" id="correo" name="correo" placeholder="correo@ejemplo.com"
+                                    >
+                            </div>
+
+                            <div class="col-12">
+                                <label for="telefono" class="form-label">Teléfono</label>
+                                <input type="number" class="form-control" id="telefono" name="telefono" placeholder="Ej. 300 123 4567"
+                                    >
+                            </div>
+
+                            <div class="col-12">
+                                <label for="mensaje" class="form-label">Mensaje</label>
+                                <textarea class="form-control" id="mensaje" name="mensaje" rows="5"
+                                    placeholder="¿Cómo podemos ayudarte?" ></textarea>
+                            </div>
+
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-success px-4 botonEnviar">
+                                    Enviar
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+
+
+            </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- INICIO DEL FOOTER (ALEX) -->
+    <!-- FIN DEL FOOTER -->
+
+      <!-- INCLUYE EL FOOTER -->
+     <div id="footer-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="main.js"></script>
+    <script src="./js/nav-footer.js" defer></script>
+
+</body>
+
+</html>
