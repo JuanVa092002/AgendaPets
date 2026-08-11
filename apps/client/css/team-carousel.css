@@ -1,0 +1,275 @@
+/* ── Equipo (carrusel) — AgendaPets
+   Este archivo debe cargarse DESPUÉS de styles.css
+   para anular el layout antiguo de las cards ── */
+
+.team-section {
+  background-color: var(--ap-cream, #F6F3EA);
+  padding: 3.5rem 0 5rem;
+}
+
+.team-section__header {
+  margin-bottom: 2.5rem;
+}
+
+.team-section__eyebrow {
+  color: var(--ap-medium-green, #7C9A4A);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+}
+
+.team-section__title {
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  margin-bottom: 0.75rem;
+}
+
+.team-section__title--dark {
+  color: var(--ap-dark-green, #4D5C2D);
+}
+
+.team-section__title--accent {
+  color: var(--ap-medium-green, #7C9A4A);
+}
+
+.team-section__subtitle {
+  color: var(--ap-dark-green, #4D5C2D);
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0 auto;
+  max-width: 36rem;
+  opacity: 0.85;
+}
+
+.team-carousel {
+  align-items: center;
+  display: grid;
+  gap: 1.25rem 0.75rem;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "prev viewport next"
+    "dots dots dots";
+  position: relative;
+}
+
+.team-carousel__viewport {
+  grid-area: viewport;
+  min-width: 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+.team-carousel__track {
+  align-items: stretch;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 1.5rem;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.team-carousel__nav {
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--ap-light-green, #A8C48A);
+  border-radius: 50%;
+  box-shadow: 0 4px 14px rgba(77, 92, 45, 0.1);
+  color: var(--ap-dark-green, #4D5C2D);
+  display: inline-flex;
+  flex-shrink: 0;
+  font-size: 1.25rem;
+  height: 2.75rem;
+  justify-content: center;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  width: 2.75rem;
+  z-index: 2;
+}
+
+.team-carousel__nav:hover:not(:disabled) {
+  background: var(--ap-dark-green, #4D5C2D);
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.team-carousel__nav:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+
+.team-carousel__nav--prev {
+  grid-area: prev;
+}
+
+.team-carousel__nav--next {
+  grid-area: next;
+}
+
+.team-carousel__dots {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  grid-area: dots;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.team-carousel__dot {
+  background: #c9d4b0;
+  border: none;
+  border-radius: 999px;
+  height: 0.5rem;
+  padding: 0;
+  transition: width 0.25s ease, background-color 0.25s ease;
+  width: 0.5rem;
+}
+
+.team-carousel__dot.is-active {
+  background: var(--ap-medium-green, #7C9A4A);
+  width: 1.75rem;
+}
+
+/* Card */
+.team-carousel .team-card {
+  background-color: #fff;
+  border: 1px solid var(--ap-light-green, #A8C48A);
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 18px rgba(77, 92, 45, 0.08);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  min-width: 0;
+  padding: 1.75rem 1.25rem 1.5rem;
+  text-align: center;
+}
+
+/* Anillo circular — anula height:260px / width:100% de styles.css */
+.team-carousel .team-card__photo-ring {
+  background: linear-gradient(180deg, #E7D9B5 0%, #A8C48A 100%);
+  border: 3px solid var(--ap-medium-green, #7C9A4A);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(124, 154, 74, 0.15);
+  flex-shrink: 0;
+  height: 140px;
+  margin: 0 auto 1.15rem;
+  overflow: hidden;
+  position: relative;
+  width: 140px;
+}
+
+.team-carousel .team-card__photo,
+.team-carousel .team-card__photo.team-card__photo--cutout {
+  border-radius: 50%;
+  display: block;
+  height: 140px !important;
+  margin: 0 !important;
+  max-height: none;
+  max-width: none;
+  object-fit: cover !important;
+  object-position: center 18% !important;
+  width: 140px !important;
+}
+
+/* Photoroom cuerpo completo: zoom moderado al rostro */
+.team-carousel .team-card__photo--cutout {
+  height: 140px !important;
+  object-fit: cover !important;
+  object-position: center 8% !important;
+  transform: scale(1.55);
+  transform-origin: center 10%;
+  width: 140px !important;
+}
+
+.team-carousel .team-card__name {
+  color: var(--ap-dark-green, #4D5C2D);
+  font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.team-carousel .team-card__role {
+  color: var(--ap-medium-green, #7C9A4A);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.team-carousel .team-card__description {
+  color: #3f4a2d;
+  flex-grow: 1;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.65;
+  margin-bottom: 1.15rem;
+  opacity: 1;
+}
+
+.team-carousel .team-card__social {
+  display: flex;
+  gap: 0.65rem;
+  justify-content: center;
+  margin-top: auto;
+  padding-top: 0;
+}
+
+.team-carousel .team-card__social-link {
+  align-items: center;
+  background-color: var(--ap-dark-green, #4D5C2D);
+  border-radius: 0.45rem;
+  color: #fff;
+  display: inline-flex;
+  font-size: 1rem;
+  height: 2.25rem;
+  justify-content: center;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  width: 2.25rem;
+}
+
+.team-carousel .team-card__social-link:hover {
+  background-color: var(--ap-medium-green, #7C9A4A);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 767.98px) {
+  .team-section {
+    padding: 2.5rem 0;
+  }
+
+  .team-carousel {
+    gap: 1rem 0.35rem;
+  }
+
+  .team-carousel__nav {
+    height: 2.4rem;
+    width: 2.4rem;
+  }
+
+  .team-carousel .team-card__photo-ring {
+    height: 120px;
+    width: 120px;
+  }
+
+  .team-carousel .team-card__photo,
+  .team-carousel .team-card__photo.team-card__photo--cutout {
+    height: 120px !important;
+    width: 120px !important;
+  }
+
+  .team-carousel .team-card__photo--cutout {
+    transform: scale(1.55);
+    transform-origin: center 10%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-carousel__track {
+    transition: none;
+  }
+}
