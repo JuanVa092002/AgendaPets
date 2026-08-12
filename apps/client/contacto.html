@@ -18,8 +18,8 @@
 </head>
 
 <body>
-       <!-- TRAE NAVBAR -->
-<div id="navbar-container"></div>
+    <!-- TRAE NAVBAR -->
+    <div id="navbar-container"></div>
 
 
 
@@ -28,79 +28,193 @@
 
     <!--Formulario de contacto-->
 
-    <main class="contacto fondoContaco ">
+    <main class="contacto fondoContaco mb-0 pb-0 ">
 
         <!-- Encabezado -->
-        <section class="hero-contacto ">
+        <section class="hero-contacto pt-5 mt-3">
             <div class="container text-center">
-                <h1 class="about-hero__title mb-4">
+                <h1 class="about-hero__title mb-3">
                     <span class="about-hero__title--dark">¿NECESITAS</span>
                     <span class="about-hero__title--accent"> AYUDA?</span>
                 </h1>
-
+                <p class="lead text-muted col-md-8 mx-auto mb-4">
+                    Estamos aquí para responder tus inquietudes y cuidar de tu mascota. Escríbenos y te responderemos lo
+                    antes posible.
+                </p>
             </div>
         </section>
 
         <!-- Contenido -->
-        <section class="contenido-contacto ">
+        <section class="contenido-contacto" style="padding-bottom: 90px !important;">
 
             <div class="container  ">
 
-                <div class="row align-items-center ">
+                <div class="row align-items-end justify-content-center g-4">
 
                     <!-- Imagen -->
                     <div class="col-lg-6">
                         <img src="assets/contactanos/FotoGatoContactanos.png" class="Fotogato">
                     </div>
 
-                    <!-- Formulario -->
+                    <!-- Formulario metido en una card -->
                     <div class="col-lg-5">
+                        <div class="card shadow border-0 p-4 bg-white rounded-4">
+                            <!-- novalidate evita las alertas por defecto del navegador -->
+                            <form action="https://formspree.io/f/mgoggjbr" method="post" id="formulario" class="row g-3"
+                                novalidate>
 
-                        <form action="https://formspree.io/f/mgoggjbr" method="post" id="formulario" class="row g-3">
+                                <div class="col-12">
+                                    <label for="nombre" class="form-label fw-semibold text-dark">Nombre</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre"
+                                        placeholder="Ingresa tu nombre">
+                                </div>
 
-                            <div class="col-12">
-                                <label for="nombre" class="form-label">Nombre</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingresa tu nombre"
-                                    >
-                            </div>
+                                <div class="col-12">
+                                    <label for="correo" class="form-label fw-semibold text-dark">Correo
+                                        electrónico</label>
+                                    <input type="email" class="form-control" id="correo" name="correo"
+                                        placeholder="correo@ejemplo.com">
+                                </div>
 
-                            <div class="col-12">
-                                <label for="correo" class="form-label">Correo electrónico</label>
-                                <input type="email" class="form-control" id="correo" name="correo" placeholder="correo@ejemplo.com"
-                                    >
-                            </div>
+                                <div class="col-12">
+                                    <label for="telefono" class="form-label fw-semibold text-dark">Teléfono</label>
+                                    <input type="text" class="form-control" id="telefono" name="telefono"
+                                        placeholder="Ej. 300 123 4567">
+                                </div>
 
-                            <div class="col-12">
-                                <label for="telefono" class="form-label">Teléfono</label>
-                                <input type="number" class="form-control" id="telefono" name="telefono" placeholder="Ej. 300 123 4567"
-                                    >
-                            </div>
+                                <div class="col-12">
+                                    <label for="mensaje" class="form-label fw-semibold text-dark">Mensaje</label>
+                                    <textarea class="form-control" id="mensaje" name="mensaje" rows="4"
+                                        placeholder="¿Cómo podemos ayudarte?"></textarea>
+                                </div>
 
-                            <div class="col-12">
-                                <label for="mensaje" class="form-label">Mensaje</label>
-                                <textarea class="form-control" id="mensaje" name="mensaje" rows="5"
-                                    placeholder="¿Cómo podemos ayudarte?" ></textarea>
-                            </div>
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-success w-100 py-2 fw-bold botonEnviar">
+                                        Enviar
+                                    </button>
+                                </div>
 
-                            <div class="col-12 text-center">
-                                <button type="submit" class="btn btn-success px-4 botonEnviar">
-                                    Enviar
-                                </button>
-
-                            </div>
-
-                        </form>
-
+                            </form>
+                        </div>
                     </div>
 
                 </div>
 
-
-
             </div>
 
-            </div>
 
+        </section>
+
+        <section class="contenido-contacto pb-5">
+            <div class="container my-4">
+                <hr class="border-secondary border-1 opacity-0">
+            </div>
+            <!-- SECCIÓN DE PREGUNTAS FRECUENTES -->
+            <section class="faq-seccion">
+                <div class="container">
+
+                    <!-- Encabezado -->
+                    <div class="text-center mb-5">
+                        <span
+                            class="badge bg-success bg-opacity-10 text-success fw-bold px-3 py-2 rounded-pill mb-2 fs-6">
+                            <i class="bi bi-question-circle-fill me-1"></i> Resuelve tus dudas
+                        </span>
+                        <h2 class="fw-bold text-dark display-6">Preguntas Frecuentes</h2>
+                        <p class="text-muted col-md-6 mx-auto">
+                            Aquí respondemos las inquietudes más comunes de nuestros usuarios antes de contactarnos.
+                        </p>
+                    </div>
+
+                    <!-- Acordeón Bootstrap en tarjeta contenida -->
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="card shadow-sm border-0 rounded-4 p-3 bg-white">
+                                <div class="accordion accordion-flush" id="faqAccordion">
+
+                                    <!-- Pregunta 1 -->
+                                    <div class="accordion-item border-bottom">
+                                        <h3 class="accordion-header" id="headingOne">
+                                            <button class="accordion-button fw-semibold text-dark fs-5 collapsed"
+                                                type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                                                aria-expanded="false" aria-controls="collapseOne">
+                                                ¿Cómo puedo agendar una cita para mi mascota?
+                                            </button>
+                                        </h3>
+                                        <div id="collapseOne" class="accordion-collapse collapse"
+                                            aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                                            <div class="accordion-body text-muted">
+                                                Puedes agendar fácilmente una cita registrándote en nuestra plataforma,
+                                                seleccionando el servicio deseado en la sección de agenda y eligiendo la
+                                                fecha y hora que mejor te convenga.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Pregunta 2 -->
+                                    <div class="accordion-item border-bottom">
+                                        <h3 class="accordion-header" id="headingTwo">
+                                            <button class="accordion-button fw-semibold text-dark fs-5 collapsed"
+                                                type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                                aria-expanded="false" aria-controls="collapseTwo">
+                                                ¿Cuáles son los horarios de atención?
+                                            </button>
+                                        </h3>
+                                        <div id="collapseTwo" class="accordion-collapse collapse"
+                                            aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                                            <div class="accordion-body text-muted">
+                                                Nuestro equipo atiende consultas presenciales y virtuales de Lunes a
+                                                Sábado de 8:00 a.m. a 6:00 p.m. Para urgencias, contamos con atención
+                                                guiada a través de nuestro formulario de contacto.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Pregunta 3 -->
+                                    <div class="accordion-item border-bottom">
+                                        <h3 class="accordion-header" id="headingThree">
+                                            <button class="accordion-button fw-semibold text-dark fs-5 collapsed"
+                                                type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                                                aria-expanded="false" aria-controls="collapseThree">
+                                                ¿Qué debo hacer si necesito cancelar o reprogramar una cita?
+                                            </button>
+                                        </h3>
+                                        <div id="collapseThree" class="accordion-collapse collapse"
+                                            aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                                            <div class="accordion-body text-muted">
+                                                Puedes cancelar o modificar tu cita directamente desde tu perfil con un
+                                                mínimo de 2 horas de anticipación, o comunicándote con nosotros a través
+                                                de este formulario.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Pregunta 4 -->
+                                    <div class="accordion-item">
+                                        <h3 class="accordion-header" id="headingFour">
+                                            <button class="accordion-button fw-semibold text-dark fs-5 collapsed"
+                                                type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour"
+                                                aria-expanded="false" aria-controls="collapseFour">
+                                                ¿Tienen atención a domicilio?
+                                            </button>
+                                        </h3>
+                                        <div id="collapseFour" class="accordion-collapse collapse"
+                                            aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                                            <div class="accordion-body text-muted">
+                                                ¡Sí! Varios de nuestros profesionales aliados ofrecen servicios a
+                                                domicilio como vacunación, revisión general y peluquería canina/felina.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+              
+            </section>
+            
         </section>
 
     </main>
@@ -108,14 +222,14 @@
     <!-- INICIO DEL FOOTER (ALEX) -->
     <!-- FIN DEL FOOTER -->
 
-      <!-- INCLUYE EL FOOTER -->
-     <div id="footer-container"></div>
+    <!-- INCLUYE EL FOOTER -->
+    <div id="footer-container"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="main.js"></script>
     <script src="./js/nav-footer.js" defer></script>
 
 </body>
