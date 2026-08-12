@@ -22,7 +22,7 @@
   --color-star: #E8B84A;
 
   /* Typography */
-  --font-display: "Fraunces", "Georgia", serif;
+  --font-display: "Original Surfer", "Comfortaa", serif;
   --font-body: "Montserrat", system-ui, sans-serif;
 
   /* Spacing */
@@ -356,7 +356,7 @@
 }
 
 .home-float strong {
-  color: var(--color-text);
+  color: var(--color-primary);
   display: block;
   font-size: 0.9375rem;
   font-weight: 700;

@@ -6,10 +6,7 @@ async function cargarComponente(id, archivo) {
         const contenido = await respuesta.text();
         document.getElementById(id).innerHTML = contenido;
 
-        // 🌟 SOLUCIÓN: Si acabamos de cargar el navbar, activamos su lógica interna
-        if (id === "navbar-container") {
-            inicializarNavbar();
-        }
+   
     } catch (error) {
         console.log(error);
     }
@@ -20,4 +17,38 @@ async function cargarComponente(id, archivo) {
 document.addEventListener("DOMContentLoaded", () => {
     cargarComponente("navbar-container", "./components/navbar.html");
     cargarComponente("footer-container", "./components/footer.html");
+
+    marcarPaginaActual();
 });
+
+
+
+
+function marcarPaginaActual() {
+
+    let paginaActual = window.location.pathname.split("/").pop();
+
+    if (paginaActual === "") {
+        paginaActual = "index.html";
+    }
+
+    const enlaces = document.querySelectorAll(".navbar-nav .nav-link");
+
+    enlaces.forEach(enlace => {
+
+        const href = enlace.getAttribute("href");
+
+        if (!href || href === "#") {
+            return;
+        }
+
+        const paginaEnlace = href.split("/").pop();
+
+        if (paginaActual === paginaEnlace) {
+
+            enlace.classList.add("active");
+
+            enlace.setAttribute("aria-current", "page");
+        }
+    });
+}

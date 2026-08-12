@@ -1,0 +1,251 @@
+:root {
+  --ap-cream: #F6F3EA;
+  --ap-dark-green: #4D5C2D;
+  --ap-medium-green: #7C9A4A;
+  --ap-light-green: #A8C48A;
+  --ap-tan: #E7D9B5;
+}
+
+body {
+    margin: 0;
+    background-color: var(--ap-cream);
+    font-family: "Comfortaa", sans-serif;
+    color: var(--ap-dark-green);
+}
+
+.header-admin {
+    min-height: 67px;
+    background-color: var(--ap-medium-green);
+    color: white;
+}
+
+.titulo-header {
+    font-size: 1.35rem;
+    font-weight: 500;
+}
+
+.logout {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+.nav-admin {
+    color: var(--ap-dark-green);
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.nav-admin .nav-link {
+    color: var(--ap-dark-green);
+    text-decoration: none;
+    padding: 4px 12px;
+    border-radius: 7px;
+}
+
+.nav-admin .nav-link:hover,
+.nav-admin .nav-link.activo {
+    background-color: var(--ap-tan);
+}
+
+.admin-card {
+    border: 1px solid var(--ap-tan);
+    border-radius: 15px;
+    overflow: hidden;
+    background-color: var(--ap-cream);
+}
+
+.card-title-admin {
+    min-height: 54px;
+    background-color: var(--ap-tan);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.card-body-admin {
+    padding: 42px 54px;
+}
+
+.form-label {
+    font-size: 1.15rem;
+    margin-bottom: 3px;
+}
+
+.form-control {
+    border: 1px solid var(--ap-dark-green);
+    border-radius: 12px;
+    font-family: "Comfortaa", sans-serif;
+    font-size: 0.75rem;
+    padding: 6px 12px;
+}
+
+.form-control::placeholder {
+    color: #b9bcae;
+}
+
+.form-control:focus {
+    border-color: var(--ap-medium-green);
+    box-shadow: 0 0 0 2px rgba(124, 154, 74, 0.15);
+}
+
+textarea.form-control {
+    resize: none;
+}
+
+.btn-crear {
+    background-color: var(--ap-medium-green);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    width: 128px;
+    padding: 4px;
+    font-family: "Comfortaa", sans-serif;
+}
+
+.btn-crear:hover {
+    background-color: var(--ap-dark-green);
+    color: white;
+}
+
+.servicio {
+    display: flex;
+    align-items: center;
+    background-color: var(--ap-light-green);
+    border-radius: 15px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    min-height: 107px;
+}
+
+.icono-servicio {
+    flex-shrink: 0;
+
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--ap-dark-green);
+    color: var(--ap-light-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+}
+
+.info-servicio {
+    flex: 1;
+    min-width: 0;
+    padding-left: 10px;
+}
+
+.info-servicio h5 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.info-servicio p {
+    margin: 2px 0;
+    font-size: 0.65rem;
+    line-height: 1.15;
+    text-align: justify;
+}
+
+.datos-servicio {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.65rem;
+}
+
+.datos-servicio span {
+    background-color: var(--ap-medium-green);
+    color: white;
+    padding: 1px 6px;
+    border-radius: 8px;
+}
+
+.acciones-servicio {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-left: 8px;
+}
+
+.acciones-servicio .btn {
+    padding: 1px 7px;
+    border-radius: 8px;
+    font-family: "Comfortaa", sans-serif;
+    font-size: 0.55rem;
+    background-color: white;
+}
+
+
+.btn-ocultar, .btn-editar {
+    color: var(--ap-dark-green);
+}
+
+.btn-eliminar {
+    color: #C25F5F;
+}
+
+
+@media (max-width: 767px) {
+
+    .header-admin {
+        padding: 12px 18px !important;
+    }
+
+    .titulo-header {
+        font-size: 0.95rem;
+    }
+
+    .header-admin .bi-shield-check {
+        font-size: 1.5rem !important;
+    }
+
+    .logout {
+        font-size: 0.9rem;
+    }
+
+    .logout i {
+        font-size: 1.2rem !important;
+    }
+
+    .nav-admin {
+        flex-wrap: wrap;
+        gap: 5px !important;
+        font-size: 0.9rem;
+    }
+
+    .card-body-admin {
+        padding: 30px 25px;
+    }
+
+    .servicios {
+        padding: 20px;
+    }
+
+    .servicio {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .info-servicio {
+        width: calc(100% - 50px);
+    }
+
+    .acciones-servicio {
+        width: 100%;
+        flex-direction: row;
+        margin: 8px 0 0 50px;
+    }
+
+    .acciones-servicio .btn {
+        flex: 1;
+    }
+}
