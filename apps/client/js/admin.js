@@ -25,3 +25,14 @@ function agregarServicio() {
 
     console.log(JSON.stringify(servicios, null, 2));
 }
+
+//Ocultar
+const botonesOcultar = document.querySelectorAll("ocultarServicio");
+
+botonesOcultar.forEach(function (boton){
+    boton.addEventListener("click",function(){
+        const servicio = boton.ocultar(".servicio");
+        servicio.style.display = "none";
+    })
+})
+
