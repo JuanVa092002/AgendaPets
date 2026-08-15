@@ -1,4 +1,4 @@
-const servicios = [
+const serviciosIniciales = [
     {
         id: 1,
         nombre: "Baño básico",
@@ -36,15 +36,36 @@ const servicios = [
     }
 ];
 
+const STORAGE_KEY = "servicios";
+
+
+// Solo la primera vez se cargan los datos iniciales
+if (!localStorage.getItem(STORAGE_KEY)) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(serviciosIniciales));
+}
+
+// A partir de aquí SIEMPRE trabajamos con localStorage
+const servicios = JSON.parse(localStorage.getItem(STORAGE_KEY));
+
+
 const formulario = document.getElementById("form-servicio");
 const contenedorServicios = document.getElementById("contenedorServicios");
+
 
 formulario.addEventListener("submit", function (event) {
     event.preventDefault();
     agregarServicio();
+    formulario.reset();
 });
 
-let contador = 5;
+// Calcula el último id existente
+let contador = Math.max(...servicios.map(servicio => servicio.id));
+
+//let contador = 5;
+
+function guardarServicios() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(servicios));
+}
 
 function agregarServicio() {
 
@@ -64,6 +85,7 @@ function agregarServicio() {
     };
 
     servicios.push(servicio);
+    guardarServicios();
     mostrarServicios();
 
 //    console.log(JSON.stringify(servicios, null, 2));
