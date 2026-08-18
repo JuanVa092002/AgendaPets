@@ -13,11 +13,18 @@ async function cargarComponente(id, archivo) {
 }
 
 
-// Arranca la carga de componentes al iniciar la página
-document.addEventListener("DOMContentLoaded", () => {
-    cargarComponente("navbar-container", "./components/navbar.html");
-    cargarComponente("footer-container", "./components/footer.html");
+document.addEventListener("DOMContentLoaded", async () => {
+    const tareas = [];
 
+    if (document.getElementById("navbar-container")) {
+        tareas.push(cargarComponente("navbar-container", "./components/navbar.html"));
+    }
+
+    if (document.getElementById("footer-container")) {
+        tareas.push(cargarComponente("footer-container", "./components/footer.html"));
+    }
+
+    await Promise.all(tareas);
     marcarPaginaActual();
 });
 

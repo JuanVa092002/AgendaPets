@@ -193,6 +193,21 @@ textarea.form-control {
     color: #C25F5F;
 }
 
+.servicio--oculto {
+    opacity: 0.55;
+}
+
+.etiqueta-oculto {
+    font-size: 0.7rem;
+    color: #C25F5F;
+}
+
+.servicios-vacio {
+    margin: 0;
+    text-align: center;
+    font-size: 0.85rem;
+}
+
 
 @media (max-width: 767px) {
 
