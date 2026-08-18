@@ -383,8 +383,9 @@
   font-size: 1.25rem;
 }
 
+.home-float--rating strong,
 .home-float--rating span {
-  color: rgba(255, 255, 255, 0.92);
+  color: #fff;
 }
 
 .home-float--appointment {
