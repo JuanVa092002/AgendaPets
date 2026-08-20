@@ -15,25 +15,26 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
- <link
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Original+Surfer&display=swap" rel="stylesheet">
-    
-     <link rel="stylesheet" href="css/home.css">
-     <link rel="stylesheet" href="./css/navbar.css">
+    <link <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Original+Surfer&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="./css/navbar.css">
     <link rel="stylesheet" href="styles.css">
-   
-   
+
+
 </head>
 
 <body class="home-page">
 
     <!-- TRAE NAVBAR -->
-<div id="navbar-container"></div>
+    <div id="navbar-container"></div>
 
-   
-<main id="contenido-principal">
+
+    <main id="contenido-principal">
         <!-- Hero: valor + CTA principal (above the fold) -->
         <section class="home-hero" aria-labelledby="hero-heading">
             <div class="home-hero__bg" aria-hidden="true"></div>
@@ -111,6 +112,8 @@
                 </div>
             </div>
         </section>
+
+
 
         <!-- Servicios: progressive disclosure por tarjeta -->
         <section class="home-services home-section" id="servicios" aria-labelledby="services-heading">
@@ -214,16 +217,31 @@
                             <i class="bi bi-envelope-check"></i>
                         </div>
                         <h3 class="home-step__title">¡Listo!</h3>
-                        <p class="home-step__text">Recibirás un correo con la confirmación y los detalles de tu cita.</p>
+                        <p class="home-step__text">Recibirás un correo con la confirmación y los detalles de tu cita.
+                        </p>
                     </article>
                 </div>
             </div>
         </section>
 
         <!-- Testimonial: prueba social, PENDIENTE VOLVERLO CARRUSEL O INCORPORAR ANIMACIÓN -->
-        <section class="home-proof home-section--tight" aria-label="Opinión de cliente">
-            <div class="home-container">
-                <blockquote class="home-proof__card home-reveal">
+
+        
+        <div id="carouselExampleDark" class="carousel carousel-dark slide">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+                     <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="3"
+                    aria-label="Slide 4"></button>
+                      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="4"
+                    aria-label="Slide 5"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active" data-bs-interval="10000">
                     <div class="home-proof__stars" aria-hidden="true">★★★★★</div>
                     <p class="home-proof__quote">
                         "Reservé en menos de un minuto y al día siguiente ya tenía confirmación. Luna salió feliz y
@@ -233,31 +251,76 @@
                         <div class="home-proof__avatar" aria-hidden="true">MC</div>
                         <div>
                             <p class="home-proof__name">María Camila R.</p>
-                            <p class="home-proof__meta">Dueña de Luna · Chapinero</p>
+                            <p class="home-proof__meta">Dueña de Luna 🐶· Chapinero</p>
                         </div>
                     </footer>
-                </blockquote>
-            </div>
-        </section>
-
-        <section class="home-proof home-section--tight" aria-label="Opinión de cliente">
-            <div class="home-container">
-                <blockquote class="home-proof__card home-reveal">
+                </div>
+                <div class="carousel-item" data-bs-interval="2000">
                     <div class="home-proof__stars" aria-hidden="true">★★★★★</div>
                     <p class="home-proof__quote">
                         "Reservar en Agenda Pets fue muy facil y atendieron excelente a mi gatito Romeo."
                     </p>
                     <footer class="home-proof__author">
-                        <div class="home-proof__avatar" aria-hidden="true">MC</div>
+                        <div class="home-proof__avatar" aria-hidden="true">ET</div>
                         <div>
                             <p class="home-proof__name">Estefany Trujillo</p>
-                            <p class="home-proof__meta">Dueña de Romeo · Fontibrons</p>
+                            <p class="home-proof__meta">Dueña de Romeo 😺· Fontibrons</p>
                         </div>
                     </footer>
-                </blockquote>
+                </div>
+                <div class="carousel-item">
+                    <div class="home-proof__stars" aria-hidden="true">★★★★★</div>
+                    <p class="home-proof__quote">
+                        “Me encantó el servicio. Todo fue rápido,sencillo y mi perrito quedó hermoso.”
+                    </p>
+                    <footer class="home-proof__author">
+                        <div class="home-proof__avatar" aria-hidden="true">JL</div>
+                        <div>
+                            <p class="home-proof__name">Juan López</p>
+                            <p class="home-proof__meta">Dueño de Max 🐶· Teusaquillo</p>
+                        </div>
+                    </footer>
+                </div>
+                <div class="carousel-item">
+                    <div class="home-proof__stars" aria-hidden="true">★★★★★</div>
+                    <p class="home-proof__quote">
+                        "Antes me demoraba mucho buscando dónde llevar a Toby. Ahora puedo reservar su cita rápidamente y recibir la confirmación sin complicaciones."
+                    </p>
+                    <footer class="home-proof__author">
+                        <div class="home-proof__avatar" aria-hidden="true">AC</div>
+                        <div>
+                            <p class="home-proof__name">Andrés Cepeda</p>
+                            <p class="home-proof__meta">Dueño de Toby 🐶 · La Candelaria</p>
+                        </div>
+                    </footer>
+                </div>
+                      <div class="carousel-item">
+                    <div class="home-proof__stars" aria-hidden="true">★★★★★</div>
+                    <p class="home-proof__quote">
+                       "La atención fue excelente y trataron a mi gatita con muchísimo cuidado. Me gustó poder encontrar todo en un solo lugar."
+                    <footer class="home-proof__author">
+                        <div class="home-proof__avatar" aria-hidden="true">AM</div>
+                        <div>
+                            <p class="home-proof__name">Alejandra Manjarres</p>
+                            <p class="home-proof__meta">Dueña de Nala 🐱 · Chapinero</p>
+                        </div>
+                    </footer>
+                </div>
             </div>
-        </section>
-<!-- Testimonial: prueba social, PENDIENTE VOLVERLO CARRUSEL O INCORPORAR ANIMACIÓN -->
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+        <!-- Testimonial: prueba social, PENDIENTE VOLVERLO CARRUSEL O INCORPORAR ANIMACIÓN -->
 
 
         <!-- CTA final: peak-end rule -->
@@ -280,14 +343,14 @@
 
 
     <!-- INCLUYE EL FOOTER -->
-     <div id="footer-container"></div>
+    <div id="footer-container"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
 
     <script src="js/home.js"></script>
-     <script src="./js/nav-footer.js" defer></script>
+    <script src="./js/nav-footer.js" defer></script>
 </body>
 
 </html>
