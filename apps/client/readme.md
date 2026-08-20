@@ -7,9 +7,19 @@
  <h1 align="center"> 🐾 AGENDAPETS - RESERVAS PETGROOMING🐶</h1>
 
 <p align="center">
+
+DEPLOY PAGINA:
+
   <a href="https://agendapets.github.io/AgendaPets/">https://agendapets.github.io/AgendaPets/</a>
+  
 </p>
 
+
+<p align="center">
+DEPLOY PANEL ADMIN: 
+  <a href="https://agendapets.github.io/AgendaPets/VAdmin/mis-servicios.html">https://agendapets.github.io/AgendaPets/VAdmin/mis-servicios.html</a>
+  
+</p>
 ---
 
 ## 🚧 Proyecto en construcción 🚧
