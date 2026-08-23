@@ -1,7 +1,8 @@
 const KEY_S="servicios",KEY_C="citas",HORAS=["08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00"],DIAS=["LUN","MAR","MIÉ","JUE","VIE","SÁB"],DIA_NOM=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"],MESES=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 const $ = (id) => document.getElementById(id);
 const inicioSemana = (f) => { const d=new Date(f), n=d.getDay(); d.setDate(d.getDate()+(n===0?-6:1-n)); d.setHours(0,0,0,0); return d; };
-const estado = { paso:1, ids:[], fecha:null, hora:null, mesVista:new Date(), semanaInicio:inicioSemana(new Date()) };
+const estado = { paso:1, ids:[], fecha:null, hora:null, mesVista:new Date(), semanaInicio:inicioSemana(new Date()), retornoRevision:null };
+let snapshotRevision=null;
 const money = (n) => "$ " + Number(n).toLocaleString("es-CO");
 const ymd = (f) => { const d=new Date(f); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; };
 const hoy = ymd(new Date());
@@ -64,16 +65,111 @@ function pintarGrilla(){
   $("grilla-semana").innerHTML=h;
 }
 
+function guardarSnapshot(){
+  snapshotRevision={
+    ids:[...estado.ids],
+    fecha:estado.fecha,
+    hora:estado.hora,
+    mascota:mascota()
+  };
+}
+
+function restaurarSnapshot(){
+  if(!snapshotRevision) return;
+  estado.ids=[...snapshotRevision.ids];
+  estado.fecha=snapshotRevision.fecha;
+  estado.hora=snapshotRevision.hora;
+  const m=snapshotRevision.mascota;
+  $("mascota-nombre").value=m.nombre;
+  $("mascota-tipo").value=m.tipo;
+  $("mascota-raza").value=m.raza;
+  $("mascota-tamano").value=m.tamano;
+  $("dueno-nombre").value=m.dueno;
+  $("dueno-telefono").value=m.telefono;
+  $("mascota-notas").value=m.notas;
+  snapshotRevision=null;
+}
+
+function irAEditar(paso){
+  guardarSnapshot();
+  estado.retornoRevision=4;
+  mostrarPaso(paso);
+}
+
+function btnContinuarTexto(){
+  if(estado.retornoRevision) return "Guardar y volver";
+  return estado.paso===4 ? "Confirmar cita" : "Continuar";
+}
+
 function pintarResumen(){
   const m=mascota(), [y,mo,d]=estado.fecha.split("-");
-  $("resumen-cita").innerHTML=`<ul>${elegidos().map(s=>`<li><span>${s.nombre}<br><small>${s.duracion}</small></span><strong>${money(s.precio)}</strong></li>`).join("")}</ul><p class="meta">${m.nombre} · ${m.tipo} ${m.tamano}${m.raza?" · "+m.raza:""}<br>${m.dueno} · ${m.telefono}<br>${d} de ${MESES[mo-1]} · ${ampm(estado.hora)}${m.notas?"<br>"+m.notas:""}</p><p class="total">${money(total())}</p>`;
+  const diaNom=DIA_NOM[new Date(estado.fecha+"T00:00:00").getDay()];
+  const inicial=(m.nombre||"?").charAt(0).toUpperCase();
+  const serviciosHtml=elegidos().map(s=>`<li><span class="revision-chip"><i class="bi ${icono(s.nombre)}"></i>${s.nombre}</span><span>${money(s.precio)}</span></li>`).join("");
+  $("resumen-cita").innerHTML=`
+    <p class="revision-hint"><i class="bi bi-pencil-square"></i> Puedes ajustar servicios, datos o fecha antes de confirmar.</p>
+    <article class="revision-card" data-edit="1" role="button" tabindex="0" aria-label="Editar servicios">
+      <div class="revision-card__head">
+        <span class="revision-card__icon"><i class="bi bi-scissors"></i></span>
+        <div class="revision-card__copy">
+          <h2>Servicios</h2>
+          <p>${elegidos().length} seleccionado${elegidos().length>1?"s":""} · ${money(total())}</p>
+        </div>
+        <span class="revision-edit" aria-hidden="true"><i class="bi bi-pencil"></i> Cambiar</span>
+      </div>
+      <ul class="revision-list">${serviciosHtml}</ul>
+    </article>
+    <article class="revision-card" data-edit="2" role="button" tabindex="0" aria-label="Editar datos de mascota">
+      <div class="revision-card__head">
+        <span class="revision-card__avatar">${inicial}</span>
+        <div class="revision-card__copy">
+          <h2>${m.nombre}</h2>
+          <p>${m.tipo}${m.tamano?` · ${m.tamano}`:""}${m.raza?` · ${m.raza}`:""}</p>
+        </div>
+        <span class="revision-edit" aria-hidden="true"><i class="bi bi-pencil"></i> Cambiar</span>
+      </div>
+      <div class="revision-meta">
+        <span><i class="bi bi-person"></i>${m.dueno}</span>
+        <span><i class="bi bi-whatsapp"></i>${m.telefono}</span>
+        ${m.notas?`<span class="revision-note"><i class="bi bi-chat-left-text"></i>${m.notas}</span>`:""}
+      </div>
+    </article>
+    <article class="revision-card revision-card--fecha" data-edit="3" role="button" tabindex="0" aria-label="Editar fecha y hora">
+      <div class="revision-card__head">
+        <span class="revision-card__icon revision-card__icon--cal"><i class="bi bi-calendar-check"></i></span>
+        <div class="revision-card__copy">
+          <h2>${diaNom}, ${d} de ${MESES[mo-1]}</h2>
+          <p>${ampm(estado.hora)} · GMT-5</p>
+        </div>
+        <span class="revision-edit" aria-hidden="true"><i class="bi bi-pencil"></i> Cambiar</span>
+      </div>
+      <div class="revision-fecha-badge">
+        <strong>${ampm(estado.hora)}</strong>
+        <small>${diaNom} ${d}/${mo}</small>
+      </div>
+    </article>
+    <footer class="revision-total">
+      <span>Total estimado</span>
+      <strong>${money(total())}</strong>
+    </footer>`;
 }
 
 function mostrarPaso(p){
   estado.paso=p;
+  if(p===4 && estado.retornoRevision===4){
+    estado.retornoRevision=null;
+    snapshotRevision=null;
+  }
+  const enEdicion=estado.retornoRevision===4;
   document.querySelectorAll(".reserva-panel").forEach(el => el.classList.toggle("d-none", Number(el.dataset.panel)!==p));
-  document.querySelectorAll(".reserva-stepper li").forEach(el => { const n=Number(el.dataset.paso); el.classList.toggle("is-active",n===p); el.classList.toggle("is-done",n<p); });
-  $("btn-continuar").textContent = p===4 ? "Confirmar cita" : "Continuar";
+  document.querySelectorAll(".reserva-stepper li").forEach(el => {
+    const n=Number(el.dataset.paso);
+    el.classList.toggle("is-active",n===p);
+    el.classList.toggle("is-done", enEdicion ? n<4 && n!==p : n<p);
+    el.classList.toggle("is-editing", enEdicion && n===p);
+  });
+  $("btn-continuar").textContent=btnContinuarTexto();
+  $("btn-atras").textContent = enEdicion ? "Descartar cambios" : "Atrás";
   if(p===3) pintarFecha();
   if(p===4) pintarResumen();
   pintarPick();
@@ -81,13 +177,41 @@ function mostrarPaso(p){
 
 function validar(){
   if(estado.paso===1 && !estado.ids.length) return "Selecciona uno o más servicios.";
-  if(estado.paso===2){ const m=mascota(); if(m.nombre.length<2) return "Indica el nombre de tu mascota."; if(!m.tipo||!m.tamano) return "Completa tipo y tamaño."; if(m.dueno.length<3) return "Indica tu nombre."; if(!/^\d{10}$/.test(m.telefono)) return "El WhatsApp debe tener 10 dígitos."; }
-  if(estado.paso===3 && (!estado.fecha||!estado.hora)) return "Elige un día y un horario libre.";
+  if(estado.paso===2 || estado.paso===4){
+    const m=mascota();
+    if(m.nombre.length<2) return "Indica el nombre de tu mascota.";
+    if(!m.tipo||!m.tamano) return "Completa tipo y tamaño.";
+    if(m.dueno.length<3) return "Indica tu nombre.";
+    if(!/^\d{10}$/.test(m.telefono)) return "El WhatsApp debe tener 10 dígitos.";
+  }
+  if((estado.paso===3 || estado.paso===4) && (!estado.fecha||!estado.hora)) return "Elige un día y un horario libre.";
+  if(estado.paso===4 && !estado.ids.length) return "Selecciona al menos un servicio.";
 }
 
 $("lista-servicios").onclick = (e) => { const c=e.target.closest(".reserva-card"); if(!c) return; const id=Number(c.dataset.id); estado.ids=estado.ids.includes(id)?estado.ids.filter(x=>x!==id):estado.ids.concat(id); pintarServicios(); };
-$("btn-atras").onclick = () => estado.paso===1 ? location.href="index.html" : mostrarPaso(estado.paso-1);
-$("btn-continuar").onclick = () => { const err=validar(); if(err) return avis("Falta un dato", err); if(estado.paso!==4) return mostrarPaso(estado.paso+1); const m=mascota(); localStorage.setItem(KEY_C, JSON.stringify(citas().concat({ id:Date.now(), servicios:elegidos(), servicio:etiqueta(), precio:total(), ...m, mascota:m.nombre, fecha:estado.fecha, hora:estado.hora }))); avis("Cita confirmada", `La cita de ${m.nombre} queda para el ${DIA_NOM[new Date(estado.fecha+"T00:00:00").getDay()]} ${estado.fecha} a las ${ampm(estado.hora)}.`, "success").then(()=> location.href="index.html"); };
+$("btn-atras").onclick = () => {
+  if(estado.retornoRevision){
+    restaurarSnapshot();
+    return mostrarPaso(estado.retornoRevision);
+  }
+  if(estado.paso===1) return location.href="index.html";
+  mostrarPaso(estado.paso-1);
+};
+$("btn-continuar").onclick = () => {
+  const err=validar();
+  if(err) return avis("Falta un dato", err);
+  if(estado.retornoRevision){
+    snapshotRevision=null;
+    return mostrarPaso(estado.retornoRevision);
+  }
+  if(estado.paso!==4) return mostrarPaso(estado.paso+1);
+  const m=mascota();
+  localStorage.setItem(KEY_C, JSON.stringify(citas().concat({ id:Date.now(), servicios:elegidos(), servicio:etiqueta(), precio:total(), ...m, mascota:m.nombre, fecha:estado.fecha, hora:estado.hora })));
+  avis("Cita confirmada", `La cita de ${m.nombre} queda para el ${DIA_NOM[new Date(estado.fecha+"T00:00:00").getDay()]} ${estado.fecha} a las ${ampm(estado.hora)}.`, "success").then(()=> location.href="index.html");
+};
+document.querySelector(".reserva-form")?.addEventListener("submit", (e) => e.preventDefault());
+$("resumen-cita").onclick = (e) => { const b=e.target.closest("[data-edit]"); if(!b) return; irAEditar(Number(b.dataset.edit)); };
+$("resumen-cita").onkeydown = (e) => { if(e.key!=="Enter" && e.key!==" ") return; const b=e.target.closest("[data-edit]"); if(!b) return; e.preventDefault(); irAEditar(Number(b.dataset.edit)); };
 $("mini-calendario").onclick = (e) => { const m=e.target.closest("[data-mes]"); if(m){ estado.mesVista=new Date(estado.mesVista.getFullYear(), estado.mesVista.getMonth()+Number(m.dataset.mes),1); pintarFecha(); return; } const d=e.target.closest("[data-fecha]"); if(!d||d.disabled) return; estado.fecha=d.dataset.fecha; estado.hora=null; estado.semanaInicio=inicioSemana(new Date(estado.fecha+"T00:00:00")); pintarFecha(); pintarPick(); };
 $("lista-horas").onclick = (e) => { const b=e.target.closest("[data-hora]"); if(!b) return; estado.hora=b.dataset.hora; pintarFecha(); pintarPick(); };
 $("grilla-semana").onclick = (e) => { const s=e.target.closest(".agenda-slot.is-libre"); if(!s) return; estado.fecha=s.dataset.fecha; estado.hora=s.dataset.hora; estado.mesVista=new Date(estado.fecha+"T00:00:00"); pintarFecha(); pintarPick(); };
