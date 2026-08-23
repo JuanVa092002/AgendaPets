@@ -1,0 +1,370 @@
+/* =========================================================
+   MIS CITAS
+========================================================= */
+:root {
+    --ap-crema: #FAF8F2;
+    --ap-cards: #FFFDF9;
+    --ap-verdeOscuro: #4D5C2D;
+    --ap-acento: #C97A4C;
+    --texto: #6B6B6B;
+
+    --ap-verdeOscuroNuevo: #556B2F;
+    --ap-verdeMedioNuevo: #7EAE45;
+    --ap-verdeClaroNuevo: #BFD99A;
+    --ap-beigeNuevo: #F1DFC6;
+    --ap-doradosuave: #D2A441;
+    --ap-coral: #D98B7B;
+
+    --ap-cream: #F6F3EA;
+    --ap-dark-green: #4D5C2D;
+    --ap-medium-green: #7C9A4A;
+    --ap-light-green: #A8C48A;
+    --ap-tan: #E7D9B5;
+}
+
+
+.mis-citas-page {
+    min-height: 650px;
+    background-color: var(--ap-cream);
+    font-family: "Montserrat", sans-serif;
+}
+
+
+/* =========================================================
+   ENCABEZADO
+========================================================= */
+
+.mis-citas-header {
+    padding-top: 35px;
+}
+
+.mis-citas-header h1 {
+    text-align: center;
+    color: var(--ap-dark-green);
+    font-family: "Comfortaa", sans-serif;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.mis-citas-subtitle {
+    text-align: center;
+    color: var(--ap-dark-green);
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+}
+
+
+/* =========================================================
+   INPUT NÚMERO CELULAR
+========================================================= */
+
+.celular-form {
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+.celular-form label {
+    display: block;
+    color: var(--ap-dark-green);
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.celular-form input {
+    width: 100%;
+    height: 58px;
+
+    border: 1px solid var(--ap-dark-green);
+    border-radius: 12px;
+
+    background-color: #ffffff;
+    color: var(--ap-dark-green);
+
+    padding: 0 16px;
+    font-size: 1rem;
+
+    transition: all 0.2s ease;
+}
+
+.celular-form input::placeholder {
+    color: #8b8b8b;
+}
+
+.celular-form input:focus {
+    border-color: var(--ap-medium-green);
+    box-shadow: 0 0 0 0.2rem rgba(124, 154, 74, 0.18);
+}
+
+
+/* =========================================================
+   SECCIÓN CITAS
+========================================================= */
+
+.citas-section {
+    padding: 18px 0 120px;
+}
+
+
+/* =========================================================
+   CARD DE LA CITA
+========================================================= */
+
+.cita-card {
+    width: 100%;
+    max-width: 540px;
+
+    margin-top: 0;
+
+    background: linear-gradient(
+        135deg,
+        var(--ap-tan),
+        #f2e6cf
+    );
+
+    border-radius: 18px;
+
+    padding: 18px 28px;
+
+    box-shadow: 0 5px 16px rgba(77, 92, 45, 0.10);
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        auto;
+
+    grid-template-areas:
+        "info acciones"
+        "resumen resumen";
+
+    gap: 12px 20px;
+}
+
+
+/* =========================================================
+   INFORMACIÓN DE LA CITA
+========================================================= */
+
+.cita-info {
+    grid-area: info;
+}
+
+.cita-titulo {
+    color: var(--ap-dark-green);
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.cita-titulo span {
+    font-weight: 500;
+}
+
+.cita-info p {
+    color: var(--ap-dark-green);
+    font-size: 0.8rem;
+    margin-bottom: 2px;
+}
+
+.cita-info strong {
+    font-weight: 500;
+}
+
+
+/* LISTA DE SERVICIOS */
+
+.cita-servicios {
+    margin: 0;
+    padding-left: 18px;
+
+    color: var(--ap-dark-green);
+    font-size: 0.8rem;
+}
+
+.cita-servicios li {
+    margin-bottom: 2px;
+}
+
+
+/* =========================================================
+   BOTONES
+========================================================= */
+
+.cita-acciones {
+    grid-area: acciones;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-cita {
+    border: none;
+    border-radius: 50px;
+
+    padding: 8px 16px;
+
+    font-size: 0.78rem;
+    font-weight: 500;
+
+    background-color: #ffffff;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.btn-cita i {
+    margin-right: 5px;
+}
+
+
+/* BOTÓN REPROGRAMAR */
+
+.btn-reprogramar {
+    color: var(--ap-dark-green);
+}
+
+.btn-reprogramar i {
+    color: var(--ap-medium-green);
+}
+
+.btn-reprogramar:hover {
+    background-color: var(--ap-light-green);
+    color: var(--ap-dark-green);
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 4px 10px rgba(77, 92, 45, 0.12);
+}
+
+
+/* BOTÓN CANCELAR */
+
+.btn-cancelar {
+    color: #b35f58;
+}
+
+.btn-cancelar i {
+    color: var(--ap-coral);
+}
+
+.btn-cancelar:hover {
+    background-color: #f7d9d4;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 4px 10px rgba(179, 95, 88, 0.12);
+}
+
+
+/* =========================================================
+   BADGES DE RESUMEN
+========================================================= */
+
+.cita-resumen {
+    grid-area: resumen;
+
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.badge-cita {
+    display: inline-block;
+
+    background-color: var(--ap-medium-green);
+    color: #ffffff;
+
+    border-radius: 50px;
+
+    padding: 3px 14px;
+
+    font-size: 0.72rem;
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   ESTADO SIN CITAS
+========================================================= */
+
+.sin-citas {
+    max-width: 500px;
+
+    margin: 40px auto;
+
+    text-align: center;
+
+    background-color: #ffffff;
+
+    border: 1px solid var(--ap-light-green);
+
+    border-radius: 18px;
+
+    padding: 40px 25px;
+
+    box-shadow: 0 5px 16px rgba(77, 92, 45, 0.08);
+}
+
+.sin-citas i {
+    color: var(--ap-medium-green);
+
+    font-size: 3rem;
+}
+
+.sin-citas h2 {
+    color: var(--ap-dark-green);
+
+    font-size: 1.4rem;
+
+    margin-top: 15px;
+}
+
+.sin-citas p {
+    color: var(--texto);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 576px) {
+
+    .mis-citas-header {
+        padding-top: 25px;
+    }
+
+    .cita-card {
+
+        grid-template-columns: 1fr;
+
+        grid-template-areas:
+            "info"
+            "acciones"
+            "resumen";
+
+        padding: 22px;
+
+    }
+
+    .cita-acciones {
+        width: 100%;
+    }
+
+    .btn-cita {
+        width: 100%;
+    }
+
+    .cita-resumen {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+}

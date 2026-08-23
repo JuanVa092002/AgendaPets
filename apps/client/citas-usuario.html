@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nosotros | AgendaPets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Montserrat:wght@100..900&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./css/citas-usuario.css">
+    <link rel="stylesheet" href="./css/navbar.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+</head>
+
+<body>
+    <!-- TRAE NAVBAR -->
+    <div id="navbar-container"></div>
+
+
+    
+<main class="mis-citas-page">
+
+    <!-- TÍTULO -->
+    <section class="mis-citas-header">
+        <div class="container">
+
+            <h1>Mis citas</h1>
+
+            <p class="mis-citas-subtitle">
+                Ingresa tu número de celular para ver tus reservas
+            </p>
+
+            <!-- BUSCADOR -->
+            <div class="celular-form">
+
+                <label for="numeroCelular">
+                    Número de celular
+                </label>
+
+                <input
+                    type="tel"
+                    id="numeroCelular"
+                    class="form-control"
+                    placeholder="+57 3123456789"
+                >
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- CONTENEDOR DE CITAS -->
+    <section class="citas-section">
+
+        <div class="container">
+
+                <!-- MENSAJES -->
+            <div id="mensaje-citas"></div>
+            <!--
+                CONTENEDOR DE CITAS
+            -->
+            <div id="citas-container">
+
+                <!-- CITA DE EJEMPLO -->
+                <article class="cita-card">
+
+                    <!-- INFORMACIÓN -->
+                    <div class="cita-info">
+
+                        <h2 class="cita-titulo">
+                            CITA DE
+                            <span>(nombre mascota)</span>
+                        </h2>
+
+                        <p>
+                            <strong>Fecha:</strong>
+                            01/01/2026
+                        </p>
+
+                        <p>
+                            <strong>Hora:</strong>
+                            08:00 AM
+                        </p>
+
+                        <p>
+                            <strong>Servicio:</strong>
+                        </p>
+
+                        <ul class="cita-servicios">
+                            <li>Baño básico</li>
+                            <li>Limpieza dental</li>
+                        </ul>
+
+                    </div>
+
+
+                    <!-- ACCIONES -->
+                    <div class="cita-acciones">
+
+                        <button
+                            class="btn-cita btn-reprogramar"
+                            type="button"
+                        >
+                            <i class="bi bi-pencil-square"></i>
+                            Reprogramar
+                        </button>
+
+
+                        <button
+                            class="btn-cita btn-cancelar"
+                            type="button"
+                        >
+                            <i class="bi bi-trash"></i>
+                            Cancelar cita
+                        </button>
+
+                    </div>
+
+
+                    <!-- RESUMEN -->
+                    <div class="cita-resumen">
+
+                        <span class="badge-cita">
+                            Total: $ 100.000
+                        </span>
+
+                        <span class="badge-cita">
+                            Duración servicio: 1 Hora
+                        </span>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+
+            <!-- MENSAJE PARA CUANDO NO EXISTAN CITAS -->
+            <!--
+            <div class="sin-citas">
+                <i class="bi bi-calendar-x"></i>
+                <h2>No encontramos citas</h2>
+                <p>
+                    Ingresa un número de celular válido para consultar tus reservas.
+                </p>
+            </div>
+            -->
+
+        </div>
+
+    </section>
+
+    <!-- INCLUYE FOOTER:  -->
+<div id="footer-container"></div>
+</main>
+
+
+
+
+
+
+ 
+
+
+   
+
+    <!-- INCLUYE EL FOOTER -->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="citas-usuario.js"></script>
+    <script src="./js/nav-footer.js" defer></script>
+
+</body>
+
+</html>
