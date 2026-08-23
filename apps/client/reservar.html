@@ -34,7 +34,7 @@
         <section class="reserva-panel d-none" data-panel="2">
             <h1>Tu peludo</h1>
             <p class="lead">Datos cortos para preparar la cita.</p>
-            <form class="reserva-form">
+            <form class="reserva-form" novalidate>
                 <div class="row g-4">
                     <div class="col-md-6"><label for="mascota-nombre">Nombre</label><input id="mascota-nombre" placeholder="Luna"></div>
                     <div class="col-md-6"><label for="mascota-tipo">Tipo</label><select id="mascota-tipo"><option value="">Selecciona</option><option>Perro</option><option>Gato</option></select></div>
@@ -75,9 +75,9 @@
             </div>
         </section>
         <section class="reserva-panel d-none" data-panel="4">
-            <h1>Todo listo</h1>
-            <p class="lead">Confirma y te queda agendada al instante.</p>
-            <div class="reserva-resumen" id="resumen-cita"></div>
+            <h1>Revisa tu cita</h1>
+            <p class="lead">Todo se ve bien. Si cambias de opinión, toca <strong>Cambiar</strong> en cualquier bloque.</p>
+            <div class="revision-wrap" id="resumen-cita"></div>
         </section>
     </main>
     <footer class="reserva-bar">

@@ -68,6 +68,38 @@
 .hora{min-width:92px;border:1px solid #e4ddcf;background:#fbfaf6;border-radius:999px;padding:12px 14px;font-weight:600}
 .hora:hover,.hora.is-on{background:var(--sage);border-color:var(--sage);color:#fff}
 .reserva-resumen{background:var(--card);border-radius:28px;padding:28px;box-shadow:0 16px 48px rgba(44,51,25,.07)}
+.revision-wrap{max-width:720px;margin-inline:auto;display:grid;gap:16px}
+.revision-hint{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 0 8px;padding:12px 16px;border-radius:16px;background:#eef5e3;color:var(--green);font:600 .86rem Comfortaa,sans-serif;text-align:center}
+.revision-hint i{font-size:1rem}
+.revision-card{cursor:pointer;background:var(--card);border:1px solid #ebe4d4;border-radius:24px;padding:20px 22px;box-shadow:0 8px 28px rgba(44,51,25,.06);transition:transform .2s,box-shadow .2s,border-color .2s}
+.revision-card:hover{border-color:#d5e0bc;box-shadow:0 12px 32px rgba(44,51,25,.09);transform:translateY(-1px)}
+.revision-card:focus-visible{outline:3px solid rgba(124,154,74,.35);outline-offset:2px}
+.revision-card__head{display:flex;align-items:flex-start;gap:14px}
+.revision-card__icon,.revision-card__avatar{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;flex-shrink:0;font-size:1.2rem;color:var(--green);background:linear-gradient(160deg,#eef6e2,#d5e6b8)}
+.revision-card__avatar{font:700 1.2rem Comfortaa,sans-serif;color:#fff;background:linear-gradient(160deg,var(--sage),var(--green))}
+.revision-card__icon--cal{background:linear-gradient(160deg,#e8f0fb,#c9dbf5);color:#3d5a80}
+.revision-card__copy{flex:1;min-width:0}
+.revision-card__copy h2{margin:0 0 4px;font:700 1.05rem Comfortaa,sans-serif;color:var(--ink)}
+.revision-card__copy p{margin:0;color:var(--muted);font-size:.88rem;line-height:1.45}
+.revision-edit{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:8px 14px;background:#f3f8ea;color:var(--green);font:700 .78rem Comfortaa,sans-serif;white-space:nowrap;pointer-events:none}
+.revision-edit i{font-size:.85rem}
+.revision-list{margin:14px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+.revision-list li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;background:#fbfaf6;font-size:.9rem}
+.revision-chip{display:inline-flex;align-items:center;gap:8px;font-weight:600;color:var(--ink)}
+.revision-chip i{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:#eef5e3;color:var(--green);font-size:.85rem}
+.revision-meta{display:grid;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid #f0ebe0}
+.revision-meta span{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.88rem}
+.revision-meta i{color:var(--sage)}
+.revision-note{display:block;padding:10px 12px;border-radius:12px;background:#fff9eb;color:#6b5a2e;line-height:1.5}
+.revision-card--fecha .revision-card__head{align-items:center}
+.revision-fecha-badge{margin-top:14px;display:inline-flex;align-items:center;gap:12px;padding:10px 16px;border-radius:14px;background:linear-gradient(135deg,#eef5e3,#dce8c4);color:var(--green)}
+.revision-fecha-badge strong{font:700 1.1rem Comfortaa,sans-serif}
+.revision-fecha-badge small{font-weight:600;opacity:.85}
+.revision-total{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-radius:20px;background:var(--green);color:#fff;margin-top:4px}
+.revision-total span{font:600 .9rem Comfortaa,sans-serif;opacity:.9}
+.revision-total strong{font:700 1.6rem Fraunces,serif}
+.reserva-stepper .is-editing b{box-shadow:0 0 0 3px #fff,0 0 0 5px var(--leaf);animation:editPulse 1.4s ease infinite}
+@keyframes editPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
 .reserva-resumen li{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #f0ebe0;list-style:none}
 .reserva-resumen ul{margin:0;padding:0}
 .reserva-resumen .meta{color:var(--muted);margin:18px 0;line-height:1.7}
@@ -80,4 +112,4 @@
 .btn-solid:hover{background:var(--green)}
 .btn-ghost{background:transparent;color:var(--green);box-shadow:inset 0 0 0 1.5px var(--green)}
 @media(max-width:1100px){.fecha-layout{grid-template-columns:1fr}.fecha-left{max-width:none}}
-@media(max-width:640px){.reserva-card{grid-template-columns:20px 44px minmax(0,1fr);padding:16px}.reserva-card>span:last-child{grid-column:3;text-align:left;padding-left:82px}.reserva-bar{flex-direction:column;align-items:stretch;padding:16px 20px}.reserva-bar div{justify-content:space-between}.btn-solid,.btn-ghost{flex:1}.reserva-main{padding:8px 20px 48px}}
+@media(max-width:640px){.reserva-card{grid-template-columns:20px 44px minmax(0,1fr);padding:16px}.reserva-card>span:last-child{grid-column:3;text-align:left;padding-left:82px}.revision-card__head{flex-wrap:wrap}.revision-edit{margin-left:auto}.revision-card{padding:16px 18px}.reserva-bar{flex-direction:column;align-items:stretch;padding:16px 20px}.reserva-bar div{justify-content:space-between}.btn-solid,.btn-ghost{flex:1}.reserva-main{padding:8px 20px 48px}}
