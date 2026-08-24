@@ -66,21 +66,21 @@
             <div class="container">
 
                 <!-- MENSAJES -->
-                <div id="mensaje-citas"></div>
+                <div id="mensajeCitas"></div>
                 <!--
                 CONTENEDOR DE CITAS
             -->
 
             <div id="citas-container">            
                 </div>
-                
 
-                <div id="citas-container">
-
-                    <!-- CITA DE EJEMPLO -->
+<!-- aqui carga todas las citas por celular -->
+                <div id="citasContainer" class="citas-container"></div>
+<!-- 
+                    CITA DE EJEMPLO
                     <article class="cita-card">
 
-                        <!-- INFORMACIÓN -->
+                         INFORMACIÓN 
                         <div class="cita-info">
 
                             <h2 class="cita-titulo">
@@ -101,48 +101,33 @@
                             <p>
                                 <strong>Servicio:</strong>
                             </p>
-
                             <ul class="cita-servicios">
                                 <li>Baño básico</li>
                                 <li>Limpieza dental</li>
                             </ul>
-
                         </div>
-
-
-                        <!-- ACCIONES -->
+                         ACCIONES 
                         <div class="cita-acciones">
-
                             <button class="btn-cita btn-reprogramar" type="button">
                                 <i class="bi bi-pencil-square"></i>
                                 Reprogramar
                             </button>
-
-
                             <button class="btn-cita btn-cancelar" type="button">
                                 <i class="bi bi-trash"></i>
                                 Cancelar cita
                             </button>
-
                         </div>
-
-
-                        <!-- RESUMEN -->
+                         RESUMEN 
                         <div class="cita-resumen">
-
                             <span class="badge-cita">
                                 Total: $ 100.000
                             </span>
-
                             <span class="badge-cita">
                                 Duración servicio: 1 Hora
                             </span>
-
                         </div>
-
                     </article>
-
-                </div>
+                </div> -->
 
 
                 <!-- MENSAJE PARA CUANDO NO EXISTAN CITAS -->
@@ -156,7 +141,7 @@
             </div>
             -->
 
-            </div>
+            
 
         </section>
 
@@ -167,21 +152,12 @@
 
 
 
-
-
-
-
-
-
-
-    <!-- INCLUYE EL FOOTER -->
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="citas-usuario.js"></script>
+    
+    <script type="module" src="./js/citas-usuario.js"></script>
     <script src="./js/nav-footer.js" defer></script>
 
 </body>

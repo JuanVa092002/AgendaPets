@@ -7,10 +7,7 @@ export function obtenerTodasLasCitas() {
 }
 
 export function guardarCitas(citas) {
-    localStorage.setItem(
-        KEY_CITAS,
-        JSON.stringify(citas)
-    );
+    localStorage.setItem(KEY_CITAS,  JSON.stringify(citas) );
 }
 
 
@@ -100,3 +97,51 @@ export function formatearHora(hora) {
         numeroHora < 12 ? "AM" : "PM"
     }`;
 }
+
+//REVISAR SI SE VA A IMPLEMENTAR  ESTA FUNCION SI SE AGREGAN VARIOS SERVICIOS SE DEBERIA SUMAR MINUTOS - HORAS TOTALES? 
+/* 
+export function calcularDuracionTotal(servicios = []) {
+
+    if (!Array.isArray(servicios)) return "";
+
+    const minutosTotales = servicios.reduce(
+        (total, servicio) => {
+            return total + convertirDuracionAMinutos(
+                servicio.duracion); },
+        0
+    );
+
+    if (!minutosTotales) return "";
+    const horas = Math.floor(minutosTotales / 60);
+    const minutos = minutosTotales % 60;
+    if (horas && minutos) {
+        return `${horas} h ${minutos} min`;
+    }
+    if (horas) {
+        return `${horas} hora${horas > 1 ? "s" : ""}`;
+    }
+    return `${minutos} min`; }
+
+
+function convertirDuracionAMinutos(duracion) {
+    if (!duracion) return 0;
+    const texto = String(duracion).toLowerCase();
+    const horasMatch = texto.match(
+        /(\d+(?:[.,]\d+)?)\s*(hora|horas|h)/
+    );
+    const minutosMatch = texto.match(
+        /(\d+)\s*(min|minuto|minutos)/
+    );
+    let minutos = 0;
+    if (horasMatch) {
+        minutos += Math.round(
+            Number(
+                horasMatch[1].replace(",", ".")
+            ) * 60
+        );
+    }
+    if (minutosMatch) {
+        minutos += Number(minutosMatch[1]);
+    }
+    return minutos;
+} */
