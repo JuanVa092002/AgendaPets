@@ -437,3 +437,294 @@
     }
 
 }
+
+
+
+
+
+
+/* PROBANDO ANIMACIONES FONDOS */
+/* Contenedor de las decoraciones */
+.background-shapes {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Todo el contenido real queda por encima */
+main > section {
+    position: relative;
+    z-index: 1;
+}
+
+/* Estilo general */
+.bg-shape {
+     opacity: 0.3 !important;
+    z-index: 9999 !important;
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+
+    /* Movimiento suave */
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+/* =========================================================
+   HOJAS
+   ========================================================= */
+
+.bg-leaf {
+    width: 170px;
+    opacity: 0.07;
+    filter: saturate(0.8);
+}
+
+.leaf1 {
+    top: 2%;
+    left: -45px;
+
+    animation:
+        leafFloat1 9s ease-in-out infinite alternate,
+        leafOpacity 7s ease-in-out infinite alternate;
+}
+
+.leaf2 {
+    right: -55px;
+    bottom: 18%;
+
+    width: 190px;
+
+    animation:
+        leafFloat2 11s ease-in-out infinite alternate,
+        leafOpacity 8s ease-in-out infinite alternate;
+}
+
+/* =========================================================
+   HUELLAS
+   ========================================================= */
+
+.bg-paw {
+    width: 65px;
+    opacity: 0.06;
+}
+
+.paw1 {
+    top: 18%;
+    right: 10%;
+
+    animation:
+        pawFloat1 7s ease-in-out infinite alternate,
+        pawOpacity 6s ease-in-out infinite alternate;
+}
+
+.paw2 {
+    bottom: 15%;
+    left: 8%;
+
+    width: 50px;
+
+    animation:
+        pawFloat2 8s ease-in-out infinite alternate,
+        pawOpacity 7s ease-in-out infinite alternate;
+}
+
+/* =========================================================
+   CORAZONES
+   ========================================================= */
+
+.bg-heart {
+    width: 42px;
+    opacity: 0.06;
+}
+
+.heart1 {
+    top: 42%;
+    left: 53%;
+
+    animation:
+        heartFloat1 6s ease-in-out infinite alternate,
+        heartOpacity 5s ease-in-out infinite alternate;
+}
+
+.heart2 {
+    bottom: 30%;
+    right: 22%;
+
+    width: 32px;
+
+    animation:
+        heartFloat2 7s ease-in-out infinite alternate,
+        heartOpacity 6s ease-in-out infinite alternate;
+}
+
+
+/* =========================================================
+   ANIMACIONES
+   ========================================================= */
+
+/* Hojas */
+
+@keyframes leafFloat1 {
+
+    0% {
+        transform: translate3d(0, 0, 0) rotate(-25deg);
+    }
+
+    50% {
+        transform: translate3d(10px, -18px, 0) rotate(-18deg);
+    }
+
+    100% {
+        transform: translate3d(0, -30px, 0) rotate(-28deg);
+    }
+}
+
+@keyframes leafFloat2 {
+
+    0% {
+        transform: translate3d(0, 0, 0) rotate(30deg);
+    }
+
+    50% {
+        transform: translate3d(-15px, -20px, 0) rotate(38deg);
+    }
+
+    100% {
+        transform: translate3d(-5px, -35px, 0) rotate(28deg);
+    }
+}
+
+
+/* Huellas */
+
+@keyframes pawFloat1 {
+
+    0% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+
+    50% {
+        transform: translate3d(-8px, -15px, 0) rotate(5deg);
+    }
+
+    100% {
+        transform: translate3d(5px, -28px, 0) rotate(-4deg);
+    }
+}
+
+@keyframes pawFloat2 {
+
+    0% {
+        transform: translate3d(0, 0, 0) rotate(-10deg);
+    }
+
+    50% {
+        transform: translate3d(10px, -12px, 0) rotate(-2deg);
+    }
+
+    100% {
+        transform: translate3d(3px, -25px, 0) rotate(-15deg);
+    }
+}
+
+
+/* Corazones */
+
+@keyframes heartFloat1 {
+
+    0% {
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate3d(8px, -12px, 0) scale(1.08);
+    }
+
+    100% {
+        transform: translate3d(-5px, -22px, 0) scale(0.95);
+    }
+}
+
+@keyframes heartFloat2 {
+
+    0% {
+        transform: translate3d(0, 0, 0) scale(0.95);
+    }
+
+    50% {
+        transform: translate3d(-8px, -10px, 0) scale(1.08);
+    }
+
+    100% {
+        transform: translate3d(5px, -20px, 0) scale(1);
+    }
+}
+
+
+/* =========================================================
+   ANIMACIÓN DE OPACIDAD
+   ========================================================= */
+
+@keyframes leafOpacity {
+
+    0% {
+        opacity: 0.035;
+    }
+
+    50% {
+        opacity: 0.09;
+    }
+
+    100% {
+        opacity: 0.055;
+    }
+}
+
+@keyframes pawOpacity {
+
+    0% {
+        opacity: 0.025;
+    }
+
+    50% {
+        opacity: 0.075;
+    }
+
+    100% {
+        opacity: 0.04;
+    }
+}
+
+@keyframes heartOpacity {
+
+    0% {
+        opacity: 0.025;
+    }
+
+    50% {
+        opacity: 0.085;
+    }
+
+    100% {
+        opacity: 0.035;
+    }
+}
+
+
+/* =========================================================
+   REDUCIR ANIMACIONES PARA ACCESIBILIDAD
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .bg-shape {
+        animation: none !important;
+    }
+
+}
