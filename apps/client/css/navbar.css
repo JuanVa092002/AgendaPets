@@ -1,260 +1,333 @@
-:root {
-  --ap-cream: #F6F3EA;
-  --ap-dark-green: #4D5C2D;
-  --ap-medium-green: #7C9A4A;
-  --ap-light-green: #A8C48A;
-  --ap-tan: #E7D9B5;
-}
+ :root {
+     --ap-crema: #FAF8F2;
+     --ap-cards: #FFFDF9;
+     --ap-verdeOscuro: #4D5C2D;
+     --ap-acento: #C97A4C;
+     --texto: #6B6B6B;
 
-body {
-  background-color: var(--ap-cream);
-  color: var(--ap-dark-green);
-  font-family: "Montserrat", sans-serif;
-    /* padding-top: 80px;  */
+     --ap-verdeOscuroNuevo: #556B2F;
+     --ap-verdeMedioNuevo: #7EAE45;
+     --ap-verdeClaroNuevo: #BFD99A;
+     --ap-beigeNuevo: #F1DFC6;
+     --ap-doradosuave: #D2A441;
+     --ap-coral: #D98B7B;
 
-}
-/* =========================
+     /* Anteriores */
+     --ap-cream: #F6F3EA;
+     --ap-dark-green: #4D5C2D;
+     --ap-medium-green: #7C9A4A;
+     --ap-light-green: #A8C48A;
+     --ap-tan: #E7D9B5;
+ }
+
+
+ /* =========================
    NAVBAR
 ========================= */
 
-.navbar {
-    background-color: #ffffff;
-    padding: 10px 40px;
-    font-family: "Comfortaa", sans-serif;
-}
 
-/* =========================
+ .navbar {
+     background-color: var(--ap-verdeOscuroNuevo);
+     padding: 10px 40px;
+     font-family: "Comfortaa", sans-serif;
+     position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+ }
+
+ /* =========================
    LOGO
 ========================= */
 
-.navbar-brand {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+ .navbar-brand {
+     display: flex;
+     align-items: center;
+     gap: 8px;
+     color: var(--ap-beigeNuevo);
+     text-decoration: none;
+     font-size: 25px;
+     font-weight: 900;
+     letter-spacing: 0.2px;
+     font-family: 'Original Surfer', sans-serif;
+     transition: transform 0.3s ease;
+ }
 
-    color: #2b2b2b;
 
-    text-decoration: none;
 
-    font-family: "Comfortaa", sans-serif;
-    font-size: 25px;
-    font-weight: 900;
-    letter-spacing: 0.2px;
-}
-
-.logo-agenda {
-    width: 50px;
-    height: 50px;
-    object-fit: contain;
-}
-
-/* =========================
+ /* =========================
    CONTENEDOR DEL MENÚ
 ========================= */
 
-.navbar-collapse {
-    display: flex;
-    align-items: center;
-}
+ .navbar-collapse {
+     display: flex;
+     align-items: center;
+ }
 
-/* =========================
+ /* =========================
    LINKS
 ========================= */
 
-.navbar-nav {
-    display: flex;
-    gap: 20px;
+ .navbar-nav {
+     display: flex;
+     gap: 20px;
 
-    margin: 0 auto;
-}
+     margin: 0 auto;
+ }
 
 
-.nav-link:hover {
-    color: var(--ap-medium-green);
-}
+ .nav-link:hover {
+     color: var(--ap-medium-green);
+ }
 
-/* =========================
+ /* =========================
    BOTONES DEL NAVBAR
 ========================= */
 
-.navbar-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
+ .navbar-actions {
+     display: flex;
+     align-items: center;
+     gap: 12px;
+ }
 
-.btn-admin {
-    background-color: transparent;
-    color: var(--ap-dark-green);
-    border: 2px solid var(--ap-dark-green);
-    border-radius: 50px;
-    padding: 9px 24px;
-    font-size: 18px;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-}
+ 
+ .btn-admin {
+    background-color: var(--ap-beigeNuevo);
+     color: var(--ap-dark-green);
+     border: 2px solid var(--ap-dark-green);
+     border-radius: 50px;
+     padding: 9px 24px;
+     font-size: 18px;
+     font-weight: 500;
+     text-decoration: none;
+     transition: all 0.3s ease;
+     white-space: nowrap;
+ }
 
-.btn-admin:hover {
-    background-color: var(--ap-dark-green);
-    color: #ffffff;
-}
+ .btn-admin:hover {
+     background-color: var(--ap-dark-green);
+     color: #ffffff;
+ }
 
-.btn-reserva {
+ .btn-reserva {
 
-  background-color: var(--ap-dark-green);
-    color: #ffffff;
-    border: 2px solid var(--ap-dark-green);
-    border-radius: 50px;
-    padding: 9px 24px;
-    font-size: 18px;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-}
+     background-color: var(--ap-coral);
+     color: #ffffff;
+     border: 2px solid var(--ap-dark-green);
+     border-radius: 50px;
+     padding: 9px 24px;
+     font-size: 18px;
+     font-weight: 500;
+     text-decoration: none;
+     transition: all 0.3s ease;
+     white-space: nowrap;
+ }
 
-.btn-reserva:hover {
+ .btn-reserva:hover {
      background-color: var(--ap-tan);
-    color: #2b2b2b;
-}
+     color: #2b2b2b;
+ }
 
-/* =========================
+ /* =========================
    HAMBURGUESA
 ========================= */
 
-.navbar-toggler {
-    border: 1px solid #ddd;
-}
+ .navbar-toggler {
+     border: 1px solid #ddd;
+ }
 
-.navbar-toggler:focus {
-    box-shadow: none;
-}
+ .navbar-toggler:focus {
+     box-shadow: none;
+ }
 
-@media (max-width: 991.98px) {
+ @media (max-width: 991.98px) {
 
-    .navbar {
-        padding: 8px 20px;
-    }
+     .navbar {
+         padding: 8px 20px;
+     }
 
-    .navbar-collapse {
-        flex-direction: column;
-        align-items: center;
+     .navbar-collapse {
+         flex-direction: column;
+         align-items: center;
 
-        padding-top: 20px;
-        padding-bottom: 20px;
-    }
+         padding-top: 20px;
+         padding-bottom: 20px;
+     }
 
-    .navbar-nav {
-        flex-direction: column;
-        align-items: center;
+     .navbar-nav {
+         flex-direction: column;
+         align-items: center;
 
-        gap: 5px;
+         gap: 5px;
 
-        margin: 0;
-    }
+         margin: 0;
+     }
 
-    .navbar-actions {
-        flex-direction: column;
-        margin-top: 15px;
-        width: 100%;
-    }
+     .navbar-actions {
+         flex-direction: column;
+         margin-top: 15px;
+         width: 100%;
+     }
 
-    .btn-admin,
-    .btn-reserva {
-        width: 100%;
-        text-align: center;
-    }
-}
+     .btn-admin,
+     .btn-reserva {
+         width: 100%;
+         text-align: center;
+     }
+ }
 
 
 
-/* =========================
+ /* =========================
    INDICADOR DE PÁGINA ACTIVA
 ========================= */
 
-/* Línea */
-.nav-link::after {
-    content: "";
-    position: absolute;
+ /* Línea */
+ .nav-link::after {
+     content: "";
+     position: absolute;
 
-    left: 0;
-    bottom: 0;
+     left: 0;
+     bottom: 0;
 
-    width: 0;
-    height: 2px;
+     width: 0;
+     height: 2px;
 
-    background-color: var(--ap-medium-green);
+     background-color: var(--ap-medium-green);
 
-    transition: width 0.5s ease;
-}
+     transition: width 0.5s ease;
+ }
 
-/* Hover */
-.nav-link:hover::after {
-    width: 100%;
-}
+ /* Hover */
+ .nav-link:hover::after {
+     width: 100%;
+ }
 
-/* Página actual */
-.nav-link.active {
-    color: #4a5d2c;
-}
+ /* Página actual */
+ .nav-link.active {
+     color: #4a5d2c;
+ }
 
-.nav-link.active::after {
-    width: 100%;
-}
+ .nav-link.active::after {
+     width: 100%;
+ }
 
 
-/* //// */
-/* =========================
+ /* //// */
+ /* =========================
    INDICADOR DE PÁGINA ACTIVA
 ========================= */
 
-.nav-link {
-    position: relative;
-    color: #2b2b2b;
-    font-size: 16px;
-    text-decoration: none;
-    padding: 8px 2px;
-}
+ .nav-link {
+     position: relative;
+     color: var(--ap-crema);
+     font-size: 16px;
+     text-decoration: none;
+     padding: 8px 2px;
+ }
 
 
-.nav-link.disabled::after {
-    display: none;
-}
+ .nav-link.disabled::after {
+     display: none;
+ }
 
-.navbar-toggler-icon {
-    background-image: none;
+ .navbar-toggler-icon {
+     background-image: none;
 
-    width: 24px;
-    height: 18px;
+     width: 24px;
+     height: 18px;
 
-    position: relative;
+     position: relative;
 
-    border-top: 2px solid var(--ap-dark-green);
-    border-bottom: 2px solid var(--ap-dark-green);
-}
+     border-top: 2px solid var(--ap-dark-green);
+     border-bottom: 2px solid var(--ap-dark-green);
+ }
 
-.navbar-toggler-icon::before {
-    content: "";
+ .navbar-toggler-icon::before {
+     content: "";
 
-    position: absolute;
+     position: absolute;
 
-    left: 0;
-    top: 7px;
+     left: 0;
+     top: 7px;
 
-    width: 24px;
-    height: 2px;
+     width: 24px;
+     height: 2px;
 
-    background-color: var(--ap-dark-green);
-}
+     background-color: var(--ap-dark-green);
+ }
 
-.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
-    border-top: none;
-    border-bottom: none;
-}
+ .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
+     border-top: none;
+     border-bottom: none;
+ }
 
-.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::before {
-    transform: rotate(45deg);
-    transition: transform 0.3s ease;
-}
+ .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::before {
+     transform: rotate(45deg);
+     transition: transform 0.3s ease;
+ }
+
+
+
+
+ /* ............ */
+ /* Contenedor principal de la marca */
+
+
+ /* Animación sutil al pasar el cursor sobre todo el bloque */
+ .navbar-brand:hover {
+     transform: translateY(-2px);
+ }
+
+ /* /* Estilo para el logo / */
+ .logo-agenda {
+     height: 50px;
+     width: auto;
+     filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.15));
+     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+ }
+
+
+ /* /* Contenedor del texto / */
+ .brand-text {
+     display: flex;
+     gap: 6px;
+     font-size: 28px;
+     font-weight: 700;
+     letter-spacing: 0.5px;
+ }
+
+ /* /* Estilo para la palabra "Agenda" (Color sólido amigable) / */
+ .word-agenda {
+     color: var(--ap-crema);
+     text-shadow: 2px 2px 0px var(--ap-verdeOscuro),
+         1px 1px 0px rgba(0, 0, 0, 0.05);
+ }
+
+ /* VERIFICAR SI DEJO */
+ .navbar-brand:hover .word-agenda {
+     color: var(--ap-verdeClaroNuevo);
+ }
+
+ /* /* Estilo para la palabra "Pets" (Efecto Gradiente y Brillo) / */
+ .word-pets {
+     color: var(--ap-coral);
+     text-shadow: 1px 1px 0px var(--ap-beigeNuevo),
+         1px 1px 0px rgba(0, 0, 0, 0.05);
+     
+     transition: color 0.3s ease, text-shadow 0.3s ease; 
+ }
+
+ /* /* Efecto interactivo en las letras al pasar el mouse / */
+ .word-pets:hover {
+     animation: shine 1.5s infinite;
+ }
+
+ /* Efecto de iluminación en "Pets" al pasar el cursor */
+ .navbar-brand:hover .word-pets {
+     background: linear-gradient(135deg, var(--ap-acento), var(--ap-coral));
+     -webkit-background-clip: text;
+     -webkit-text-fill-color: transparent;
+     
+ }

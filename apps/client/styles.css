@@ -1,15 +1,36 @@
-:root {
-  --ap-cream: #F6F3EA;
-  --ap-dark-green: #4D5C2D;
-  --ap-medium-green: #7C9A4A;
-  --ap-light-green: #A8C48A;
-  --ap-tan: #E7D9B5;
+
+/* //INCLUSION COLORES ESTANDARIZADOS */
+  :root {
+    --ap-crema: #FAF8F2;
+    --ap-cards: #FFFDF9;
+    --ap-verdeOscuro: #4D5C2D;
+    --ap-acento: #C97A4C;
+    --texto: #6B6B6B;
+
+    --ap-verdeOscuroNuevo: #556B2F;
+    --ap-verdeMedioNuevo: #7EAE45;
+    --ap-verdeClaroNuevo: #BFD99A;
+    --ap-beigeNuevo: #F1DFC6;
+    --ap-doradosuave: #D2A441;
+    --ap-coral: #D98B7B;
+
+    /* Anteriores */
+    --ap-cream: #F6F3EA;
+    --ap-dark-green: #4D5C2D;
+    --ap-medium-green: #7C9A4A;
+    --ap-light-green: #A8C48A;
+    --ap-tan: #E7D9B5;
+}
+
+html{
+  height: 100%;
 }
 
 body {
   background-color: var(--ap-cream);
   color: var(--ap-dark-green);
   font-family: "Montserrat", sans-serif;
+ padding-top: 80px; 
 }
 
 /* ── Intro ── */
@@ -23,6 +44,7 @@ body {
   font-weight: 800;
   letter-spacing: 0.04em;
   line-height: 1.15;
+  font-family: "Original Surfer", "Comfortaa";
 }
 
 .about-hero__title--dark {
@@ -63,6 +85,7 @@ body {
   font-weight: 800;
   letter-spacing: 0.04em;
   line-height: 1.15;
+  font-family: "Original Surfer", "Comfortaa";
 }
 
 .team-section__title--dark {
@@ -221,15 +244,22 @@ body {
 }
 
 .footer {
+  margin-top: auto;
   font-family: "Comfortaa";
   background-color: #4D5C2D;
   color: white;
+  align-items: flex-end;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .footer h4,
 .footer h5 {
   color: white;
   font-weight: 700;
+  font-family: "Original Surfer", cursive;
 }
 
 .footer p,
@@ -255,19 +285,6 @@ body {
 
 
 
-:root {
-  --ap-cream: #F6F3EA;
-  --ap-dark-green: #4D5C2D;
-  --ap-medium-green: #7C9A4A;
-  --ap-light-green: #A8C48A;
-  --ap-tan: #E7D9B5;
-}
-
-body {
-  background-color: var(--ap-cream);
-  color: var(--ap-dark-green);
-  font-family: "Montserrat", sans-serif;
-}
 
 /* ── Intro ── */
 .about-hero {
@@ -416,35 +433,12 @@ body {
   transform: translateY(-2px);
 }
 
-/* ── Cards Misión / Visión ── */
-/*.about-card {
-  background-color: #fff;
-  border: 1px solid #d9d9d9;
-  border-radius: 1.25rem;
-  box-shadow: 0 4px 18px rgba(77, 92, 45, 0.08);
-  padding: 2.5rem 2rem;
-}
-
-.about-card__title {
-  color: var(--ap-medium-green);
-  font-size: clamp(1.75rem, 3vw, 2.25rem);
-  font-weight: 700;
-  margin-bottom: 1.25rem;
-}
-
-.about-card__text {
-  color: var(--ap-dark-green);
-  font-size: clamp(0.95rem, 2vw, 1.05rem);
-  line-height: 1.7;
-  margin-bottom: 0;
-} */
-
 /* ── Imágenes ── */
 .about-image {
   border-radius: 1.25rem;
   box-shadow: 0 6px 20px rgba(77, 92, 45, 0.12);
   display: block;
-  width: 100%;
+  width: 80%;
 }
 
 .about-row {
@@ -618,6 +612,7 @@ body {
 /*Contactanos*/
 
 .fondoContaco {
+  padding-top: 30px;
   background-image: url("assets/contactanos/fondo.png");
   background-size: cover;
 }
@@ -684,6 +679,15 @@ body {
   box-shadow: none !important;
   border-color: rgba(0,0,0,0.125);
 }
+
+.titulo-faq {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  color: #556B2F;
+  font-weight: 700;
+  margin-bottom: 30px;
+  font-family: "Original Surfer", "Comfortaa", cursive;
+}
+
 
 /* Elimina márgenes por defecto en el contenedor del footer */
 #footer-container {
