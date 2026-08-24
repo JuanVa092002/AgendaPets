@@ -206,7 +206,96 @@ $("btn-continuar").onclick = () => {
   }
   if(estado.paso!==4) return mostrarPaso(estado.paso+1);
   const m=mascota();
-  localStorage.setItem(KEY_C, JSON.stringify(citas().concat({ id:Date.now(), servicios:elegidos(), servicio:etiqueta(), precio:total(), ...m, mascota:m.nombre, fecha:estado.fecha, hora:estado.hora })));
+
+
+  // localStorage.setItem(KEY_C, JSON.stringify(citas().concat({ id:Date.now(), servicios:elegidos(), servicio:etiqueta(), precio:total(), ...m, mascota:m.nombre, fecha:estado.fecha, hora:estado.hora })));  //SE REEMPLAZA POR FUNCION GUARDAR RESERVA*
+
+
+  function guardarReserva() {
+
+    const m = mascota();
+
+    const datosCita = {
+
+        servicios: elegidos(),
+
+        servicio: etiqueta(),
+
+        precio: total(),
+
+        ...m,
+
+        mascota: m.nombre,
+
+        fecha: estado.fecha,
+
+        hora: estado.hora
+    };
+
+
+    // REPROGRAMAR UNA CITA EXISTENTE
+    if (citaReprogramadaId) {
+
+        actualizarCita({
+            ...datosCita,
+            id: citaReprogramadaId
+        });
+
+
+        Swal.fire({
+            title: "Cita reprogramada",
+            text: "Tu cita fue actualizada correctamente.",
+            icon: "success",
+            confirmButtonColor: "#7C9A4A"
+        }).then(() => {
+
+            window.location.href =
+                "citas-usuario.html";
+
+        });
+
+        return;
+    }
+
+
+    // CREAR UNA CITA NUEVA
+    const nuevaCita = {
+
+        ...datosCita,
+
+        id: Date.now()
+    };
+
+
+    const citas = obtenerTodasLasCitas();
+
+
+    localStorage.setItem(
+        "citas",
+        JSON.stringify([
+            ...citas,
+            nuevaCita
+        ])
+    );
+
+
+    Swal.fire({
+        title: "Cita confirmada",
+        text: `La cita de ${m.nombre} fue reservada correctamente.`,
+        icon: "success",
+        confirmButtonColor: "#7C9A4A"
+    }).then(() => {
+
+        window.location.href =
+            "index.html";
+
+    });
+
+}
+
+
+
+
   avis("Cita confirmada", `La cita de ${m.nombre} queda para el ${DIA_NOM[new Date(estado.fecha+"T00:00:00").getDay()]} ${estado.fecha} a las ${ampm(estado.hora)}.`, "success").then(()=> location.href="index.html");
 };
 document.querySelector(".reserva-form")?.addEventListener("submit", (e) => e.preventDefault());
@@ -218,5 +307,92 @@ $("grilla-semana").onclick = (e) => { const s=e.target.closest(".agenda-slot.is-
 $("semana-prev").onclick = () => { estado.semanaInicio.setDate(estado.semanaInicio.getDate()-7); pintarFecha(); };
 $("semana-next").onclick = () => { estado.semanaInicio.setDate(estado.semanaInicio.getDate()+7); pintarFecha(); };
 $("buscar-cita").oninput = pintarGrilla;
-pintarServicios();
-mostrarPaso(Number(new URLSearchParams(location.search).get("paso")) || 1);
+// pintarServicios();
+// mostrarPaso(Number(new URLSearchParams(location.search).get("paso")) || 1);
+
+function iniciarReserva() {
+
+    cargarCitaParaReprogramar();
+    pintarServicios();
+    const pasoURL =
+        Number(
+            new URLSearchParams(
+                location.search
+            ).get("paso")
+        );
+    mostrarPaso(
+        citaReprogramadaId
+            ? 1
+            : pasoURL || 1
+    );
+}
+
+
+iniciarReserva();
+
+
+import {
+    obtenerTodasLasCitas,
+    obtenerCitaPorId,
+    actualizarCita,
+    formatearDinero
+} from "./citas-storage";
+
+function obtenerIdCitaReprogramada() {
+
+    const parametros =
+        new URLSearchParams(window.location.search);
+
+    const citaId =
+        parametros.get("reprogramar");
+
+    return citaId
+        ? Number(citaId)
+        : null;
+
+}
+
+function cargarCitaParaReprogramar() {
+
+    if (!citaReprogramadaId) return;
+
+
+    const cita =
+        obtenerCitaPorId(
+            citaReprogramadaId
+        );
+
+    if (!cita) return;
+
+    estado.ids =
+        cita.servicios.map(
+            servicio => servicio.id
+        );
+    estado.fecha =cita.fecha;
+
+    estado.hora =cita.hora;
+
+    estado.mesVista = new Date(`${cita.fecha}T00:00:00` );
+
+    estado.semanaInicio =  inicioSemana(  new Date(`${cita.fecha}T00:00:00`
+            )
+        );
+
+    $("mascota-nombre").value =
+        cita.mascota || "";
+    $("mascota-tipo").value =
+        cita.tipo || "";
+    $("mascota-raza").value =
+        cita.raza || "";
+    $("mascota-tamano").value =
+        cita.tamano || "";
+    $("dueno-nombre").value =
+        cita.dueno || "";
+    $("dueno-telefono").value =
+        cita.telefono || "";
+    $("mascota-notas").value =
+        cita.notas || "";
+
+    estado.paso = 1;
+
+}

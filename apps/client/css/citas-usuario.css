@@ -108,6 +108,64 @@
 }
 
 
+
+/* boton buscar */
+
+.contenedor-boton {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente en la ventana */
+  align-items: center;
+  width: 100%;             /* Ocupa todo el ancho disponible */
+  margin-top: 24px;        /* 👈 SEPARACIÓN: Espacio exacto entre el input y el botón */
+  margin-bottom: 16px;     /* Espacio inferior opcional */
+}
+/* Estilo base del botón Buscar */
+.btn-buscar-citas {
+  /* Dimensiones y alineación */
+  padding: 12px 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'Original Surfer', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ap-verdeOscuroNuevo); /* Texto oscuro para máxima legibilidad sobre el coral */
+  background-color: var(--ap-coral);
+  
+  /* Bordes y estructura */
+  border: 2px solid var(--ap-verdeOscuroNuevo); /* Borde sutil que le da estructura de botón de interfaz */
+  border-radius: 30px; /* Bordes redondeados y amigables estilo 'pets' */
+  cursor: pointer;
+  
+  /* Efectos y transiciones */
+  box-shadow: 0 4px 0px var(--ap-verdeOscuroNuevo); /* Sombra sólida estilo sticker/cómic que combina con las letras */
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform: translateY(0);
+}
+
+/* Estado: Pasar el mouse (Hover) */
+.btn-buscar-citas:hover {
+  background-color: var(--ap-acento); /* Cambia a tu color acento para indicar acción */
+  color: var(--ap-crema); /* El texto cambia a tu crema claro para contrastar con el acento */
+  border-color: var(--ap-verdeOscuroNuevo);
+  transform: translateY(-2px); /* Se eleva sutilmente */
+  box-shadow: 0 6px 0px var(--ap-verdeOscuroNuevo); /* La sombra se estira al elevarse */
+}
+
+/* Estado: Al hacer clic (Active) */
+.btn-buscar-citas:active {
+  transform: translateY(4px); /* El botón baja simulando que se presiona de verdad */
+  box-shadow: 0 0px 0px var(--ap-verdeOscuroNuevo); /* La sombra desaparece al hundirse */
+}
+
+/* Estado: Enfocado (Accesibilidad con teclado) */
+.btn-buscar-citas:focus-visible {
+  outline: 3px solid var(--ap-verdeMedioNuevo);
+  outline-offset: 2px;
+}
+
+
 /* =========================================================
    SECCIÓN CITAS
 ========================================================= */
@@ -150,6 +208,7 @@
         "resumen resumen";
 
     gap: 12px 20px;
+    margin: 50px;
 }
 
 
