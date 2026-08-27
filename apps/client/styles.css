@@ -1,26 +1,28 @@
 
 /* //INCLUSION COLORES ESTANDARIZADOS */
-  :root {
-    --ap-crema: #FAF8F2;
-    --ap-cards: #FFFDF9;
-    --ap-verdeOscuro: #4D5C2D;
-    --ap-acento: #C97A4C;
-    --texto: #6B6B6B;
+ :root {
+     --ap-crema: #FAF8F2;
+     --ap-cards: #FFFDF9;
+     --ap-verdeOscuro: #4D5C2D;
+     --ap-acento: #C97A4C;
+     --texto: #6B6B6B;
 
-    --ap-verdeOscuroNuevo: #556B2F;
-    --ap-verdeMedioNuevo: #7EAE45;
-    --ap-verdeClaroNuevo: #BFD99A;
-    --ap-beigeNuevo: #F1DFC6;
-    --ap-doradosuave: #D2A441;
-    --ap-coral: #D98B7B;
+     --ap-verdeOscuroNuevo: #556B2F;
+     --ap-verdeMedioNuevo: #7EAE45;
+     --ap-verdeClaroNuevo: #BFD99A;
+     --ap-beigeNuevo: #F1DFC6;
+     --ap-doradosuave: #D2A441;
+     --ap-coral: #D98B7B;
+    --ap-blanco:#ffffff;
+    --ap-negro:#2b2b2b;
 
-    /* Anteriores */
-    --ap-cream: #F6F3EA;
-    --ap-dark-green: #4D5C2D;
-    --ap-medium-green: #7C9A4A;
-    --ap-light-green: #A8C48A;
-    --ap-tan: #E7D9B5;
-}
+     /* Anteriores */
+     --ap-cream: #F6F3EA;
+     --ap-dark-green: #4D5C2D;
+     --ap-medium-green: #7C9A4A;
+     --ap-light-green: #A8C48A;
+     --ap-tan: #E7D9B5;
+ }
 
 
 body {

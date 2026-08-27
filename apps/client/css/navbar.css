@@ -11,6 +11,8 @@
      --ap-beigeNuevo: #F1DFC6;
      --ap-doradosuave: #D2A441;
      --ap-coral: #D98B7B;
+    --ap-blanco:#ffffff;
+    --ap-negro:#2b2b2b;
 
      /* Anteriores */
      --ap-cream: #F6F3EA;
@@ -27,7 +29,7 @@
 
 
  .navbar {
-     background-color: var(--ap-verdeOscuroNuevo);
+     background-color: var(--ap-blanco);
      padding: 10px 40px;
      font-family: "Comfortaa", sans-serif;
      position: fixed;
@@ -45,7 +47,7 @@
      display: flex;
      align-items: center;
      gap: 8px;
-     color: var(--ap-beigeNuevo);
+     color: var(--ap-negro);
      text-decoration: none;
      font-size: 25px;
      font-weight: 900;
@@ -92,8 +94,8 @@
  }
 
  
- .btn-admin {
-    background-color: var(--ap-beigeNuevo);
+ .btn-inicioSesion {
+    background-color: var(--ap-blanco);
      color: var(--ap-dark-green);
      border: 2px solid var(--ap-dark-green);
      border-radius: 50px;
@@ -105,15 +107,15 @@
      white-space: nowrap;
  }
 
- .btn-admin:hover {
-     background-color: var(--ap-verdeClaroNuevo);
-     color: #ffffff;
+ .btn-inicioSesion:hover {
+     background-color: var(--ap-verdeOscuroNuevo);
+     color: var(--ap-blanco);
  }
 
  .btn-reserva {
 
-     background-color: var(--ap-coral);
-     color: #ffffff;
+     background-color: var(--ap-blanco);
+     color: var(--ap-verdeOscuro);
      border: 2px solid var(--ap-dark-green);
      border-radius: 50px;
      padding: 9px 24px;
@@ -125,8 +127,8 @@
  }
 
  .btn-reserva:hover {
-     background-color: var(--ap-tan);
-     color: #2b2b2b;
+     background-color: var(--ap-verdeOscuro);
+     color: var(--ap-blanco);
  }
 
  /* =========================
@@ -170,7 +172,7 @@
          width: 100%;
      }
 
-     .btn-admin,
+     .btn-inicioSesion,
      .btn-reserva {
          width: 100%;
          text-align: center;
@@ -206,7 +208,7 @@
 
  /* Página actual */
  .nav-link.active {
-     color: #4a5d2c;
+     color: var(--ap-negro);
  }
 
  .nav-link.active::after {
@@ -221,7 +223,7 @@
 
  .nav-link {
      position: relative;
-     color: var(--ap-crema);
+     color: var(--ap-negro);
      font-size: 16px;
      text-decoration: none;
      padding: 8px 2px;
@@ -241,7 +243,7 @@
      position: relative;
 
      border-top: 2px solid var(--ap-dark-green);
-     border-bottom: 2px solid var(--ap-dark-green);
+     /* border-bottom: 2px solid var(--ap-dark-green); */
  }
 
  .navbar-toggler-icon::before {
@@ -270,11 +272,6 @@
 
 
 
-
- /* ............ */
- /* Contenedor principal de la marca */
-
-
  /* Animación sutil al pasar el cursor sobre todo el bloque */
  .navbar-brand:hover {
      transform: translateY(-2px);
@@ -295,39 +292,32 @@
      gap: 6px;
      font-size: 28px;
      font-weight: 700;
-     letter-spacing: 0.5px;
+     letter-spacing: 0.1px;
  }
 
  /* /* Estilo para la palabra "Agenda" (Color sólido amigable) / */
  .word-agenda {
-     color: var(--ap-crema);
-     text-shadow: 2px 2px 0px var(--ap-verdeOscuro),
+     color: var(--ap-verdeOscuroNuevo);
+     text-shadow: 1px 1px 0px var(--ap-negro),
          1px 1px 0px rgba(0, 0, 0, 0.05);
  }
 
- /* VERIFICAR SI DEJO */
- .navbar-brand:hover .word-agenda {
-     color: var(--ap-verdeClaroNuevo);
+  .word-agenda-footer {
+     color: var(--ap-tan);
+     text-shadow: 1px 1px 0px var(--ap-negro),
+         1px 1px 0px rgba(0, 0, 0, 0.05);
  }
+
+
 
  /* /* Estilo para la palabra "Pets" (Efecto Gradiente y Brillo) / */
  .word-pets {
      color: var(--ap-coral);
-     text-shadow: 1px 1px 0px var(--ap-beigeNuevo),
+     text-shadow: 1px 1px 0px var(--ap-negro),
          1px 1px 0px rgba(0, 0, 0, 0.05);
      
      transition: color 0.3s ease, text-shadow 0.3s ease; 
  }
 
- /* /* Efecto interactivo en las letras al pasar el mouse / */
- .word-pets:hover {
-     animation: shine 1.5s infinite;
- }
+ 
 
- /* Efecto de iluminación en "Pets" al pasar el cursor */
- .navbar-brand:hover .word-pets {
-     background: linear-gradient(135deg, var(--ap-acento), var(--ap-coral));
-     -webkit-background-clip: text;
-     -webkit-text-fill-color: transparent;
-     
- }
