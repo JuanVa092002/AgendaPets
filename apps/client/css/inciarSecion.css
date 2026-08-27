@@ -1,0 +1,145 @@
+.iniciarSecion-body {
+    min-height: 100vh;
+    background: #F6F3EA;
+    font-family: "Montserrat", sans-serif;
+}
+
+.roles {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+a {
+    color: #7C9A4A;
+    font-family: "Comfortaa", sans-serif;
+}
+
+/* Card */
+.cliente {
+    width: 520px;
+    margin: 50px auto;
+    padding: 40px;
+    background: #EFF5E2;
+    color: #556B2F;
+    border-radius: 25px;
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.15);
+}
+
+.cliente h1 {
+    text-align: center;
+    font-family: "Comfortaa", sans-serif;
+    margin-bottom: 30px;
+}
+
+.correo,
+.contrasenna {
+    margin-bottom: 20px;
+}
+
+.forgot-password {
+    display: block;
+    text-align: left;
+    text-decoration: none;
+    margin-bottom: 20px;
+}
+
+#botonIniciar {
+    width: 100%;
+    background: #7C9A4A;
+    border: none;
+    border-radius: 10px;
+}
+
+/*admin*/
+.admin {
+    display: none;
+}
+.admin {
+    width: 520px;
+    margin: 50px auto;
+    padding: 40px;
+    background: #d5e6b2;
+    color: #435625;
+    border-radius: 25px;
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.15);
+}
+
+.admin h1 {
+    text-align: center;
+    color: #435625;
+    font-family: "Comfortaa", sans-serif;
+    margin-bottom: 30px;
+}
+
+.forgot-passwordAmin{
+ 
+    color: #4c691f;
+}
+.registarAdmi{
+    color: #4c691f
+}
+#botonIniciarAdmin {
+    width: 100%;
+    background: #637c3a;
+    border: none;
+    border-radius: 10px;
+}
+
+/* Decoraciones */
+.background-shapes img {
+    position: absolute;
+    z-index: -1;
+}
+.leaf1 {
+    width: 100px;
+    left: 8%;
+    top: 35%;
+    transform: rotate(-25deg);
+}
+
+.leaf2 {
+    width: 90px;
+    right: 8%;
+    top: 30%;
+    transform: rotate(25deg);
+}
+
+.paw1 {
+    width: 65px;
+    left: 15%;
+    top: 65%;
+    transform: rotate(-20deg);
+}
+
+.paw2 {
+    width: 65px;
+    right: 15%;
+    top: 70%;
+    transform: rotate(20deg);
+}
+
+.heart1 {
+    width: 55px;
+    left: 25%;
+    top: 20%;
+}
+
+.heart2 {
+    width: 55px;
+    right: 25%;
+    top: 65%;
+}
+
+/* Celular */
+@media (max-width: 600px) {
+    .cliente {
+        width: 90%;
+        padding: 30px;
+    }
+
+    .background-shapes img {
+        opacity: 0.5;
+    }
+}

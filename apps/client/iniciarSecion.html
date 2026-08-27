@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión | AgendaPets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Montserrat:wght@100..900&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Original+Surfer&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./css/inciarSecion.css">
+    <link rel="stylesheet" href="./css/navbar.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+</head>
+
+<body class="iniciarSecion-body">
+    <!-- TRAE NAVBAR -->
+    <div id="navbar-container"></div>
+
+    <div class="roles" id="roles">
+        <a href="#admin" aria-disabled="false"> Admin</a>
+        <a href="#cliente" class=""> Cliente</a>
+    </div>
+
+    <section class="cliente" id="cliente">
+        <div>
+            <h1> Iniciar sesión <br>
+                en tu cuenta
+            </h1>
+            <div class="correo" id="correo">
+
+                <label for="exampleFormControlInput1" class="form-label">Correo</label>
+                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+            </div>
+            <div class="contrasenna" id="contrasenna">
+                <label for="exampleInputPassword1">Contraseña</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
+            </div>
+            <a href="#" class="forgot-password">
+                ¿Olvidaste tu contraseña?
+            </a>
+
+            <button type="submit" class="btn btn-primary mb-3" id="botonIniciar">Iniciar sesión</button>
+
+            <div class="register">
+                <span>¿No tienes una cuenta?</span>
+                <a href="#">Regístrate</a>
+            </div>
+        </div>
+
+
+    </section>
+    <section class="admin" id="admin">
+        <div>
+            <h1> Panel  <br>
+                Administrador
+            </h1>
+            <div class="correo" id="correo">
+
+                <label for="exampleFormControlInput1" class="form-label">Correo</label>
+                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+            </div>
+            <div class="contrasenna" id="contrasenna">
+                <label for="exampleInputPassword1">Contraseña</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
+            </div>
+            <a href="#" class="forgot-password forgot-passwordAmin">
+                ¿Olvidaste tu contraseña?
+            </a>
+
+            <button type="submit" class="btn btn-primary mb-3" id="botonIniciarAdmin">Iniciar sesión</button>
+
+            <div class="registerAdmin" id="registerAdmin">
+                <span>¿No tienes una cuenta?</span>
+                <a href="#" class="registarAdmi">Regístrate</a>
+            </div>
+        </div>
+
+
+    </section>
+
+
+
+
+    <div class="background-shapes" aria-hidden="true">
+
+        <img class="bg-shape bg-leaf leaf1" src="./assets/contactanos/hoja.svg" alt="">
+
+        <img class="bg-shape bg-leaf leaf2" src="./assets/contactanos/hoja2.svg" alt="">
+
+        <img class="bg-shape bg-paw paw1" src="./assets/contactanos/huella.svg" alt="">
+
+        <img class="bg-shape bg-paw paw2" src="./assets/contactanos/huella.svg" alt="">
+
+        <img class="bg-shape bg-heart heart1" src="./assets/contactanos/corazon.svg" alt="">
+
+        <img class="bg-shape bg-heart heart2" src="./assets/contactanos/corazon.svg" alt="">
+
+    </div>
+
+
+
+    </main>
+
+    <!-- INCLUYE FOOTER:  -->
+    <div id="footer-container"></div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script type="module" src="./js/iniciarSecion.js"></script>
+    <script src="./js/nav-footer.js" defer></script>
+
+</body>
+
+</html>
