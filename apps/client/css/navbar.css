@@ -161,10 +161,10 @@ body {
         width: 100%;
     }
 
-    .btn-admin,
-    .btn-reserva {
+    .sesion-chip--out,
+    .sesion-chip--in {
         width: 100%;
-        text-align: center;
+        justify-content: center;
     }
 }
 

@@ -107,7 +107,7 @@ function pintarResumen(){
   const inicial=(m.nombre||"?").charAt(0).toUpperCase();
   const serviciosHtml=elegidos().map(s=>`<li><span class="revision-chip"><i class="bi ${icono(s.nombre)}"></i>${s.nombre}</span><span>${money(s.precio)}</span></li>`).join("");
   $("resumen-cita").innerHTML=`
-    <p class="revision-hint"><i class="bi bi-pencil-square"></i> Puedes ajustar servicios, datos o fecha antes de confirmar.</p>
+    <p class="revision-hint"><i class="bi bi-pencil-square"></i> Puedes ajustar cualquier bloque. Al confirmar te pedimos cuenta si aún no tienes.</p>
     <article class="revision-card" data-edit="1" role="button" tabindex="0" aria-label="Editar servicios">
       <div class="revision-card__head">
         <span class="revision-card__icon"><i class="bi bi-scissors"></i></span>
@@ -175,6 +175,26 @@ function mostrarPaso(p){
   pintarPick();
 }
 
+function confirmarCita(usuario){
+  const m=mascota();
+  const tel=usuario?.telefono || m.telefono;
+  if(tel && tel!==m.telefono) $("dueno-telefono").value=tel;
+  localStorage.setItem(KEY_C, JSON.stringify(citas().concat({
+    id:Date.now(),
+    servicios:elegidos(),
+    servicio:etiqueta(),
+    precio:total(),
+    ...m,
+    telefono:tel,
+    mascota:m.nombre,
+    fecha:estado.fecha,
+    hora:estado.hora,
+    duenoId:tel
+  })));
+  AgendaAuth.pintar();
+  avis("Cita confirmada", `La cita de ${m.nombre} queda para el ${DIA_NOM[new Date(estado.fecha+"T00:00:00").getDay()]} ${estado.fecha} a las ${ampm(estado.hora)}.`, "success").then(()=> location.href="index.html");
+}
+
 function validar(){
   if(estado.paso===1 && !estado.ids.length) return "Selecciona uno o más servicios.";
   if(estado.paso===2 || estado.paso===4){
@@ -205,9 +225,13 @@ $("btn-continuar").onclick = () => {
     return mostrarPaso(estado.retornoRevision);
   }
   if(estado.paso!==4) return mostrarPaso(estado.paso+1);
-  const m=mascota();
-  localStorage.setItem(KEY_C, JSON.stringify(citas().concat({ id:Date.now(), servicios:elegidos(), servicio:etiqueta(), precio:total(), ...m, mascota:m.nombre, fecha:estado.fecha, hora:estado.hora })));
-  avis("Cita confirmada", `La cita de ${m.nombre} queda para el ${DIA_NOM[new Date(estado.fecha+"T00:00:00").getDay()]} ${estado.fecha} a las ${ampm(estado.hora)}.`, "success").then(()=> location.href="index.html");
+  if(AgendaAuth.sesion()) return confirmarCita(AgendaAuth.sesion());
+  AgendaAuth.abrir({
+    intent:"confirm",
+    telefono:mascota().telefono,
+    nombre:mascota().dueno,
+    onSuccess:confirmarCita
+  });
 };
 document.querySelector(".reserva-form")?.addEventListener("submit", (e) => e.preventDefault());
 $("resumen-cita").onclick = (e) => { const b=e.target.closest("[data-edit]"); if(!b) return; irAEditar(Number(b.dataset.edit)); };
@@ -218,5 +242,6 @@ $("grilla-semana").onclick = (e) => { const s=e.target.closest(".agenda-slot.is-
 $("semana-prev").onclick = () => { estado.semanaInicio.setDate(estado.semanaInicio.getDate()-7); pintarFecha(); };
 $("semana-next").onclick = () => { estado.semanaInicio.setDate(estado.semanaInicio.getDate()+7); pintarFecha(); };
 $("buscar-cita").oninput = pintarGrilla;
+AgendaAuth.mount();
 pintarServicios();
 mostrarPaso(Number(new URLSearchParams(location.search).get("paso")) || 1);
