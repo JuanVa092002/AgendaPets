@@ -1080,6 +1080,20 @@ $("btn-continuar").onclick = () => {
         return;
     }
 
+    if (window.AgendaAuth && AgendaAuth.sesion()) {
+        guardarReserva(AgendaAuth.sesion());
+        return;
+    }
+
+    if (window.AgendaAuth) {
+        AgendaAuth.abrir({
+            intent: "confirm",
+            telefono: mascota().telefono,
+            nombre: mascota().dueno,
+            onSuccess: guardarReserva
+        });
+        return;
+    }
 
     guardarReserva();
 };
@@ -1089,9 +1103,14 @@ $("btn-continuar").onclick = () => {
 // GUARDAR CITA
 // ======================================================
 
-function guardarReserva() {
+function guardarReserva(usuario) {
 
     const m = mascota();
+    const tel = usuario?.telefono || m.telefono;
+
+    if (tel && tel !== m.telefono) {
+        $("dueno-telefono").value = tel;
+    }
 
     const datosCita = {
 
@@ -1108,12 +1127,14 @@ function guardarReserva() {
 
         // Datos mascota/cliente
         ...m,
+        telefono: tel,
 
         mascota: m.nombre,
 
         // Fecha y hora
         fecha: estado.fecha,
-        hora: estado.hora
+        hora: estado.hora,
+        duenoId: tel
     };
 
 
@@ -1131,6 +1152,10 @@ function guardarReserva() {
         ...citasActuales,
         nuevaCita
     ]);
+
+    if (window.AgendaAuth) {
+        AgendaAuth.pintar();
+    }
 
 
     Swal.fire({
@@ -1324,6 +1349,10 @@ $("buscar-cita").oninput =
 // ======================================================
 
 function iniciarReserva() {
+
+    if (window.AgendaAuth) {
+        AgendaAuth.mount();
+    }
 
     pintarServicios();
 

@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     await Promise.all(tareas);
     marcarPaginaActual();
+    if (window.AgendaAuth) AgendaAuth.mount();
 });
 
 
