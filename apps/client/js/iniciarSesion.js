@@ -37,7 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
       cambiarRol("cliente");
     });
   }
-
   
   // Validacion y localStorage
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

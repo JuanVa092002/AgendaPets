@@ -1,6 +1,4 @@
-/* =========================================================
-   MIS CITAS
-========================================================= */
+
 :root {
     --ap-crema: #FAF8F2;
     --ap-cards: #FFFDF9;
@@ -65,51 +63,7 @@
 }
 
 
-/* =========================================================
-   INPUT NÚMERO CELULAR
-========================================================= */
-
-.celular-form {
-    max-width: 450px;
-    margin: 0 auto;
-}
-
-.celular-form label {
-    display: block;
-    color: var(--ap-dark-green);
-    font-size: 1.1rem;
-    font-weight: 500;
-    margin-bottom: 8px;
-}
-
-.celular-form input {
-    width: 100%;
-    height: 58px;
-
-    border: 1px solid var(--ap-dark-green);
-    border-radius: 12px;
-
-    background-color: #ffffff;
-    color: var(--ap-dark-green);
-
-    padding: 0 16px;
-    font-size: 1rem;
-
-    transition: all 0.2s ease;
-}
-
-.celular-form input::placeholder {
-    color: #8b8b8b;
-}
-
-.celular-form input:focus {
-    border-color: var(--ap-medium-green);
-    box-shadow: 0 0 0 0.2rem rgba(124, 154, 74, 0.18);
-}
-
-
-
-/* boton buscar */
+/* boton Iniciar sesion (menu citas) */
 
 .contenedor-boton {
   display: flex;
@@ -119,8 +73,8 @@
   margin-top: 24px;        /* 👈 SEPARACIÓN: Espacio exacto entre el input y el botón */
   margin-bottom: 16px;     /* Espacio inferior opcional */
 }
-/* Estilo base del botón Buscar */
-.btn-buscar-citas {
+
+.btnIniciarSesion {
   /* Dimensiones y alineación */
   padding: 12px 28px;
   display: inline-flex;
@@ -145,7 +99,7 @@
 }
 
 /* Estado: Pasar el mouse (Hover) */
-.btn-buscar-citas:hover {
+.btnIniciarSesion:hover {
   background-color: var(--ap-acento); /* Cambia a tu color acento para indicar acción */
   color: var(--ap-crema); /* El texto cambia a tu crema claro para contrastar con el acento */
   border-color: var(--ap-verdeOscuroNuevo);
@@ -154,209 +108,17 @@
 }
 
 /* Estado: Al hacer clic (Active) */
-.btn-buscar-citas:active {
+.btnIniciarSesion:active {
   transform: translateY(4px); /* El botón baja simulando que se presiona de verdad */
   box-shadow: 0 0px 0px var(--ap-verdeOscuroNuevo); /* La sombra desaparece al hundirse */
 }
 
 /* Estado: Enfocado (Accesibilidad con teclado) */
-.btn-buscar-citas:focus-visible {
+.btnIniciarSesion:focus-visible {
   outline: 3px solid var(--ap-verdeMedioNuevo);
   outline-offset: 2px;
 }
 
-
-/* =========================================================
-   SECCIÓN CITAS
-========================================================= */
-
-.citas-section {
-    padding: 18px 0 120px;
-}
-
-
-/* =========================================================
-   CARD DE LA CITA
-========================================================= */
-
-.cita-card {
-    width: 100%;
-    max-width: 540px;
-
-    margin-top: 0;
-
-    background: linear-gradient(
-        135deg,
-        var(--ap-tan),
-        #f2e6cf
-    );
-
-    border-radius: 18px;
-
-    padding: 18px 28px;
-
-    box-shadow: 0 5px 16px rgba(77, 92, 45, 0.10);
-
-    display: grid;
-
-    grid-template-columns:
-        1fr
-        auto;
-
-    grid-template-areas:
-        "info acciones"
-        "resumen resumen";
-
-    gap: 12px 20px;
-    margin: 50px;
-}
-
-
-/* =========================================================
-   INFORMACIÓN DE LA CITA
-========================================================= */
-
-.cita-info {
-    grid-area: info;
-}
-
-.cita-titulo {
-    color: var(--ap-dark-green);
-    font-size: 1rem;
-    font-weight: 700;
-    margin-bottom: 5px;
-}
-
-.cita-titulo span {
-    font-weight: 500;
-}
-
-.cita-info p {
-    color: var(--ap-dark-green);
-    font-size: 0.8rem;
-    margin-bottom: 2px;
-}
-
-.cita-info strong {
-    font-weight: 500;
-}
-
-
-/* LISTA DE SERVICIOS */
-
-.cita-servicios {
-    margin: 0;
-    padding-left: 18px;
-
-    color: var(--ap-dark-green);
-    font-size: 0.8rem;
-}
-
-.cita-servicios li {
-    margin-bottom: 2px;
-}
-
-
-/* =========================================================
-   BOTONES
-========================================================= */
-
-.cita-acciones {
-    grid-area: acciones;
-
-    display: flex;
-    flex-direction: column;
-
-    justify-content: center;
-    gap: 8px;
-}
-
-.btn-cita {
-    border: none;
-    border-radius: 50px;
-
-    padding: 8px 16px;
-
-    font-size: 0.78rem;
-    font-weight: 500;
-
-    background-color: #ffffff;
-
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        background-color 0.2s ease;
-}
-
-.btn-cita i {
-    margin-right: 5px;
-}
-
-
-/* BOTÓN REPROGRAMAR */
-
-.btn-reprogramar {
-    color: var(--ap-dark-green);
-}
-
-.btn-reprogramar i {
-    color: var(--ap-medium-green);
-}
-
-.btn-reprogramar:hover {
-    background-color: var(--ap-light-green);
-    color: var(--ap-dark-green);
-
-    transform: translateY(-2px);
-
-    box-shadow: 0 4px 10px rgba(77, 92, 45, 0.12);
-}
-
-
-/* BOTÓN CANCELAR */
-
-.btn-cancelar {
-    color: #b35f58;
-}
-
-.btn-cancelar i {
-    color: var(--ap-coral);
-}
-
-.btn-cancelar:hover {
-    background-color: #f7d9d4;
-
-    transform: translateY(-2px);
-
-    box-shadow: 0 4px 10px rgba(179, 95, 88, 0.12);
-}
-
-
-/* =========================================================
-   BADGES DE RESUMEN
-========================================================= */
-
-.cita-resumen {
-    grid-area: resumen;
-
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-}
-
-.badge-cita {
-    display: inline-block;
-
-    background-color: var(--ap-medium-green);
-    color: #ffffff;
-
-    border-radius: 50px;
-
-    padding: 3px 14px;
-
-    font-size: 0.72rem;
-    font-weight: 500;
-}
 
 
 /* =========================================================
@@ -365,19 +127,12 @@
 
 .sin-citas {
     max-width: 500px;
-
     margin: 40px auto;
-
     text-align: center;
-
     background-color: #ffffff;
-
     border: 1px solid var(--ap-light-green);
-
     border-radius: 18px;
-
     padding: 40px 25px;
-
     box-shadow: 0 5px 16px rgba(77, 92, 45, 0.08);
 }
 
@@ -727,4 +482,364 @@ main > section {
         animation: none !important;
     }
 
+}
+
+
+
+
+/* =========================================
+   CARD DE CITA
+   ========================================= */
+
+.cita-card {
+    width: 100%;
+    max-width: 700px;
+    min-height: 260px;
+
+    margin: 25px auto;
+    padding: 28px 30px;
+
+    display: grid;
+    grid-template-columns: 90px minmax(0, 1fr) 190px;
+    align-items: start;
+    gap: 24px;
+
+    background: var(--ap-beigeNuevo);
+    border: 1px solid rgba(77, 92, 45, 0.08);
+    border-radius: 24px;
+
+    box-shadow: 0 8px 20px rgba(77, 92, 45, 0.10);
+
+    color: var(--ap-verdeOscuro);
+
+    transition: transform 0.25s ease,
+                box-shadow 0.25s ease;
+}
+
+.cita-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow: 0 12px 28px rgba(77, 92, 45, 0.14);
+}
+
+
+/* =========================================
+   FOTO DE PERFIL
+   ========================================= */
+
+.cita-perfil {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.cita-perfil-img {
+    width: 70px;
+    height: 70px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 4px solid var(--ap-crema);
+
+    background: var(--ap-light-green);
+
+    box-shadow: 0 4px 10px rgba(77, 92, 45, 0.15);
+}
+
+
+/* =========================================
+   INFORMACIÓN DE LA CITA
+   ========================================= */
+
+.cita-info {
+    min-width: 0;
+}
+
+.cita-titulo {
+    margin: 2px 0 18px;
+
+    font-family: "Original Surfer", sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+
+    color: var(--ap-verdeOscuro);
+}
+
+.cita-mascota {
+    font-weight: 800;
+    font-size: 30px;
+    color: var(--ap-verdeOscuroNuevo);
+}
+
+
+/* Fecha, hora y servicio */
+
+.cita-info > p {
+    margin: 6px 0;
+
+    font-size: 15px;
+    line-height: 1.4;
+
+    color: var(--texto);
+}
+
+.cita-info > p strong {
+    display: inline-block;
+    min-width: 65px;
+
+    color: var(--ap-verdeOscuro);
+    font-weight: 600;
+}
+
+
+/* =========================================
+   SERVICIOS
+   ========================================= */
+
+.cita-servicio-titulo {
+    margin-bottom: 2px !important;
+}
+
+.cita-servicios {
+    margin: 4px 0 16px;
+    padding-left: 22px;
+
+    list-style: none;
+}
+
+.cita-servicios li {
+    position: relative;
+
+    margin: 5px 0;
+    padding-left: 13px;
+
+    color: var(--texto);
+    font-size: 14px;
+}
+
+.cita-servicios li::before {
+    content: "•";
+
+    position: absolute;
+    left: 0;
+
+    color: var(--ap-verdeMedioNuevo);
+
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+/* Duración debajo del nombre del servicio */
+
+.servicio-duracion {
+    display: block;
+
+    margin-top: 2px;
+
+    color: var(--texto);
+    font-size: 11px;
+}
+
+
+/* =========================================
+   RESUMEN: TOTAL + DURACIÓN
+   ========================================= */
+
+.cita-resumen {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    margin-top: 18px;
+}
+
+.cita-total,
+.cita-duracion {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin: 0 !important;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: var(--ap-doradosuave);
+    color: white !important;
+    font-size: 13px !important;
+    white-space: nowrap;
+}
+
+.cita-total strong,
+.cita-duracion strong {
+    min-width: auto !important;
+
+    color: white !important;
+    font-weight: 700;
+}
+
+.cita-duracion i {
+    font-size: 14px;
+}
+
+
+/* =========================================
+   BOTONES
+   ========================================= */
+
+.cita-acciones {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+
+    gap: 12px;
+
+    margin-top: 42px;
+}
+
+.btn-cita {
+    width: 100%;
+    min-height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 10px 16px;
+
+    border: none;
+    border-radius: 25px;
+
+    background: var(--ap-cards);
+
+    font-family: "Comfortaa", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow: 0 4px 10px rgba(77, 92, 45, 0.08);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.btn-cita:hover {
+    transform: translateY(-2px);
+
+    box-shadow: 0 7px 14px rgba(77, 92, 45, 0.13);
+}
+
+.btn-cita i {
+    font-size: 16px;
+}
+
+
+/* =========================================
+   REPROGRAMAR
+   ========================================= */
+
+.btn-reprogramar {
+    color: var(--ap-verdeOscuroNuevo);
+    font-size: 15px;
+}
+
+.btn-reprogramar i {
+    color: var(--ap-verdeOscuroNuevo);
+}
+
+.btn-reprogramar:hover {
+    background: var(--ap-verdeClaroNuevo);
+    color: var(--ap-verdeOscuro);
+}
+
+
+/* =========================================
+   CANCELAR
+   ========================================= */
+
+.btn-cancelar {
+    color: var(--ap-coral);
+    font-size: 15px;
+}
+
+.btn-cancelar i {
+    color: var(--ap-coral);
+}
+
+.btn-cancelar:hover {
+    background: #f4d3cc;
+    color: #b95f50;
+}
+
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 700px) {
+
+    .cita-card {
+        grid-template-columns: 70px minmax(0, 1fr);
+
+        padding: 24px 20px;
+
+        gap: 18px;
+    }
+
+    .cita-acciones {
+        grid-column: 1 / -1;
+
+        flex-direction: row;
+
+        margin-top: 5px;
+    }
+
+    .btn-cita {
+        flex: 1;
+    }
+}
+
+
+@media (max-width: 480px) {
+
+    .cita-card {
+        grid-template-columns: 1fr;
+
+        padding: 22px 18px;
+
+        gap: 12px;
+    }
+
+    .cita-perfil {
+        justify-content: flex-start;
+    }
+
+    .cita-titulo {
+        font-size: 21px;
+    }
+
+    .cita-acciones {
+        grid-column: auto;
+
+        flex-direction: column;
+    }
+
+    .cita-resumen {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .cita-total,
+    .cita-duracion {
+        width: fit-content;
+    }
 }
