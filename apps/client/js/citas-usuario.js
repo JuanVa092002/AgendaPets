@@ -8,7 +8,6 @@ import {
     formatearHora
 } from "./citas-storage.js";
 
-
 const elementos = {
     inputTelefono: document.getElementById("numeroCelular"),
     btnBuscar:  document.getElementById("btnBuscarCitas"),
@@ -16,11 +15,9 @@ const elementos = {
     container: document.getElementById("citasContainer")
 };
 
-
 function iniciarPaginaCitas() {
     configurarEventos();
 }
-
 
 function configurarEventos() {
     elementos.btnBuscar.addEventListener("click", consultarCitas  );
@@ -34,11 +31,9 @@ function manejarEnter(evento) {
     consultarCitas();
 }
 
-
 function consultarCitas() {
     const telefono = elementos.inputTelefono.value.trim();
     limpiarResultados();
-
     if (!validarTelefono(telefono)) {
         Swal.fire({
             title: "Número inválido",
@@ -49,7 +44,6 @@ function consultarCitas() {
         });
         return;
     }
-
     const citasEncontradas = buscarCitasPorTelefono(telefono);
     if (!citasEncontradas.length) {
         Swal.fire({
@@ -62,22 +56,18 @@ function consultarCitas() {
 
         mostrarSinCitas();
         return;
-
     }
     pintarCitas(citasEncontradas);
 }
-
 
 function validarTelefono(telefono) {
     return normalizarTelefono(telefono).length === 10;
 }
 
-
 function limpiarResultados() {
     elementos.mensaje.innerHTML = "";
     elementos.container.innerHTML = "";
 }
-
 
 function mostrarSinCitas() {
     elementos.mensaje.innerHTML = `
@@ -95,7 +85,6 @@ function pintarCitas(citas) {
         ordenarCitas(citas);
     elementos.container.innerHTML =ordenadas.map(crearCardCita).join("");
 }
-
 function ordenarCitas(citas) {
     return [...citas].sort((a, b) => {
         const fechaA = new Date(`${a.fecha}T${a.hora}`);
@@ -151,7 +140,6 @@ function crearCardCita(cita) {
     `;
 }
 
-
 function crearServiciosHTML(servicios = []) {
 
     if (!Array.isArray(servicios) ||  !servicios.length ) {
@@ -175,26 +163,17 @@ function crearServiciosHTML(servicios = []) {
     `).join("");
 }
 
-
 function calcularTotal(servicios = []) {
     if (!Array.isArray(servicios)) {
         return 0;
     }
-
     return servicios.reduce(
         (total, servicio) => {
-            return (
-                total +
-                Number(
-                    servicio.precio || 0
-                )
-            );
+            return ( total +     Number(   servicio.precio || 0   ) );
         },
         0
     );
-
 }
-
 
 function manejarAccionesCita(evento) {
     const boton =
@@ -202,7 +181,6 @@ function manejarAccionesCita(evento) {
     if (!boton) return;
     const accion =boton.dataset.accion;
     const citaId =    Number(   boton.dataset.citaId    );
-
     if (accion === "cancelar") {
         cancelarCita(citaId);
     }
@@ -210,7 +188,6 @@ function manejarAccionesCita(evento) {
         reprogramarCita(citaId);
     }
 }
-
 
 async function cancelarCita(citaId) {
     const cita =
@@ -224,8 +201,7 @@ async function cancelarCita(citaId) {
         });
         return;
     }
-    const resultado =
-        await Swal.fire({
+    const resultado = await Swal.fire({
             title: "¿Cancelar cita?",
             text: `Vas a cancelar la cita de ${cita.mascota}.`,
             icon: "warning",
