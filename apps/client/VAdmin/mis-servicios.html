@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/styles-admin.css">
+     
 </head>
 
 <body>
@@ -19,11 +20,25 @@
         <header class="header-admin d-flex justify-content-between align-items-center px-4">
             <div class="d-flex align-items-center gap-3">
                 <i class="bi bi-shield-check fs-2"></i>
+
                 <span class="titulo-header">
                     Panel Administrador - NombrePeluquería
                 </span>
             </div>
-            <a href="#" class="logout d-flex align-items-center gap-2">
+            <nav class="nav-admin d-flex justify-content-center align-items-center gap-3">
+                <a href="#" class="nav-link activo">
+                    Mis servicios
+                </a>
+                <span>|</span>
+                <a href="#" class="nav-link">
+                    Mi info
+                </a>
+                <span>|</span>
+                <a href="#" class="nav-link">
+                    Dashboard
+                </a>
+            </nav>
+            <a href="../index.html" class="logout d-flex align-items-center gap-2">
                 <i class="bi bi-box-arrow-right fs-4"></i>
                 <span>Salir</span>
             </a>
@@ -33,7 +48,7 @@
 
         <main class="container py-4">
 
-            <nav class="nav-admin d-flex justify-content-center align-items-center gap-3 mb-4">
+            <!-- <nav class="nav-admin d-flex justify-content-center align-items-center gap-3 mb-4">
                 <a href="#" class="nav-link activo">
                     Mis servicios
                 </a>
@@ -49,7 +64,7 @@
                 <a href="#" class="nav-link">
                     Dashboard
                 </a>
-            </nav>
+            </nav>-->
 
             <div class="row justify-content-center g-4">
 
@@ -57,7 +72,7 @@
                     <section class="admin-card h-100">
 
                         <div class="card-title-admin">
-                            <i class="bi bi-plus-circle" id="icono-formulario"></i>
+                            <i class="bi bi-plus-circle" id="icono-formulario" ></i>
                             <span id="texto-formulario">Agregar servicio</span>
                         </div>
 
@@ -68,9 +83,7 @@
                                     <label for="nombre" class="form-label">
                                         Nombre:
                                     </label>
-                                    <input type="text"
-                                        id="nombre"
-                                        class="form-control"
+                                    <input type="text" id="nombre" class="form-control"
                                         placeholder="Ej: Lavado + shampoo premium...">
                                 </div>
 
@@ -79,20 +92,14 @@
                                     <label for="duracion" class="form-label">
                                         Duración:
                                     </label>
-                                    <input type="text"
-                                        id="duracion"
-                                        class="form-control"
-                                        placeholder="Ej: 1 hora">
+                                    <input type="text" id="duracion" class="form-control" placeholder="Ej: 1 hora">
                                 </div>
 
                                 <div class="mb-2">
                                     <label for="precio" class="form-label">
                                         Precio:
                                     </label>
-                                    <input type="number"
-                                        id="precio"
-                                        class="form-control"
-                                        placeholder="Ej: 1000">
+                                    <input type="number" id="precio" class="form-control" placeholder="Ej: 1000">
                                 </div>
 
                                 <div class="mb-3">
@@ -100,9 +107,7 @@
                                         Descripción:
                                     </label>
 
-                                    <textarea id="descripcion"
-                                        class="form-control"
-                                        rows="2"
+                                    <textarea id="descripcion" class="form-control" rows="2"
                                         placeholder="Se lava con shampoo especial de marca premium..."></textarea>
                                 </div>
 
@@ -277,7 +282,8 @@
             </div>
         </main>
     </div>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="../js/admin.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../js/admin.js"></script>
 </body>
+
 </html>
