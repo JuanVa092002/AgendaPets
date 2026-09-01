@@ -19,7 +19,11 @@ function obtenerSesion() {
 function obtenerMisCitas() {
     const usuario = obtenerSesion();
     if (!usuario) return [];
-    return obtenerCitas().filter(cita => {   const telefono = cita.usuarioTelefono || cita.telefono;
+    return obtenerCitas().filter(cita => {
+        const correoCita = (cita.correo || cita.duenoId || "").toLowerCase();
+        const correoUsuario = (usuario.email || "").toLowerCase();
+        if (correoUsuario && correoCita) return correoCita === correoUsuario;
+        const telefono = cita.usuarioTelefono || cita.telefono;
         return normalizarTelefono(telefono) === normalizarTelefono(usuario.telefono);
     });
 }
@@ -311,18 +315,41 @@ async function cancelarCita(id) {
     iniciarMisCitas();
 }
 
-//REVISAR FLUJO CON RESERVAR CITAS
-function reprogramarCita(id) {
-    const cita = obtenerCitas().find(
-        c => Number(c.id) === id
-    );
-    if (!cita) return;
+async function reprogramarCita(id) {
     const usuario = obtenerSesion();
     if (!usuario) {
         mostrarNecesitaLogin();
         return;
     }
-    window.location.href =`reservar.html?reprogramar=${id}`;
+
+    const cita = obtenerMisCitas().find(
+        c => Number(c.id) === id
+    );
+
+    if (!cita) {
+        Swal.fire({
+            title: "No encontramos la cita",
+            text: "Es posible que ya no esté disponible.",
+            icon: "error",
+            confirmButtonColor: "#7C9A4A"
+        });
+        return;
+    }
+
+    const resultado = await Swal.fire({
+        title: `Reprogramar a ${cita.mascota || cita.nombre || "tu mascota"}`,
+        text: `Horario actual: ${formatearFecha(cita.fecha)} · ${formatearHora(cita.hora)}. Te llevamos al calendario para elegir uno nuevo.`,
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Ir al calendario",
+        cancelButtonText: "Volver",
+        confirmButtonColor: "#7C9A4A",
+        cancelButtonColor: "#D98B7B"
+    });
+
+    if (!resultado.isConfirmed) return;
+
+    window.location.href = `reservar.html?reprogramar=${id}`;
 }
 
 

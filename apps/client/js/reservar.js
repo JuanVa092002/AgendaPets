@@ -1,4 +1,4 @@
-import{obtenerTodasLasCitas,guardarCitas,formatearDinero}from"./citas-storage.js";
+import{obtenerTodasLasCitas,guardarCitas,formatearDinero,obtenerCitaPorId,actualizarCita}from"./citas-storage.js";
 
 const KEY_S="servicios";
 const HORAS=["08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00"];
@@ -6,7 +6,7 @@ const DIAS=["LUN","MAR","MIÉ","JUE","VIE","SÁB"];
 const DIA_NOM=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
 const MESES=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 const $=id=>document.getElementById(id);
-const estado={paso:1,ids:[],fecha:null,hora:null,mesVista:new Date(),semanaInicio:inicioSemana(new Date())};
+const estado={paso:1,ids:[],fecha:null,hora:null,mesVista:new Date(),semanaInicio:inicioSemana(new Date()),reprogramarId:null,citaOriginal:null};
 let snapshotRevision=null;
 
 const citas=()=>obtenerTodasLasCitas();
@@ -23,12 +23,15 @@ const avis=(titulo,texto,icon="warning")=>Swal.fire({title:titulo,text:texto,ico
 function inicioSemana(f){const d=new Date(f),n=d.getDay();d.setDate(d.getDate()+(n===0?-6:1-n));d.setHours(0,0,0,0);return d;}
 
 const abierta=(iso,h)=>{const d=new Date(iso+"T00:00:00").getDay();if(d===0)return false;if(d===6)return h>="09:00"&&h<"16:00";return true;};
-const ocupada=(iso,h)=>citas().find(c=>c.fecha===iso&&c.hora===h);
+const ocupada=(iso,h)=>citas().find(c=>c.fecha===iso&&c.hora===h&&Number(c.id)!==Number(estado.reprogramarId||0));
 const clock=h=>{const n=Number(h.slice(0,2));return`${String(n).padStart(2,"0")}.00 ${n<12?"AM":"PM"}`;};
 const rango=h=>{const n=Number(h.slice(0,2));return`${n%12||12} ${n<12?"AM":"PM"} - ${(n+1)%12||12} ${n+1<12?"AM":"PM"}`;};
 const ampm=h=>{const[H,M]=h.split(":");const n=Number(H);return`${n%12||12}:${M} ${n<12?"a. m.":"p. m."}`;};
 
-const mascota=()=>({nombre:$("mascota-nombre").value.trim(),tipo:$("mascota-tipo").value,raza:$("mascota-raza").value.trim(),tamano:$("mascota-tamano").value,dueno:$("dueno-nombre").value.trim(),telefono:$("dueno-telefono").value.trim(),notas:$("mascota-notas").value.trim()});
+const mascota=()=>{
+    const s=window.AgendaAuth?.sesion?.();
+    return{nombre:$("mascota-nombre").value.trim(),tipo:$("mascota-tipo").value,raza:$("mascota-raza").value.trim(),tamano:$("mascota-tamano").value,dueno:($("dueno-nombre")?.value||"").trim()||s?.nombre||"",correo:($("dueno-correo")?.value||"").trim()||s?.email||"",notas:$("mascota-notas").value.trim()};
+};
 
 function pintarPick(){
     const n=estado.ids.length,bits=[n?`${n} servicio${n>1?"s":""} · ${money(total())}`:"Elige un servicio"];
@@ -103,7 +106,10 @@ function restaurarSnapshot(){
     if(!snapshotRevision)return;
     estado.ids=[...snapshotRevision.ids];estado.fecha=snapshotRevision.fecha;estado.hora=snapshotRevision.hora;
     const m=snapshotRevision.mascota;
-    $("mascota-nombre").value=m.nombre;$("mascota-tipo").value=m.tipo;$("mascota-raza").value=m.raza;$("mascota-tamano").value=m.tamano;$("dueno-nombre").value=m.dueno;$("dueno-telefono").value=m.telefono;$("mascota-notas").value=m.notas;
+    $("mascota-nombre").value=m.nombre;$("mascota-tipo").value=m.tipo;$("mascota-raza").value=m.raza;$("mascota-tamano").value=m.tamano;
+    if($("dueno-nombre"))$("dueno-nombre").value=m.dueno||"";
+    if($("dueno-correo"))$("dueno-correo").value=m.correo||"";
+    $("mascota-notas").value=m.notas;
     snapshotRevision=null;
 }
 
@@ -113,14 +119,14 @@ function pintarResumen(){
     const m=mascota(),[y,mo,d]=estado.fecha.split("-"),diaNom=DIA_NOM[new Date(estado.fecha+"T00:00:00").getDay()],inicial=(m.nombre||"?").charAt(0).toUpperCase();
     const serviciosHtml=elegidos().map(s=>`<li><span class="revision-chip"><i class="bi ${icono(s.nombre)}"></i>${s.nombre}</span><span>${money(s.precio)}</span></li>`).join("");
     $("resumen-cita").innerHTML=`
-        <p class="revision-hint"><i class="bi bi-pencil-square"></i>Puedes ajustar servicios, datos o fecha antes de confirmar.</p>
+        <p class="revision-hint"><i class="bi bi-pencil-square"></i>${esReprogramar()?"Revisa el nuevo horario. Si quieres, también puedes cambiar servicios o datos.":"Puedes ajustar servicios, datos o fecha antes de confirmar."}</p>
         <article class="revision-card" data-edit="1" role="button" tabindex="0">
             <div class="revision-card__head"><span class="revision-card__icon"><i class="bi bi-scissors"></i></span><div class="revision-card__copy"><h2>Servicios</h2><p>${elegidos().length} seleccionado${elegidos().length>1?"s":""} · ${money(total())}</p></div><span class="revision-edit"><i class="bi bi-pencil"></i>Cambiar</span></div>
             <ul class="revision-list">${serviciosHtml}</ul>
         </article>
         <article class="revision-card" data-edit="2" role="button" tabindex="0">
             <div class="revision-card__head"><span class="revision-card__avatar">${inicial}</span><div class="revision-card__copy"><h2>${m.nombre}</h2><p>${m.tipo}${m.tamano?` · ${m.tamano}`:""}${m.raza?` · ${m.raza}`:""}</p></div><span class="revision-edit"><i class="bi bi-pencil"></i>Cambiar</span></div>
-            <div class="revision-meta"><span><i class="bi bi-person"></i>${m.dueno}</span><span><i class="bi bi-whatsapp"></i>${m.telefono}</span>${m.notas?`<span class="revision-note"><i class="bi bi-chat-left-text"></i>${m.notas}</span>`:""}</div>
+            <div class="revision-meta"><span><i class="bi bi-person"></i>${m.dueno||"Se pide al confirmar"}</span><span><i class="bi bi-envelope"></i>${m.correo||"Se pide al confirmar"}</span>${m.notas?`<span class="revision-note"><i class="bi bi-chat-left-text"></i>${m.notas}</span>`:""}</div>
         </article>
         <article class="revision-card revision-card--fecha" data-edit="3" role="button" tabindex="0">
             <div class="revision-card__head"><span class="revision-card__icon revision-card__icon--cal"><i class="bi bi-calendar-check"></i></span><div class="revision-card__copy"><h2>${diaNom}, ${d} de ${MESES[Number(mo)-1]}</h2><p>${ampm(estado.hora)} · GMT-5</p></div><span class="revision-edit"><i class="bi bi-pencil"></i>Cambiar</span></div>
@@ -129,14 +135,19 @@ function pintarResumen(){
         <footer class="revision-total"><span>Total estimado</span><strong>${money(total())}</strong></footer>`;
 }
 
-function btnContinuarTexto(){return estado.paso===4?"Confirmar cita":"Continuar";}
+function esReprogramar(){return Boolean(estado.reprogramarId);}
+
+function btnContinuarTexto(){
+    if(estado.paso===4)return esReprogramar()?"Guardar nueva fecha":"Confirmar cita";
+    return"Continuar";
+}
 
 function mostrarPaso(p){
     estado.paso=p;
     document.querySelectorAll(".reserva-panel").forEach(el=>el.classList.toggle("d-none",Number(el.dataset.panel)!==p));
     document.querySelectorAll(".reserva-stepper li").forEach(el=>{const n=Number(el.dataset.paso);el.classList.toggle("is-active",n===p);el.classList.toggle("is-done",n<p);});
     $("btn-continuar").textContent=btnContinuarTexto();
-    $("btn-atras").textContent="Atrás";
+    $("btn-atras").textContent=esReprogramar()&&(p===3||p===1)?"Mis citas":"Atrás";
     if(p===1)pintarServicios();
     if(p===3)pintarFecha();
     if(p===4)pintarResumen();
@@ -149,10 +160,8 @@ function validar(){
         const m=mascota();
         if(m.nombre.length<2)return"Indica el nombre de tu mascota.";
         if(!m.tipo||!m.tamano)return"Completa tipo y tamaño.";
-        if(m.dueno.length<3)return"Indica tu nombre.";
-        if(!/^\d{10}$/.test(m.telefono))return"El WhatsApp debe tener 10 dígitos.";
     }
-    if((estado.paso===3||estado.paso===4)&&(!estado.fecha||!estado.hora))return"Elige un día y un horario libre.";
+    if((estado.paso===3||estado.paso===4)&&(!estado.fecha||!estado.hora))return esReprogramar()?"Elige el nuevo día y un horario libre.":"Elige un día y un horario libre.";
     if(estado.paso===4&&!estado.ids.length)return"Selecciona al menos un servicio.";
 }
 
@@ -164,8 +173,15 @@ $("lista-servicios").onclick=e=>{
 };
 
 $("btn-atras").onclick=()=>{
-    if(estado.paso===1){location.href="index.html";return;}
-    if(snapshotRevision)restaurarSnapshot();
+    if(snapshotRevision){
+        restaurarSnapshot();
+        mostrarPaso(4);
+        return;
+    }
+    if(estado.paso===1||(esReprogramar()&&estado.paso===3)){
+        location.href=esReprogramar()?"citas-usuario.html":"index.html";
+        return;
+    }
     mostrarPaso(estado.paso-1);
 };
 
@@ -174,17 +190,27 @@ $("btn-continuar").onclick=()=>{
     if(err){avis("Falta un dato",err);return;}
     if(estado.paso!==4){mostrarPaso(estado.paso+1);return;}
     if(window.AgendaAuth&&AgendaAuth.sesion()){guardarReserva(AgendaAuth.sesion());return;}
-    if(window.AgendaAuth){AgendaAuth.abrir({intent:"confirm",telefono:mascota().telefono,nombre:mascota().dueno,onSuccess:guardarReserva});return;}
+    if(window.AgendaAuth){AgendaAuth.abrir({intent:"confirm",email:mascota().correo,nombre:mascota().dueno,onSuccess:guardarReserva});return;}
     guardarReserva();
 };
 
 function guardarReserva(usuario){
-    const m=mascota(),tel=usuario?.telefono||m.telefono;
-    if(tel&&tel!==m.telefono)$("dueno-telefono").value=tel;
-    const datosCita={servicios:elegidos(),servicio:etiqueta(),precio:total(),...m,telefono:tel,mascota:m.nombre,fecha:estado.fecha,hora:estado.hora,duenoId:tel};
+    const m=mascota(),correo=usuario?.email||m.correo;
+    if(correo&&$("dueno-correo")&&correo!==m.correo)$("dueno-correo").value=correo;
+    const datosCita={servicios:elegidos(),servicio:etiqueta(),precio:total(),...m,correo,mascota:m.nombre,fecha:estado.fecha,hora:estado.hora,duenoId:correo};
+    if(window.AgendaAuth)AgendaAuth.pintar();
+    if(esReprogramar()){
+        const actual=obtenerCitaPorId(estado.reprogramarId);
+        if(!actual){
+            avis("No encontramos la cita","Es posible que ya no esté disponible.","error");
+            return;
+        }
+        actualizarCita({...actual,...datosCita,id:actual.id});
+        Swal.fire({title:"Cita reprogramada",text:`El nuevo horario de ${m.nombre} quedó guardado.`,icon:"success",confirmButtonColor:"#7C9A4A"}).then(()=>{window.location.href="citas-usuario.html";});
+        return;
+    }
     const nuevaCita={...datosCita,id:Date.now()},citasActuales=obtenerTodasLasCitas();
     guardarCitas([...citasActuales,nuevaCita]);
-    if(window.AgendaAuth)AgendaAuth.pintar();
     Swal.fire({title:"Cita confirmada",text:`La cita de ${m.nombre} fue reservada correctamente.`,icon:"success",confirmButtonColor:"#7C9A4A"}).then(()=>{window.location.href="index.html";});
 }
 
@@ -238,10 +264,101 @@ $("semana-next").onclick=()=>{
 
 $("buscar-cita").oninput=pintarGrilla;
 
+function idsDeCita(cita){
+    const deServicios=(cita.servicios||[]).map(s=>Number(s.id)).filter(Boolean);
+    if(deServicios.length)return deServicios;
+    const nombre=cita.servicio||"";
+    const hallado=servicios().find(s=>s.nombre===nombre);
+    return hallado?[Number(hallado.id)]:[];
+}
+
+function aplicarCita(cita){
+    estado.ids=idsDeCita(cita);
+    if($("mascota-nombre"))$("mascota-nombre").value=cita.nombre||cita.mascota||"";
+    if($("mascota-tipo"))$("mascota-tipo").value=cita.tipo||"";
+    if($("mascota-raza"))$("mascota-raza").value=cita.raza||"";
+    if($("mascota-tamano"))$("mascota-tamano").value=cita.tamano||"";
+    if($("mascota-notas"))$("mascota-notas").value=cita.notas||"";
+    if($("dueno-nombre"))$("dueno-nombre").value=cita.dueno||"";
+    if($("dueno-correo"))$("dueno-correo").value=cita.correo||cita.duenoId||"";
+}
+
+function pintarModoReprogramar(cita){
+    document.title="Reprogramar cita | AgendaPets";
+    document.body.classList.add("is-reprogramar");
+    const cierre=document.querySelector(".reserva-brand__close");
+    if(cierre)cierre.setAttribute("href","citas-usuario.html");
+    if($("titulo-fecha"))$("titulo-fecha").textContent="Elige un nuevo horario";
+    const fechaTxt=formatearFechaCita(cita.fecha);
+    const horaTxt=cita.hora?ampm(cita.hora):"";
+    if($("lead-fecha"))$("lead-fecha").textContent=`La cita de ${cita.mascota||cita.nombre||"tu mascota"} está el ${fechaTxt}${horaTxt?` a las ${horaTxt}`:""}. Escoge otro día u hora libre.`;
+    if($("titulo-confirma"))$("titulo-confirma").textContent="Confirma el cambio";
+    if($("lead-confirma"))$("lead-confirma").textContent="Si el nuevo horario se ve bien, guárdalo. Puedes tocar Cambiar si quieres ajustar algo más.";
+    const aviso=$("aviso-reprogramar");
+    if(aviso){
+        aviso.hidden=false;
+        const etiqueta=aviso.querySelector("span");
+        if(etiqueta)etiqueta.textContent=`Horario actual: ${fechaTxt}${horaTxt?` · ${horaTxt}`:""}`;
+    }
+}
+
+function formatearFechaCita(iso){
+    if(!iso)return"";
+    const[y,mo,d]=iso.split("-");
+    const diaNom=DIA_NOM[new Date(iso+"T00:00:00").getDay()];
+    return `${diaNom} ${d} de ${MESES[Number(mo)-1]}`;
+}
+
+function iniciarReprogramacion(id){
+    const cita=obtenerCitaPorId(id);
+    if(!cita){
+        avis("No encontramos la cita","Te devolvemos a Mis citas.","error");
+        setTimeout(()=>{location.href="citas-usuario.html";},1400);
+        return false;
+    }
+    const sesion=window.AgendaAuth?.sesion?.();
+    const correoSesion=(sesion?.email||"").toLowerCase();
+    const correoCita=(cita.correo||cita.duenoId||"").toLowerCase();
+    if(correoSesion&&correoCita&&correoSesion!==correoCita){
+        avis("Esa cita no es tuya","Abre Mis citas e inicia sesión con tu correo.","warning");
+        setTimeout(()=>{location.href="citas-usuario.html";},1400);
+        return false;
+    }
+    estado.reprogramarId=Number(cita.id);
+    estado.citaOriginal=cita;
+    aplicarCita(cita);
+    if(sesion){
+        if($("dueno-nombre")&&sesion.nombre)$("dueno-nombre").value=sesion.nombre;
+        if($("dueno-correo")&&sesion.email)$("dueno-correo").value=sesion.email;
+    }
+    if(cita.fecha&&cita.fecha>=hoy){
+        estado.fecha=cita.fecha;
+        estado.hora=null;
+        estado.mesVista=new Date(cita.fecha+"T00:00:00");
+        estado.semanaInicio=inicioSemana(estado.mesVista);
+    }
+    pintarModoReprogramar(cita);
+    return true;
+}
+
 function iniciarReserva(){
-    if(window.AgendaAuth)AgendaAuth.mount();
+    if(window.AgendaAuth){
+        AgendaAuth.mount();
+        const s=AgendaAuth.sesion();
+        if(s){
+            if($("dueno-nombre"))$("dueno-nombre").value=s.nombre||"";
+            if($("dueno-correo"))$("dueno-correo").value=s.email||"";
+        }
+    }
     pintarServicios();
-    const pasoURL=Number(new URLSearchParams(location.search).get("paso"));
+    const params=new URLSearchParams(location.search);
+    const reprogramarId=Number(params.get("reprogramar"));
+    if(reprogramarId){
+        if(!iniciarReprogramacion(reprogramarId))return;
+        mostrarPaso(3);
+        return;
+    }
+    const pasoURL=Number(params.get("paso"));
     mostrarPaso(pasoURL||1);
 }
 
