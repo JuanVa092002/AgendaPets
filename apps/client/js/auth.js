@@ -1,8 +1,11 @@
 (function () {
   const KEY_U = "usuarios";
   const KEY_SES = "sesion";
+  const ADMIN_EMAIL = "admin@agendapets.com";
+  const ADMIN_PASS = "Admin123";
   let modo = "register";
   let intent = "session";
+  let rolLogin = "cliente";
   let onSuccess = null;
   let nombreReserva = "";
 
@@ -23,7 +26,39 @@
   }
 
   function guardarSesion(u) {
-    localStorage.setItem(KEY_SES, JSON.stringify({ email: u.email, nombre: u.nombre }));
+    localStorage.setItem(KEY_SES, JSON.stringify({
+      email: u.email,
+      nombre: u.nombre,
+      rol: esAdmin(u) ? "admin" : "cliente",
+    }));
+    localStorage.removeItem("usuarioSesion");
+  }
+
+  function esAdmin(u) {
+    return (u?.rol || "") === "admin";
+  }
+
+  function rutaPanelAdmin() {
+    return /\/VAdmin\//i.test(location.pathname) ? "mis-servicios.html" : "VAdmin/mis-servicios.html";
+  }
+
+  function asegurarAdmin() {
+    const lista = usuarios();
+    const i = lista.findIndex((u) => (u.email || "").toLowerCase() === ADMIN_EMAIL);
+    if (i >= 0) {
+      if (lista[i].rol !== "admin") {
+        lista[i] = { ...lista[i], rol: "admin" };
+        guardarUsuarios(lista);
+      }
+      return;
+    }
+    guardarUsuarios(lista.concat({
+      email: ADMIN_EMAIL,
+      password: ADMIN_PASS,
+      nombre: "Administrador",
+      rol: "admin",
+      creado: Date.now(),
+    }));
   }
 
   function cerrarSesion() {
@@ -44,13 +79,15 @@
       </button>`;
     }
     const inicial = primerNombre(s.nombre).charAt(0).toUpperCase();
-    return `<div class="sesion-chip sesion-chip--in" title="Sesión activa">
+    const admin = esAdmin(s);
+    return `<div class="sesion-chip sesion-chip--in" title="${admin ? "Administrador" : "Sesión activa"}">
       <span class="sesion-chip__avatar">${inicial}</span>
       <span class="sesion-chip__copy">
         <strong>Hola, ${primerNombre(s.nombre)}</strong>
-        <small>Sesión activa</small>
+        <small>${admin ? "Administrador" : "Sesión activa"}</small>
       </span>
       <span class="sesion-chip__dot" aria-hidden="true"></span>
+      ${admin ? `<a class="sesion-chip__panel" href="${rutaPanelAdmin()}">Panel</a>` : ""}
       <button type="button" class="sesion-chip__salir" data-auth-out>Salir</button>
     </div>`;
   }
@@ -91,7 +128,9 @@
     document.querySelectorAll(".auth-switch__btn").forEach((b) => b.classList.toggle("is-on", b.dataset.auth === modo));
     $("auth-confirm-wrap").hidden = !esRegistro;
     $("auth-nombre-wrap").hidden = !esRegistro;
+    $("auth-rol-wrap").hidden = esRegistro;
     $("auth-password").autocomplete = esRegistro ? "new-password" : "current-password";
+    document.querySelectorAll(".auth-rol__btn").forEach((b) => b.classList.toggle("is-on", b.dataset.rol === rolLogin));
     $("auth-title").textContent = esRegistro ? (confirmar ? "Guarda tu cita" : "Crea tu cuenta") : "Bienvenido de nuevo";
     $("auth-lead").textContent = esRegistro
       ? confirmar
@@ -99,7 +138,9 @@
         : "Regístrate con tu correo y una contraseña."
       : confirmar
         ? "Entra con tu correo y confirma la cita."
-        : "Entra con tu correo para seguir tu reserva.";
+        : rolLogin === "admin"
+          ? "Entra con la cuenta del administrador para abrir el panel."
+          : "Entra con tu correo para seguir tu reserva.";
     $("auth-submit").textContent = esRegistro
       ? confirmar
         ? "Crear cuenta y confirmar"
@@ -129,6 +170,10 @@
         <div class="auth-switch" role="tablist" aria-label="Tipo de acceso">
           <button type="button" class="auth-switch__btn" data-auth="login" role="tab">Iniciar sesión</button>
           <button type="button" class="auth-switch__btn is-on" data-auth="register" role="tab">Crear cuenta</button>
+        </div>
+        <div class="auth-rol" id="auth-rol-wrap" hidden>
+          <button type="button" class="auth-rol__btn is-on" data-rol="cliente">Usuario</button>
+          <button type="button" class="auth-rol__btn" data-rol="admin">Admin</button>
         </div>
         <form class="auth-form" id="auth-form" novalidate>
           <div id="auth-nombre-wrap">
@@ -165,6 +210,7 @@
     intent = opts.intent || "session";
     onSuccess = opts.onSuccess || null;
     nombreReserva = opts.nombre || "";
+    rolLogin = opts.rol === "admin" ? "admin" : "cliente";
     const correo = (opts.email || "").trim().toLowerCase();
     const existe = correo && usuarios().some((u) => (u.email || "").toLowerCase() === correo);
     modo = existe ? "login" : "register";
@@ -229,7 +275,7 @@
         pintarModal();
         return mostrarAlerta("Ya tienes cuenta", "Ese correo ya está registrado. Entra con tu contraseña.", "info");
       }
-      usuario = { email, password: pass, nombre: nombre || nombreReserva || "Cliente", creado: Date.now() };
+      usuario = { email, password: pass, nombre: nombre || nombreReserva || "Cliente", rol: "cliente", creado: Date.now() };
       guardarUsuarios(lista.concat(usuario));
     } else {
       if (!hallado) {
@@ -240,6 +286,10 @@
       if (hallado.password !== pass) {
         return mostrarAlerta("Contraseña incorrecta", "Revísalas e inténtalo de nuevo.", "error");
       }
+      if (rolLogin === "admin" && !esAdmin(hallado)) {
+        return mostrarAlerta("No es administrador", "Esa cuenta es de usuario. Entra como Usuario o usa la cuenta del local.", "warning");
+      }
+      usuario = { ...hallado, rol: esAdmin(hallado) ? "admin" : "cliente" };
     }
 
     guardarSesion(usuario);
@@ -250,12 +300,19 @@
     const confirmarCita = intent === "confirm";
     const listo = () => { if (ok) ok(usuario); };
     const titulo = esRegistro ? "Cuenta creada" : "Sesión iniciada";
+    const vaAlPanel = esAdmin(usuario) && intent !== "confirm";
     const texto = esRegistro
       ? "Tu cuenta quedó lista. Ya puedes reservar."
-      : `Hola, ${primerNombre(usuario.nombre)}.`;
+      : vaAlPanel
+        ? "Entrando al panel de administrador."
+        : `Hola, ${primerNombre(usuario.nombre)}.`;
     mostrarAlerta(titulo, texto, "success");
     setTimeout(() => {
       cerrar();
+      if (vaAlPanel) {
+        window.location.href = rutaPanelAdmin();
+        return;
+      }
       listo();
     }, confirmarCita ? 700 : 1400);
   }
@@ -281,6 +338,13 @@
       const b = e.target.closest("[data-auth]");
       if (!b) return;
       modo = b.dataset.auth;
+      if (modo === "register") rolLogin = "cliente";
+      pintarModal();
+    };
+    $("auth-rol-wrap").onclick = (e) => {
+      const b = e.target.closest("[data-rol]");
+      if (!b) return;
+      rolLogin = b.dataset.rol === "admin" ? "admin" : "cliente";
       pintarModal();
     };
   }
@@ -297,8 +361,22 @@
     if (e.target.closest("[data-auth-out]")) cerrarSesion();
   }
 
+  function autenticar(email, pass) {
+    const correo = (email || "").trim().toLowerCase();
+    const hallado = usuarios().find((u) => (u.email || "").toLowerCase() === correo);
+    if (!hallado) return { error: "not_found" };
+    if (hallado.password !== pass) return { error: "bad_pass" };
+    return { usuario: { ...hallado, rol: esAdmin(hallado) ? "admin" : "cliente" } };
+  }
+
+  function completarLogin(usuario) {
+    guardarSesion(usuario);
+    pintar();
+  }
+
   let mounted = false;
   function mount() {
+    asegurarAdmin();
     asegurarModal();
     pintar();
     if (mounted) return;
@@ -309,5 +387,17 @@
     });
   }
 
-  window.AgendaAuth = { sesion, usuarios, abrir, cerrar, pintar, mount, cerrarSesion };
+  window.AgendaAuth = {
+    sesion,
+    usuarios,
+    abrir,
+    cerrar,
+    pintar,
+    mount,
+    cerrarSesion,
+    esAdmin,
+    autenticar,
+    completarLogin,
+    rutaPanelAdmin,
+  };
 })();

@@ -94,6 +94,20 @@
   white-space:nowrap;
 }
 .sesion-chip__salir:hover{background:#e7d9b5}
+.sesion-chip__panel{
+  border-radius:999px;
+  padding:7px 12px;
+  background:#eef5e3;
+  color:var(--green);
+  font:700 .72rem Comfortaa,sans-serif;
+  text-decoration:none;
+  white-space:nowrap;
+}
+.sesion-chip__panel:hover{background:#dce8c4;color:var(--ink)}
+.sesion-chip--in{max-width:340px}
+.auth-rol{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin:-6px 0 18px;border-radius:14px;background:#eef5e3}
+.auth-rol__btn{border:0;border-radius:12px;padding:8px 10px;background:transparent;color:var(--muted);font:700 .78rem Comfortaa,sans-serif}
+.auth-rol__btn.is-on{background:#fff;color:var(--green);box-shadow:0 2px 8px rgba(44,51,25,.08)}
 
 .auth-overlay{position:fixed;inset:0;z-index:1080;display:grid;place-items:center;padding:20px;background:rgba(44,51,25,.42);backdrop-filter:blur(10px)}
 .auth-overlay[hidden]{display:none}
