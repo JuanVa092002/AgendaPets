@@ -6,7 +6,7 @@
      --texto: #6B6B6B;
 
      --ap-verdeOscuroNuevo: #556B2F;
-     --ap-verdeMedioNuevo: #7EAE45;
+     --ap-verdeMedioNuevo: #7C9A4A;
      --ap-verdeClaroNuevo: #BFD99A;
      --ap-beigeNuevo: #F1DFC6;
      --ap-doradosuave: #D2A441;
@@ -113,9 +113,9 @@
  }
 
  .btn-reserva {
-
-     background-color: var(--ap-blanco);
-     color: var(--ap-verdeOscuro);
+    
+     background-color: var(--ap-acento);
+     color: var(--ap-blanco);
      border: 2px solid var(--ap-dark-green);
      border-radius: 50px;
      padding: 9px 24px;
@@ -129,6 +129,7 @@
  .btn-reserva:hover {
      background-color: var(--ap-verdeOscuro);
      color: var(--ap-blanco);
+     border: 2px solid var(--ap-beigeNuevo);
  }
 
  /* =========================
