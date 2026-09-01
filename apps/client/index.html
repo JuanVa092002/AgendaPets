@@ -23,6 +23,8 @@
 
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="./css/navbar.css">
+    <link rel="stylesheet" href="./css/promo.css">
+
     <link rel="stylesheet" href="./css/auth.css">
     <link rel="stylesheet" href="styles.css">
 
@@ -90,30 +92,68 @@
             </div>
         </section>
 
+
+
         <!-- Social proof: métricas de confianza -->
-        <section class="home-stats home-section--tight" aria-label="Indicadores de confianza">
+        <section class="home-stats">
             <div class="home-container">
+
                 <div class="home-stats__grid">
-                    <div class="home-stats__item home-reveal">
-                        <p class="home-stats__value">+500</p>
-                        <p class="home-stats__label">Mascotas atendidas</p>
+
+                    <div class="home-stats__item">
+                        <div class="home-stats__icon">
+                            <img src="./assets/icons/perro.png" alt="">
+                        </div>
+
+                        <div>
+                            <p class="home-stats__value">+500</p>
+                            <p class="home-stats__label">Mascotas atendidas</p>
+                            <span>Con amor y dedicación</span>
+                        </div>
                     </div>
-                    <div class="home-stats__item home-reveal">
-                        <p class="home-stats__value">4.9</p>
-                        <p class="home-stats__label">Calificación</p>
+
+                    <div class="home-stats__item">
+                        <div class="home-stats__icon">
+                            <img src="./assets/icons/star.png" alt="">
+                        </div>
+
+                        <div>
+                            <p class="home-stats__value">4.9</p>
+                            <p class="home-stats__label">Calificación</p>
+                            <span>Basado en 280 reseñas</span>
+                        </div>
                     </div>
-                    <div class="home-stats__item home-reveal">
-                        <p class="home-stats__value">5 años</p>
-                        <p class="home-stats__label">Experiencia</p>
+
+                    <div class="home-stats__item">
+                        <div class="home-stats__icon">
+                            <img src="./assets/icons/happy.png" alt="">
+                        </div>
+
+                        <div>
+                            <p class="home-stats__value">5 años</p>
+                            <p class="home-stats__label">Experiencia</p>
+                            <span>Cuidando a tu mejor amigo</span>
+                        </div>
                     </div>
-                    <div class="home-stats__item home-reveal">
-                        <p class="home-stats__value">2 h</p>
-                        <p class="home-stats__label">Respuesta máx.</p>
+
+                    <div class="home-stats__item">
+                        <div class="home-stats__icon">
+                            <img src="./assets/icons/time.png" alt="">
+                        </div>
+
+                        <div>
+                            <p class="home-stats__value">2 h</p>
+                            <p class="home-stats__label">Respuesta máx.</p>
+                            <span>Respondemos rápido</span>
+                        </div>
                     </div>
+
                 </div>
+
             </div>
         </section>
 
+        <div id="promo"></div>
 
 
         <!-- Servicios: progressive disclosure por tarjeta -->
@@ -227,7 +267,7 @@
 
         <!-- Testimonial: prueba social, PENDIENTE VOLVERLO CARRUSEL O INCORPORAR ANIMACIÓN -->
 
-        
+
         <div id="carouselExampleDark" class="carousel carousel-dark slide">
             <div class="carousel-indicators">
                 <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
@@ -236,9 +276,9 @@
                     aria-label="Slide 2"></button>
                 <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
                     aria-label="Slide 3"></button>
-                     <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="3"
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="3"
                     aria-label="Slide 4"></button>
-                      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="4"
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="4"
                     aria-label="Slide 5"></button>
             </div>
             <div class="carousel-inner">
@@ -285,7 +325,8 @@
                 <div class="carousel-item">
                     <div class="home-proof__stars" aria-hidden="true">★★★★★</div>
                     <p class="home-proof__quote">
-                        "Antes me demoraba mucho buscando dónde llevar a Toby. Ahora puedo reservar su cita rápidamente y recibir la confirmación sin complicaciones."
+                        "Antes me demoraba mucho buscando dónde llevar a Toby. Ahora puedo reservar su cita rápidamente
+                        y recibir la confirmación sin complicaciones."
                     </p>
                     <footer class="home-proof__author">
                         <div class="home-proof__avatar" aria-hidden="true">AC</div>
@@ -295,10 +336,11 @@
                         </div>
                     </footer>
                 </div>
-                      <div class="carousel-item">
+                <div class="carousel-item">
                     <div class="home-proof__stars" aria-hidden="true">★★★★★</div>
                     <p class="home-proof__quote">
-                       "La atención fue excelente y trataron a mi gatita con muchísimo cuidado. Me gustó poder encontrar todo en un solo lugar."
+                        "La atención fue excelente y trataron a mi gatita con muchísimo cuidado. Me gustó poder
+                        encontrar todo en un solo lugar."
                     <footer class="home-proof__author">
                         <div class="home-proof__avatar" aria-hidden="true">AM</div>
                         <div>
@@ -352,6 +394,7 @@
 
     <script src="js/home.js"></script>
     <script src="./js/auth.js"></script>
+    <script src="./js/promo.js" defer></script>
     <script src="./js/nav-footer.js" defer></script>
 </body>
 
