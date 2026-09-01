@@ -99,6 +99,9 @@
 .revision-total{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-radius:20px;background:var(--green);color:#fff;margin-top:4px}
 .revision-total span{font:600 .9rem Comfortaa,sans-serif;opacity:.9}
 .revision-total strong{font:700 1.6rem Fraunces,serif}
+.reserva-banner{display:flex;align-items:center;justify-content:center;gap:10px;max-width:640px;margin:-12px auto 28px;padding:12px 18px;border-radius:16px;background:#eef5e3;color:var(--green);font:700 .88rem Comfortaa,sans-serif;text-align:center}
+.reserva-banner[hidden]{display:none}
+.reserva-banner i{font-size:1.1rem}
 .reserva-stepper .is-editing b{box-shadow:0 0 0 3px #fff,0 0 0 5px var(--leaf);animation:editPulse 1.4s ease infinite}
 @keyframes editPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
 .reserva-resumen li{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #f0ebe0;list-style:none}

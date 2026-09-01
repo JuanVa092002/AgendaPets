@@ -37,22 +37,26 @@
         </section>
         <section class="reserva-panel d-none" data-panel="2">
             <h1>Tu peludo</h1>
-            <p class="lead">Datos cortos para preparar la cita.</p>
+            <p class="lead">Solo los datos de tu mascota. Tu nombre y correo salen de tu cuenta.</p>
             <form class="reserva-form" novalidate>
                 <div class="row g-4">
                     <div class="col-md-6"><label for="mascota-nombre">Nombre</label><input id="mascota-nombre" placeholder="Luna"></div>
                     <div class="col-md-6"><label for="mascota-tipo">Tipo</label><select id="mascota-tipo"><option value="">Selecciona</option><option>Perro</option><option>Gato</option></select></div>
                     <div class="col-md-6"><label for="mascota-raza">Raza</label><input id="mascota-raza" placeholder="Labrador"></div>
                     <div class="col-md-6"><label for="mascota-tamano">Tamaño</label><select id="mascota-tamano"><option value="">Selecciona</option><option>Pequeño</option><option>Mediano</option><option>Grande</option></select></div>
-                    <div class="col-md-6"><label for="dueno-nombre">Tu nombre</label><input id="dueno-nombre" placeholder="María Camila"></div>
-                    <div class="col-md-6"><label for="dueno-telefono">WhatsApp</label><input id="dueno-telefono" type="tel" placeholder="3001234567"></div>
+                    <input type="hidden" id="dueno-nombre">
+                    <input type="hidden" id="dueno-correo">
                     <div class="col-12"><label for="mascota-notas">Notas</label><textarea id="mascota-notas" rows="2" placeholder="Alergias, miedo al secador…"></textarea></div>
                 </div>
             </form>
         </section>
         <section class="reserva-panel d-none" data-panel="3">
-            <h1>Elige día y hora</h1>
-            <p class="lead">A la izquierda eliges el día. A la derecha ves la semana completa.</p>
+            <h1 id="titulo-fecha">Elige día y hora</h1>
+            <p class="lead" id="lead-fecha">A la izquierda eliges el día. A la derecha ves la semana completa.</p>
+            <p class="reserva-banner" id="aviso-reprogramar" hidden>
+                <i class="bi bi-calendar-week" aria-hidden="true"></i>
+                <span></span>
+            </p>
             <div class="fecha-layout">
                 <div class="fecha-left">
                     <div class="fecha-cal" id="mini-calendario"></div>
@@ -79,8 +83,8 @@
             </div>
         </section>
         <section class="reserva-panel d-none" data-panel="4">
-            <h1>Revisa tu cita</h1>
-            <p class="lead">Todo se ve bien. Si cambias de opinión, toca <strong>Cambiar</strong> en cualquier bloque.</p>
+            <h1 id="titulo-confirma">Revisa tu cita</h1>
+            <p class="lead" id="lead-confirma">Todo se ve bien. Si cambias de opinión, toca <strong>Cambiar</strong> en cualquier bloque.</p>
             <div class="revision-wrap" id="resumen-cita"></div>
         </section>
     </main>

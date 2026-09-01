@@ -23,7 +23,7 @@
   }
 
   function guardarSesion(u) {
-    localStorage.setItem(KEY_SES, JSON.stringify({ telefono: u.telefono, nombre: u.nombre }));
+    localStorage.setItem(KEY_SES, JSON.stringify({ email: u.email, nombre: u.nombre }));
   }
 
   function cerrarSesion() {
@@ -61,16 +61,28 @@
     });
   }
 
-  function authError(msg) {
-    const el = $("auth-error");
+  function mostrarAlerta(titulo, texto, tipo) {
+    const el = $("auth-alerta");
     if (!el) return;
-    if (!msg) {
-      el.hidden = true;
-      el.textContent = "";
-      return;
-    }
+    const iconos = {
+      error: "bi-x-circle-fill",
+      warning: "bi-exclamation-triangle-fill",
+      success: "bi-check-circle-fill",
+      info: "bi-info-circle-fill",
+    };
     el.hidden = false;
-    el.textContent = msg;
+    el.className = `auth-alerta auth-alerta--${tipo || "info"}`;
+    el.querySelector("i").className = `bi ${iconos[tipo] || iconos.info}`;
+    $("auth-alerta-titulo").textContent = titulo || "";
+    $("auth-alerta-texto").textContent = texto || "";
+  }
+
+  function limpiarAlerta() {
+    const el = $("auth-alerta");
+    if (!el) return;
+    el.hidden = true;
+    $("auth-alerta-titulo").textContent = "";
+    $("auth-alerta-texto").textContent = "";
   }
 
   function pintarModal() {
@@ -78,15 +90,16 @@
     const confirmar = intent === "confirm";
     document.querySelectorAll(".auth-switch__btn").forEach((b) => b.classList.toggle("is-on", b.dataset.auth === modo));
     $("auth-confirm-wrap").hidden = !esRegistro;
+    $("auth-nombre-wrap").hidden = !esRegistro;
     $("auth-password").autocomplete = esRegistro ? "new-password" : "current-password";
     $("auth-title").textContent = esRegistro ? (confirmar ? "Guarda tu cita" : "Crea tu cuenta") : "Bienvenido de nuevo";
     $("auth-lead").textContent = esRegistro
       ? confirmar
-        ? "Crea tu cuenta con el WhatsApp de la reserva. Solo te toma un momento."
-        : "Regístrate con tu WhatsApp y una contraseña."
+        ? "Crea tu cuenta con tu correo. Solo te toma un momento."
+        : "Regístrate con tu correo y una contraseña."
       : confirmar
-        ? "Entra con tu WhatsApp y confirma la cita."
-        : "Entra con tu WhatsApp para seguir tu reserva.";
+        ? "Entra con tu correo y confirma la cita."
+        : "Entra con tu correo para seguir tu reserva.";
     $("auth-submit").textContent = esRegistro
       ? confirmar
         ? "Crear cuenta y confirmar"
@@ -94,7 +107,7 @@
       : confirmar
         ? "Entrar y confirmar"
         : "Entrar";
-    authError("");
+    limpiarAlerta();
   }
 
   function asegurarModal() {
@@ -103,26 +116,42 @@
     wrap.innerHTML = `<div class="auth-overlay" id="auth-modal" hidden>
       <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
         <button type="button" class="auth-modal__close" id="auth-cerrar" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+        <div class="auth-alerta" id="auth-alerta" hidden>
+          <i class="bi" aria-hidden="true"></i>
+          <div>
+            <strong id="auth-alerta-titulo"></strong>
+            <span id="auth-alerta-texto"></span>
+          </div>
+        </div>
         <img src="assets/logo.png" alt="" class="auth-modal__logo" width="48" height="48">
         <h2 id="auth-title">Guarda tu cita</h2>
-        <p class="auth-modal__lead" id="auth-lead">Usa tu WhatsApp y una contraseña.</p>
+        <p class="auth-modal__lead" id="auth-lead">Usa tu correo y una contraseña.</p>
         <div class="auth-switch" role="tablist" aria-label="Tipo de acceso">
           <button type="button" class="auth-switch__btn" data-auth="login" role="tab">Iniciar sesión</button>
           <button type="button" class="auth-switch__btn is-on" data-auth="register" role="tab">Crear cuenta</button>
         </div>
         <form class="auth-form" id="auth-form" novalidate>
-          <label for="auth-telefono">WhatsApp</label>
-          <div class="auth-phone"><span>+57</span><input id="auth-telefono" type="tel" inputmode="numeric" maxlength="10" placeholder="3001234567" autocomplete="tel"></div>
+          <div id="auth-nombre-wrap">
+            <label for="auth-nombre">Tu nombre</label>
+            <input id="auth-nombre" placeholder="María Camila" autocomplete="name">
+          </div>
+          <label for="auth-email">Correo</label>
+          <div class="auth-email">
+            <span><i class="bi bi-envelope"></i></span>
+            <input id="auth-email" type="email" inputmode="email" placeholder="tucorreo@email.com" autocomplete="email">
+          </div>
           <label for="auth-password">Contraseña</label>
           <div class="auth-pass">
             <input id="auth-password" type="password" placeholder="Mínimo 6 caracteres" autocomplete="current-password">
-            <button type="button" class="auth-pass__toggle" id="auth-ver" aria-label="Mostrar contraseña"><i class="bi bi-eye"></i></button>
+            <button type="button" class="auth-pass__toggle" data-toggle-pass="auth-password" aria-label="Mostrar contraseña"><i class="bi bi-eye"></i></button>
           </div>
           <div id="auth-confirm-wrap">
             <label for="auth-confirm">Confirmar contraseña</label>
-            <input id="auth-confirm" type="password" placeholder="Repite la contraseña" autocomplete="new-password">
+            <div class="auth-pass">
+              <input id="auth-confirm" type="password" placeholder="Repite la contraseña" autocomplete="new-password">
+              <button type="button" class="auth-pass__toggle" data-toggle-pass="auth-confirm" aria-label="Mostrar contraseña"><i class="bi bi-eye"></i></button>
+            </div>
           </div>
-          <p class="auth-error" id="auth-error" hidden></p>
           <button type="submit" class="auth-form__submit" id="auth-submit">Crear cuenta</button>
         </form>
       </div>
@@ -136,16 +165,22 @@
     intent = opts.intent || "session";
     onSuccess = opts.onSuccess || null;
     nombreReserva = opts.nombre || "";
-    const tel = (opts.telefono || "").trim();
-    const existe = tel && usuarios().some((u) => u.telefono === tel);
+    const correo = (opts.email || "").trim().toLowerCase();
+    const existe = correo && usuarios().some((u) => (u.email || "").toLowerCase() === correo);
     modo = existe ? "login" : "register";
-    $("auth-telefono").value = tel;
+    $("auth-email").value = correo;
     $("auth-password").value = "";
     $("auth-confirm").value = "";
+    $("auth-nombre").value = nombreReserva;
+    document.querySelectorAll("[data-toggle-pass]").forEach((btn) => {
+      const campo = $(btn.dataset.togglePass);
+      if (campo) campo.type = "password";
+      btn.innerHTML = '<i class="bi bi-eye"></i>';
+    });
     pintarModal();
     $("auth-modal").hidden = false;
     document.body.style.overflow = "hidden";
-    $("auth-password").focus();
+    ($("auth-email").value ? $("auth-password") : $("auth-email")).focus();
   }
 
   function cerrar() {
@@ -155,44 +190,74 @@
     onSuccess = null;
   }
 
+  function aplicarSesionEnFormulario(usuario) {
+    const mailInput = document.getElementById("dueno-correo");
+    const nomInput = document.getElementById("dueno-nombre");
+    if (mailInput) mailInput.value = usuario.email || "";
+    if (nomInput && usuario.nombre) nomInput.value = usuario.nombre;
+  }
+
+  function esCorreo(valor) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor);
+  }
+
   function enviar(e) {
     e.preventDefault();
-    const tel = $("auth-telefono").value.trim();
+    const email = $("auth-email").value.trim().toLowerCase();
     const pass = $("auth-password").value;
     const confirm = $("auth-confirm").value;
-    if (!/^\d{10}$/.test(tel)) return authError("El WhatsApp debe tener 10 dígitos.");
-    if (pass.length < 6) return authError("La contraseña debe tener al menos 6 caracteres.");
+    const nombre = ($("auth-nombre")?.value || "").trim();
+    if (modo === "register" && nombre.length < 3) {
+      return mostrarAlerta("Falta tu nombre", "Escribe al menos 3 caracteres.", "warning");
+    }
+    if (!esCorreo(email)) {
+      return mostrarAlerta("Correo inválido", "Escribe un correo válido, por ejemplo tucorreo@email.com.", "warning");
+    }
+    if (pass.length < 6) {
+      return mostrarAlerta("Contraseña corta", "Usa mínimo 6 caracteres.", "warning");
+    }
     const lista = usuarios();
-    const hallado = lista.find((u) => u.telefono === tel);
+    const hallado = lista.find((u) => (u.email || "").toLowerCase() === email);
 
     let usuario = hallado;
     if (modo === "register") {
-      if (pass !== confirm) return authError("Las contraseñas no coinciden.");
+      if (pass !== confirm) {
+        return mostrarAlerta("No coinciden", "La confirmación debe ser igual a la contraseña.", "error");
+      }
       if (hallado) {
         modo = "login";
         pintarModal();
-        return authError("Ese WhatsApp ya tiene cuenta. Inicia sesión.");
+        return mostrarAlerta("Ya tienes cuenta", "Ese correo ya está registrado. Entra con tu contraseña.", "info");
       }
-      usuario = { telefono: tel, password: pass, nombre: nombreReserva || "Cliente", creado: Date.now() };
+      usuario = { email, password: pass, nombre: nombre || nombreReserva || "Cliente", creado: Date.now() };
       guardarUsuarios(lista.concat(usuario));
     } else {
       if (!hallado) {
         modo = "register";
         pintarModal();
-        return authError("No hay cuenta con este WhatsApp. Créala aquí.");
+        return mostrarAlerta("Cuenta no encontrada", "No hay una cuenta con ese correo. Crea una para continuar.", "info");
       }
-      if (hallado.password !== pass) return authError("Contraseña incorrecta.");
+      if (hallado.password !== pass) {
+        return mostrarAlerta("Contraseña incorrecta", "Revísalas e inténtalo de nuevo.", "error");
+      }
     }
 
     guardarSesion(usuario);
-    const telInput = document.getElementById("dueno-telefono");
-    const nomInput = document.getElementById("dueno-nombre");
-    if (telInput && !telInput.value) telInput.value = usuario.telefono;
-    if (nomInput && !nomInput.value && usuario.nombre && usuario.nombre !== "Cliente") nomInput.value = usuario.nombre;
+    aplicarSesionEnFormulario(usuario);
     pintar();
     const ok = onSuccess;
-    cerrar();
-    if (ok) ok(usuario);
+    const esRegistro = modo === "register";
+    const confirmarCita = intent === "confirm";
+    const listo = () => { if (ok) ok(usuario); };
+    const titulo = esRegistro ? "Cuenta creada" : "Sesión iniciada";
+    const texto = esRegistro
+      ? "Tu cuenta quedó lista. Ya puedes reservar."
+      : `Hola, ${primerNombre(usuario.nombre)}.`;
+    mostrarAlerta(titulo, texto, "success");
+    setTimeout(() => {
+      cerrar();
+      listo();
+    }, confirmarCita ? 700 : 1400);
   }
 
   function enlazarModal() {
@@ -201,17 +266,22 @@
     $("auth-modal").onclick = (e) => {
       if (e.target.id === "auth-modal") cerrar();
     };
+    $("auth-modal").addEventListener("click", (e) => {
+      const toggle = e.target.closest("[data-toggle-pass]");
+      if (!toggle) return;
+      e.preventDefault();
+      const campo = $(toggle.dataset.togglePass);
+      if (!campo) return;
+      const ver = campo.type === "password";
+      campo.type = ver ? "text" : "password";
+      toggle.innerHTML = `<i class="bi bi-eye${ver ? "-slash" : ""}"></i>`;
+      toggle.setAttribute("aria-label", ver ? "Ocultar contraseña" : "Mostrar contraseña");
+    });
     document.querySelector(".auth-switch").onclick = (e) => {
       const b = e.target.closest("[data-auth]");
       if (!b) return;
       modo = b.dataset.auth;
       pintarModal();
-    };
-    $("auth-ver").onclick = () => {
-      const campo = $("auth-password");
-      const ver = campo.type === "password";
-      campo.type = ver ? "text" : "password";
-      $("auth-ver").innerHTML = `<i class="bi bi-eye${ver ? "-slash" : ""}"></i>`;
     };
   }
 
@@ -219,7 +289,7 @@
     if (e.target.closest("[data-auth-open]")) {
       abrir({
         intent: "session",
-        telefono: document.getElementById("dueno-telefono")?.value || "",
+        email: document.getElementById("dueno-correo")?.value || "",
         nombre: document.getElementById("dueno-nombre")?.value || "",
       });
       return;
