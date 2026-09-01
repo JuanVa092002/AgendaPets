@@ -1,5 +1,12 @@
 const STORAGE_KEY = "servicios";
 
+(function protegerAdmin() {
+    const s = JSON.parse(localStorage.getItem("sesion") || "null");
+    if (!s || s.rol !== "admin") {
+        window.location.replace("../index.html");
+    }
+})();
+
 const serviciosIniciales = [
     {
         id: 1,
@@ -303,3 +310,10 @@ function avisar(titulo, texto, icono) {
 }
 
 mostrarServicios();
+
+document.querySelector(".logout")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (window.AgendaAuth) AgendaAuth.cerrarSesion();
+    else localStorage.removeItem("sesion");
+    window.location.href = "../index.html";
+});

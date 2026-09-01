@@ -1,111 +1,106 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Logica de cambio de rol
   const enlaceAdmin = document.querySelector('a[href="#admin"]');
   const enlaceCliente = document.querySelector('a[href="#cliente"]');
   const seccionAdmin = document.getElementById("admin");
   const seccionCliente = document.getElementById("cliente");
+  const colorOk = "#7C9A4A";
 
-  // Función para cambiar de vista entre Cliente y Admin
   const cambiarRol = (rolAMostrar) => {
-    if (rolAMostrar === "admin") {
-      seccionAdmin.style.display = "block";
-      seccionCliente.style.display = "none";
-      enlaceAdmin.classList.add("active");
-      enlaceCliente.classList.remove("active");
-    } else {
-      seccionCliente.style.display = "block";
-      seccionAdmin.style.display = "none";
-      enlaceCliente.classList.add("active");
-      enlaceAdmin.classList.remove("active");
-    }
+    const esAdmin = rolAMostrar === "admin";
+    seccionAdmin.style.display = esAdmin ? "block" : "none";
+    seccionCliente.style.display = esAdmin ? "none" : "block";
+    enlaceAdmin?.classList.toggle("active", esAdmin);
+    enlaceCliente?.classList.toggle("active", !esAdmin);
   };
 
-  // Por defecto iniciamos mostrando la vista Cliente y ocultando Admin
   cambiarRol("cliente");
 
-  // Escuchar clics en los enlaces de la barra superior de roles
-  if (enlaceAdmin) {
-    enlaceAdmin.addEventListener("click", (e) => {
-      e.preventDefault();
-      cambiarRol("admin");
-    });
+  enlaceAdmin?.addEventListener("click", (e) => {
+    e.preventDefault();
+    cambiarRol("admin");
+  });
+
+  enlaceCliente?.addEventListener("click", (e) => {
+    e.preventDefault();
+    cambiarRol("cliente");
+  });
+
+  if (window.AgendaAuth) {
+    AgendaAuth.mount();
+    const s = AgendaAuth.sesion();
+    if (s && AgendaAuth.esAdmin(s)) {
+      window.location.replace(AgendaAuth.rutaPanelAdmin());
+      return;
+    }
   }
 
-  if (enlaceCliente) {
-    enlaceCliente.addEventListener("click", (e) => {
-      e.preventDefault();
-      cambiarRol("cliente");
-    });
-  }
-  
-  // Validacion y localStorage
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  const validarYGuardar = (idCorreo, idPassword, tipoRol) => {
-    const inputCorreo = document.getElementById(idCorreo);
-    const inputPassword = document.getElementById(idPassword);
+  const avisar = (icon, title, text) =>
+    Swal.fire({ icon, title, text, confirmButtonColor: colorOk });
 
-    const correo = inputCorreo ? inputCorreo.value.trim() : "";
-    const password = inputPassword ? inputPassword.value.trim() : "";
+  const entrar = (idCorreo, idPassword, rolPedido) => {
+    const correo = (document.getElementById(idCorreo)?.value || "").trim().toLowerCase();
+    const password = document.getElementById(idPassword)?.value || "";
 
-    // Validación de campos vacíos
     if (!correo || !password) {
-      Swal.fire({
-        icon: "warning",
-        title: "Campos incompletos",
-        text: "Por favor, ingresa tu correo y contraseña.",
-        confirmButtonColor: "#0d6efd"
-      });
-      return;
+      return avisar("warning", "Campos incompletos", "Ingresa tu correo y contraseña.");
     }
-
-    // Validación de formato de correo
     if (!emailRegex.test(correo)) {
+      return avisar("error", "Correo inválido", "Usa un correo con formato correcto.");
+    }
+    if (!window.AgendaAuth) {
+      return avisar("error", "No se pudo entrar", "Recarga la página e inténtalo de nuevo.");
+    }
+
+    const resultado = AgendaAuth.autenticar(correo, password);
+    if (resultado.error === "not_found") {
+      return avisar("info", "Cuenta no encontrada", "No hay una cuenta con ese correo. Crea una desde Iniciar sesión.");
+    }
+    if (resultado.error === "bad_pass") {
+      return avisar("error", "Contraseña incorrecta", "Revísalas e inténtalo de nuevo.");
+    }
+
+    const usuario = resultado.usuario;
+    const esAdmin = AgendaAuth.esAdmin(usuario);
+
+    if (rolPedido === "admin" && !esAdmin) {
+      return avisar("warning", "No es administrador", "Esa cuenta es de usuario. Entra en la pestaña Cliente.");
+    }
+
+    AgendaAuth.completarLogin(usuario);
+
+    if (esAdmin) {
       Swal.fire({
-        icon: "error",
-        title: "Correo inválido",
-        text: "Ingresa un correo con formato correcto (ej: usuario@dominio.com).",
-        confirmButtonColor: "#0d6efd"
+        icon: "success",
+        title: "Bienvenido, admin",
+        text: "Te llevamos al panel.",
+        showConfirmButton: false,
+        timer: 1200,
+      }).then(() => {
+        window.location.href = AgendaAuth.rutaPanelAdmin();
       });
       return;
     }
 
-    // Guardar en LocalStorage
-    const sesion = {
-      correo: correo,
-      rol: tipoRol,
-      activo: true,
-      fechaLogin: new Date().toLocaleString()
-    };
-
-    localStorage.setItem("usuarioSesion", JSON.stringify(sesion));
-    console.log("Sesión guardada:", JSON.parse(localStorage.getItem("usuarioSesion")));
-
-    // Alerta de éxito
     Swal.fire({
       icon: "success",
-      title: `¡Bienvenido ${tipoRol}!`,
+      title: `Hola, ${usuario.nombre || "de nuevo"}`,
       text: "Inicio de sesión exitoso.",
       showConfirmButton: false,
-      timer: 1500
+      timer: 1200,
+    }).then(() => {
+      window.location.href = "index.html";
     });
   };
 
-  // Botón enviar de Cliente
-  const btnCliente = document.getElementById("botonIniciar");
-  if (btnCliente) {
-    btnCliente.addEventListener("click", (e) => {
-      e.preventDefault();
-      validarYGuardar("clienteCorreo", "clientePassword", "Cliente");
-    });
-  }
+  document.getElementById("botonIniciar")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    entrar("clienteCorreo", "clientePassword", "cliente");
+  });
 
-  // Botón enviar de Admin
-  const btnAdmin = document.getElementById("botonIniciarAdmin");
-  if (btnAdmin) {
-    btnAdmin.addEventListener("click", (e) => {
-      e.preventDefault();
-      validarYGuardar("adminCorreo", "adminPassword", "Administrador");
-    });
-  }
+  document.getElementById("botonIniciarAdmin")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    entrar("adminCorreo", "adminPassword", "admin");
+  });
 });
