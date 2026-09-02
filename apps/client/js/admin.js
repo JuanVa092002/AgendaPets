@@ -12,15 +12,15 @@ const serviciosIniciales = [
         id: 1,
         nombre: "Baño básico",
         duracion: "1 hora",
-        precio: 15000,
-        descripcion: "Baño completo con shampoo especializado, secado y cepillado.",
+        precio: 60000,
+        descripcion: "Baño completo con shampoo especializado, secado y cepillado .",
         visible: true
     },
     {
         id: 2,
         nombre: "Corte de pelo",
         duracion: "1 hora y 30 minutos",
-        precio: 25000,
+        precio: 35000,
         descripcion: "Corte personalizado según raza, con cepillado y limpieza del pelaje.",
         visible: true
     },
@@ -28,7 +28,7 @@ const serviciosIniciales = [
         id: 3,
         nombre: "Corte de uñas",
         duracion: "30 minutos",
-        precio: 10000,
+        precio: 15000,
         descripcion: "Corte de uñas seguro para mantener higiene y comodidad.",
         visible: true
     },
@@ -36,7 +36,7 @@ const serviciosIniciales = [
         id: 4,
         nombre: "Limpieza dental",
         duracion: "45 minutos",
-        precio: 20000,
+        precio: 45000,
         descripcion: "Limpieza bucal para reducir placa y cuidar dientes y encías.",
         visible: true
     },
@@ -44,7 +44,7 @@ const serviciosIniciales = [
         id: 5,
         nombre: "Baño premium",
         duracion: "2 horas",
-        precio: 35000,
+        precio: 75000,
         descripcion: "Baño premium con tratamiento del pelaje, secado y cepillado.",
         visible: true
     }
