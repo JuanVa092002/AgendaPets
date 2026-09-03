@@ -72,12 +72,10 @@ function mostrarNecesitaLogin() {
             <p>
                 Debes iniciar sesión para consultar tus citas.
             </p>
-            <button
-                type="button"
-                class="btnIniciarSesion"
-                id="btnIniciarSesion">
-                Iniciar sesión
-            </button>
+            <button type="button" class="sesion-chip sesion-chip--out" data-auth-open>
+        <i class="bi bi-person-circle" aria-hidden="true"></i>
+        <span>Iniciar sesión</span>
+      </button>
         </div>
     `;
 

@@ -91,37 +91,37 @@
  }
 
  
- .btn-inicioSesion {
-    background-color: var(--ap-blanco);
-     color: var(--ap-dark-green);
-     border: 2px solid var(--ap-dark-green);
-     border-radius: 50px;
-     padding: 9px 24px;
-     font-size: 18px;
-     font-weight: 500;
-     text-decoration: none;
-     transition: all 0.3s ease;
-     white-space: nowrap;
- }
-
- .btn-inicioSesion:hover {
-     background-color: var(--ap-verdeOscuroNuevo);
-     color: var(--ap-blanco);
- }
 
  .btn-reserva {
-     background-color: var(--ap-acento);
-     color: var(--ap-blanco);
-     border: 1.5px solid var(--ap-acento);
-     text-decoration: none;
-     transition: all 0.3s ease;
-     white-space: nowrap;
+     /* Dimensiones y alineación */
+  padding: 12px 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'Comfortaa', sans-serif;
+  font-size: 12px;
+  font-weight: 500px;
+  color: var(--ap-blanco); /* Texto oscuro para máxima legibilidad sobre el coral */
+  background-color: var(--ap-coral);
+  
+  /* Bordes y estructura */
+  border: 2px solid var(--ap-verdeOscuroNuevo); /* Borde sutil que le da estructura de botón de interfaz */
+  border-radius: 30px; /* Bordes redondeados y amigables estilo 'pets' */
+  cursor: pointer;
+  text-decoration: none;
+  /* Efectos y transiciones */
+  box-shadow: 0 4px 0px var(--ap-verdeOscuroNuevo); /* Sombra sólida estilo sticker/cómic que combina con las letras */
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform: translateY(0);
  }
 
  .btn-reserva:hover {
-     background-color: var(--ap-verdeOscuro);
-     color: var(--ap-blanco);
-     border-color: var(--ap-beigeNuevo);
+    background-color: var(--ap-acento); /* Cambia a tu color acento para indicar acción */
+  color: var(--ap-crema); /* El texto cambia a tu crema claro para contrastar con el acento */
+  border-color: var(--ap-verdeOscuroNuevo);
+  transform: translateY(-2px); /* Se eleva sutilmente */
+  box-shadow: 0 6px 0px var(--ap-verdeOscuro); 
  }
 
  /* =========================
@@ -166,13 +166,20 @@
      }
 
      .btn-inicioSesion,
-     .btn-reserva,
      .sesion-chip--out,
      .sesion-chip--in {
          width: 100%;
          justify-content: center;
          text-align: center;
      }
+  
+     .btn-reserva  {
+         width: 16%;
+         justify-content: center;
+         text-align: center;
+     }
+
+
  }
 
 

@@ -60,10 +60,10 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-family: 'Original Surfer', sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--ap-verdeOscuroNuevo); /* Texto oscuro para máxima legibilidad sobre el coral */
+  font-family: 'Comfortaa', sans-serif;
+  font-size: 12px;
+  font-weight: 500px;
+  color: var(--ap-blanco); /* Texto oscuro para máxima legibilidad sobre el coral */
   background-color: var(--ap-coral);
   
   /* Bordes y estructura */
@@ -83,7 +83,7 @@
   color: var(--ap-crema); /* El texto cambia a tu crema claro para contrastar con el acento */
   border-color: var(--ap-verdeOscuroNuevo);
   transform: translateY(-2px); /* Se eleva sutilmente */
-  box-shadow: 0 6px 0px var(--ap-verdeOscuroNuevo); /* La sombra se estira al elevarse */
+  box-shadow: 0 6px 0px var(--ap-verdeOscuro); /* La sombra se estira al elevarse */
 }
 
 /* Estado: Al hacer clic (Active) */
