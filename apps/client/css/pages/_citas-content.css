@@ -1,25 +1,4 @@
 
-:root {
-    --ap-crema: #FAF8F2;
-    --ap-cards: #FFFDF9;
-    --ap-verdeOscuro: #4D5C2D;
-    --ap-acento: #C97A4C;
-    --texto: #6B6B6B;
-
-    --ap-verdeOscuroNuevo: #556B2F;
-    --ap-verdeMedioNuevo: #7EAE45;
-    --ap-verdeClaroNuevo: #BFD99A;
-    --ap-beigeNuevo: #F1DFC6;
-    --ap-doradosuave: #D2A441;
-    --ap-coral: #D98B7B;
-
-    --ap-cream: #F6F3EA;
-    --ap-dark-green: #4D5C2D;
-    --ap-medium-green: #7C9A4A;
-    --ap-light-green: #A8C48A;
-    --ap-tan: #E7D9B5;
-}
-
 .mis-citas-body {
     background-color: var(--ap-cream);
     font-family: "Montserrat", sans-serif;

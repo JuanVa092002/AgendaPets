@@ -13,11 +13,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"  rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous"> 
     <link rel="stylesheet"   href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <link rel="stylesheet" href="css/home.css">
-    <link rel="stylesheet" href="./css/navbar.css">
-    <link rel="stylesheet" href="./css/promo.css">
-    <link rel="stylesheet" href="./css/auth.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/pages/_home-content.css">
+    <link rel="stylesheet" href="css/components/navbar.css">
+    <link rel="stylesheet" href="css/components/promo.css">
+    <link rel="stylesheet" href="css/components/auth.css">
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components/footer.css">
 
 
 </head>
@@ -256,9 +258,15 @@
             </div>
         </section>
 
-        <!-- Testimonial: prueba social, PENDIENTE VOLVERLO CARRUSEL O INCORPORAR ANIMACIÓN -->
-
-
+        <!-- Testimonios -->
+        <section class="home-testimonials home-section" id="testimonios" aria-labelledby="testimonios-heading">
+            <div class="home-container">
+                <header class="home-section-header home-section-header--center home-reveal">
+                    <p class="home-section-kicker">Voces de la comunidad</p>
+                    <h2 class="home-display" id="testimonios-heading">Personas que confían en nosotros</h2>
+                    <p>Historias reales de quienes ya reservan el cuidado de su peludo con AgendaPets.</p>
+                </header>
+            </div>
         <div id="carouselExampleDark" class="carousel carousel-dark slide">
             <div class="carousel-indicators">
                 <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
@@ -332,6 +340,7 @@
                     <p class="home-proof__quote">
                         "La atención fue excelente y trataron a mi gatita con muchísimo cuidado. Me gustó poder
                         encontrar todo en un solo lugar."
+                    </p>
                     <footer class="home-proof__author">
                         <div class="home-proof__avatar" aria-hidden="true">AM</div>
                         <div>
@@ -353,9 +362,7 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-
-        <!-- Testimonial: prueba social, PENDIENTE VOLVERLO CARRUSEL O INCORPORAR ANIMACIÓN -->
-
+        </section>
 
         <!-- CTA final: peak-end rule -->
         <section class="home-cta" aria-labelledby="cta-heading">

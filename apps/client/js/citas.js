@@ -13,7 +13,12 @@ function obtenerCitas() {
 }
 
 function obtenerSesion() {
-    return window.AgendaAuth?.sesion() || null;
+    if (window.AgendaAuth?.sesion) return AgendaAuth.sesion();
+    try {
+        return JSON.parse(localStorage.getItem("sesion") || "null");
+    } catch {
+        return null;
+    }
 }
 
 function obtenerMisCitas() {
@@ -59,6 +64,7 @@ function pintarEncabezado(usuario) {
 }
 
 function mostrarNecesitaLogin() {
+    if (elementos.container) elementos.container.innerHTML = "";
     elementos.mensaje.innerHTML = `
         <div class="sin-citas">
             <i class="bi bi-person-lock"></i>
@@ -352,5 +358,13 @@ async function reprogramarCita(id) {
     window.location.href = `reservar.html?reprogramar=${id}`;
 }
 
+function arrancarMisCitas() {
+    iniciarMisCitas();
+    document.addEventListener("agenda:sesion", iniciarMisCitas);
+}
 
-iniciarMisCitas();
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", arrancarMisCitas);
+} else {
+    arrancarMisCitas();
+}

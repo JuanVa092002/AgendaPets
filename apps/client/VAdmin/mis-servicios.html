@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Administrador - AgendaPets</title>
+    <title>Panel Administrador | AgendaPets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Original+Surfer&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"  rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous"> 
-    <link rel="stylesheet"   href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-
-    <link rel="stylesheet" href="../css/styles-admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../css/pages/_admin-content.css">
     <script>
         (function () {
             var s = JSON.parse(localStorage.getItem("sesion") || "null");
@@ -20,276 +20,148 @@
             }
         })();
     </script>
-
 </head>
 
-<body>
+<body class="admin-page">
 
-    <div class="container-fluid min-vh-100 px-0">
-        <header class="header-admin d-flex justify-content-between align-items-center px-4">
-            <div class="d-flex align-items-center gap-3">
-                <img src="../assets/logo.png" alt="Logo Agenda Pets" class="logo-agenda ">
-                <span class="titulo-header">
-                    Panel Administrador - Pets
-                </span>
-            </div>
-            <nav class="nav-admin d-flex justify-content-center align-items-center gap-3">
-                <a href="#" class="nav-link activo">
-                    Mis servicios
-                </a>
-                <span>|</span>
-                <a href="#" class="nav-link">
-                    Mi info
-                </a>
-                <span>|</span>
-                <a href="#" class="nav-link">
-                    Dashboard
-                </a>
-            </nav>
-            <a href="../index.html" class="logout d-flex align-items-center gap-2">
-                <i class="bi bi-box-arrow-right fs-4"></i>
-                <span>Salir</span>
+    <header class="header-admin">
+        <a class="admin-brand" href="../index.html">
+            <img src="../assets/logo.png" alt="AgendaPets" class="logo-agenda" width="40" height="40">
+            <span>
+                <strong>AgendaPets</strong>
+                <small>Panel del local</small>
+            </span>
+        </a>
+        <nav class="nav-admin" aria-label="Secciones del panel">
+            <a href="mis-servicios.html" class="nav-link activo">
+                <i class="bi bi-scissors"></i>
+                Servicios
             </a>
-        </header>
+            <a href="#" class="nav-link" aria-disabled="true">
+                <i class="bi bi-person-badge"></i>
+                Mi info
+            </a>
+            <a href="#" class="nav-link" aria-disabled="true">
+                <i class="bi bi-bar-chart"></i>
+                Dashboard
+            </a>
+        </nav>
+        <div class="admin-user">
+            <span class="admin-user__chip" id="admin-saludo">Administrador</span>
+            <a href="../index.html" class="logout">
+                <i class="bi bi-box-arrow-right"></i>
+                Salir
+            </a>
+        </div>
+    </header>
 
-
-
-        <main class="container py-4">
-
-            <!-- <nav class="nav-admin d-flex justify-content-center align-items-center gap-3 mb-4">
-                <a href="#" class="nav-link activo">
-                    Mis servicios
-                </a>
-                <span>|</span>
-                <a href="#" class="nav-link">
-                    Citas
-                </a>
-                <span>|</span>
-                <a href="#" class="nav-link">
-                    Mi info
-                </a>
-                <span>|</span>
-                <a href="#" class="nav-link">
-                    Dashboard
-                </a>
-            </nav>-->
-
-            <div class="row justify-content-center g-4">
-
-                <div class="col-12 col-lg-5">
-                    <section class="admin-card h-100">
-
-                        <div class="card-title-admin">
-                            <i class="bi bi-plus-circle" id="icono-formulario"></i>
-                            <span id="texto-formulario">Agregar servicio</span>
-                        </div>
-
-                        <div class="card-body-admin">
-                            <form id="form-servicio">
-                                <input type="hidden" id="servicio-id">
-                                <div class="mb-2">
-                                    <label for="nombre" class="form-label">
-                                        Nombre:
-                                    </label>
-                                    <input type="text" id="nombre" class="form-control"
-                                        placeholder="Ej: Lavado + shampoo premium...">
-                                </div>
-
-
-                                <div class="mb-2">
-                                    <label for="duracion" class="form-label">
-                                        Duración:
-                                    </label>
-                                    <input type="text" id="duracion" class="form-control" placeholder="Ej: 1 hora">
-                                </div>
-
-                                <div class="mb-2">
-                                    <label for="precio" class="form-label">
-                                        Precio:
-                                    </label>
-                                    <input type="number" id="precio" class="form-control" placeholder="Ej: 1000">
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="descripcion" class="form-label">
-                                        Descripción:
-                                    </label>
-
-                                    <textarea id="descripcion" class="form-control" rows="2"
-                                        placeholder="Se lava con shampoo especial de marca premium..."></textarea>
-                                </div>
-
-
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-crear" id="btn-submit">
-                                        Crear
-                                    </button>
-                                    <button type="button" class="btn btn-crear d-none" id="btn-cancelar">
-                                        Cancelar
-                                    </button>
-                                </div>
-
-                            </form>
-                        </div>
-                    </section>
-                </div>
-
-                <div class="col-12 col-lg-5">
-
-                    <section class="admin-card h-100">
-
-                        <div class="card-title-admin">
-                            <i class="bi bi-exclamation-circle-fill"></i>
-                            <span>Mis servicios disponibles</span>
-                        </div>
-
-                        <div class="card-body-admin servicios" id="contenedorServicios">
-
-                            <!-- <article class="servicio">
-
-                                <div class="icono-servicio">
-                                    <i class="bi bi-paw-fill"></i>
-                                </div>
-
-                                <div class="info-servicio">
-
-                                    <h5>Nombre 1</h5>
-
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit, sed do eiusmod tempor
-                                        incididunt ut labore et dolore magna aliqua.
-                                    </p>
-
-                                    <div class="datos-servicio">
-                                        <span>$ 10000</span>
-                                        <span>
-                                            <i class="bi bi-clock"></i>
-                                            1 Hora
-                                        </span>
-                                    </div>
-
-                                </div>
-
-                                <div class="acciones-servicio">
-
-                                    <button class="btn btn-sm btn-editar">
-                                        <i class="bi bi-pencil-square"></i>
-                                        Editar
-                                    </button>
-
-                                    <button class="btn btn-sm btn-ocultar">
-                                        <i class="bi bi-eye-slash"></i>
-                                        Ocultar
-                                    </button>
-
-                                    <button class="btn btn-sm btn-eliminar">
-                                        <i class="bi bi-trash3"></i>
-                                        Eliminar
-                                    </button>
-
-                                </div>
-
-                            </article>
-
-                            <article class="servicio">
-
-                                <div class="icono-servicio">
-                                    <i class="bi bi-paw-fill"></i>
-                                </div>
-
-                                <div class="info-servicio">
-
-                                    <h5>Nombre 2</h5>
-
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit, sed do eiusmod tempor
-                                        incididunt ut labore et dolore magna aliqua.
-                                    </p>
-
-                                    <div class="datos-servicio">
-                                        <span>$ 20000</span>
-                                        <span>
-                                            <i class="bi bi-clock"></i>
-                                            1 Hora
-                                        </span>
-                                    </div>
-
-                                </div>
-
-                                <div class="acciones-servicio">
-
-                                    <button class="btn btn-sm btn-editar">
-                                        <i class="bi bi-pencil-square"></i>
-                                        Editar
-                                    </button>
-
-                                    <button class="btn btn-sm btn-ocultar">
-                                        <i class="bi bi-eye-slash"></i>
-                                        Ocultar
-                                    </button>
-
-                                    <button class="btn btn-sm btn-eliminar">
-                                        <i class="bi bi-trash3"></i>
-                                        Eliminar
-                                    </button>
-
-                                </div>
-
-                            </article>
-
-                            <article class="servicio">
-
-                                <div class="icono-servicio">
-                                    <i class="bi bi-paw-fill"></i>
-                                </div>
-
-                                <div class="info-servicio">
-
-                                    <h5>Nombre 3</h5>
-
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit, sed do eiusmod tempor
-                                        incididunt ut labore et dolore magna aliqua.
-                                    </p>
-
-                                    <div class="datos-servicio">
-                                        <span>$ 30000</span>
-                                        <span>
-                                            <i class="bi bi-clock"></i>
-                                            1 Hora
-                                        </span>
-                                    </div>
-
-                                </div>
-
-                                <div class="acciones-servicio">
-
-                                    <button class="btn btn-sm btn-editar">
-                                        <i class="bi bi-pencil-square"></i>
-                                        Editar
-                                    </button>
-
-                                    <button class="btn btn-sm btn-ocultar">
-                                        <i class="bi bi-eye-slash"></i>
-                                        Ocultar
-                                    </button>
-
-                                    <button class="btn btn-sm btn-eliminar">
-                                        <i class="bi bi-trash3"></i>
-                                        Eliminar
-                                    </button>
-
-                                </div>
-                            </article> -->
-                        </div>
-                    </section>
-                </div>
+    <main class="admin-shell">
+        <section class="admin-hero">
+            <p class="admin-kicker">Gestión del catálogo</p>
+            <h1>Servicios que ve el cliente</h1>
+            <p class="admin-lead">Crea, edita u oculta. Lo visible aquí es lo que aparece al reservar.</p>
+            <div class="admin-stats" aria-label="Resumen del catálogo">
+                <article class="admin-stat">
+                    <i class="bi bi-collection"></i>
+                    <div>
+                        <strong id="stat-total">0</strong>
+                        <span>En catálogo</span>
+                    </div>
+                </article>
+                <article class="admin-stat">
+                    <i class="bi bi-eye"></i>
+                    <div>
+                        <strong id="stat-visible">0</strong>
+                        <span>Visibles</span>
+                    </div>
+                </article>
+                <article class="admin-stat">
+                    <i class="bi bi-eye-slash"></i>
+                    <div>
+                        <strong id="stat-ocultos">0</strong>
+                        <span>Ocultos</span>
+                    </div>
+                </article>
             </div>
-        </main>
-    </div>
+        </section>
+
+        <div class="admin-workspace">
+            <section class="admin-card admin-card--form" aria-labelledby="texto-formulario">
+                <div class="card-title-admin">
+                    <span class="card-title-admin__icon"><i class="bi bi-plus-lg" id="icono-formulario"></i></span>
+                    <div>
+                        <h2 id="texto-formulario">Nuevo servicio</h2>
+                        <p id="texto-formulario-ayuda">Se publica al instante en la reserva.</p>
+                    </div>
+                </div>
+                <div class="card-body-admin">
+                    <form id="form-servicio">
+                        <input type="hidden" id="servicio-id">
+                        <div class="admin-field">
+                            <label for="nombre" class="form-label">
+                                <i class="bi bi-tag"></i>
+                                Nombre
+                            </label>
+                            <input type="text" id="nombre" class="form-control"
+                                placeholder="Ej. Baño + corte premium" autocomplete="off">
+                        </div>
+                        <div class="admin-field-row">
+                            <div class="admin-field">
+                                <label for="duracion" class="form-label">
+                                    <i class="bi bi-clock"></i>
+                                    Duración
+                                </label>
+                                <input type="text" id="duracion" class="form-control" placeholder="1 hora 30 min">
+                            </div>
+                            <div class="admin-field">
+                                <label for="precio" class="form-label">
+                                    <i class="bi bi-currency-dollar"></i>
+                                    Precio
+                                </label>
+                                <input type="number" id="precio" class="form-control" placeholder="25000" min="0" step="1000">
+                            </div>
+                        </div>
+                        <div class="admin-field">
+                            <label for="descripcion" class="form-label">
+                                <i class="bi bi-chat-left-text"></i>
+                                Descripción
+                            </label>
+                            <textarea id="descripcion" class="form-control" rows="3"
+                                placeholder="Qué incluye, para qué tipo de peludo…"></textarea>
+                        </div>
+                        <div class="admin-form-actions">
+                            <button type="submit" class="btn btn-crear" id="btn-submit">
+                                <i class="bi bi-check2"></i>
+                                Crear servicio
+                            </button>
+                            <button type="button" class="btn btn-ghost d-none" id="btn-cancelar">
+                                <i class="bi bi-x-lg"></i>
+                                Cancelar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <section class="admin-card admin-card--list" aria-labelledby="titulo-catalogo">
+                <div class="card-title-admin card-title-admin--split">
+                    <div class="card-title-admin__copy">
+                        <span class="card-title-admin__icon"><i class="bi bi-grid"></i></span>
+                        <div>
+                            <h2 id="titulo-catalogo">Catálogo</h2>
+                            <p id="texto-catalogo">Todo lo que ofreces hoy</p>
+                        </div>
+                    </div>
+                    <label class="admin-search">
+                        <i class="bi bi-search"></i>
+                        <input id="buscar-servicio" type="search" placeholder="Buscar servicio" autocomplete="off">
+                    </label>
+                </div>
+                <div class="card-body-admin servicios" id="contenedorServicios"></div>
+            </section>
+        </div>
+    </main>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js/auth.js"></script>
     <script src="../js/admin.js"></script>
