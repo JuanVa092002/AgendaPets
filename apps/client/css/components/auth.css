@@ -1,14 +1,3 @@
-:root{
-  --ink:#2c3319;
-  --muted:#667056;
-  --green:#4d5c2d;
-  --sage:#7c9a4a;
-  --leaf:#a8c48a;
-  --tan:#e7d9b5;
-  --cream:#f6f3ea;
-  --card:#fffdf8;
-}
-
 .sesion-slot{display:flex;align-items:center}
 
 .sesion-chip{

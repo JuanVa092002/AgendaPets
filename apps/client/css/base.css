@@ -1,0 +1,6 @@
+body {
+  background-color: var(--ap-cream);
+  color: var(--ap-dark-green);
+  font-family: "Montserrat", sans-serif;
+  padding-top: 80px;
+}

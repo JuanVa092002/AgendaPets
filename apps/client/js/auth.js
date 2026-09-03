@@ -32,6 +32,11 @@
       rol: esAdmin(u) ? "admin" : "cliente",
     }));
     localStorage.removeItem("usuarioSesion");
+    avisarSesion();
+  }
+
+  function avisarSesion() {
+    document.dispatchEvent(new CustomEvent("agenda:sesion", { detail: sesion() }));
   }
 
   function esAdmin(u) {
@@ -64,6 +69,7 @@
   function cerrarSesion() {
     localStorage.removeItem(KEY_SES);
     pintar();
+    avisarSesion();
   }
 
   function primerNombre(nombre) {

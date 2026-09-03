@@ -180,8 +180,10 @@ function iniciarEdicion(id) {
     document.getElementById("descripcion").value = servicio.descripcion;
 
     textoFormulario.textContent = "Editar servicio";
+    const ayuda = document.getElementById("texto-formulario-ayuda");
+    if (ayuda) ayuda.textContent = "Los cambios se ven al instante en la reserva.";
     iconoFormulario.className = "bi bi-pencil-square";
-    btnSubmit.textContent = "Guardar";
+    btnSubmit.innerHTML = '<i class="bi bi-check2"></i> Guardar cambios';
     btnCancelar.classList.remove("d-none");
 
     formulario.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -191,9 +193,11 @@ function iniciarEdicion(id) {
 function salirModoEdicion() {
     formulario.reset();
     inputId.value = "";
-    textoFormulario.textContent = "Agregar servicio";
-    iconoFormulario.className = "bi bi-plus-circle";
-    btnSubmit.textContent = "Crear";
+    textoFormulario.textContent = "Nuevo servicio";
+    const ayuda = document.getElementById("texto-formulario-ayuda");
+    if (ayuda) ayuda.textContent = "Se publica al instante en la reserva.";
+    iconoFormulario.className = "bi bi-plus-lg";
+    btnSubmit.innerHTML = '<i class="bi bi-check2"></i> Crear servicio';
     btnCancelar.classList.add("d-none");
 }
 
@@ -238,40 +242,88 @@ function eliminarServicio(id) {
     avisar("Servicio eliminado", `"${servicio.nombre}" ya no está en la lista.`, "success");
 }
 
+function iconoServicio(nombre) {
+    const n = String(nombre || "").toLowerCase();
+    if (n.includes("uña")) return "bi-heart";
+    if (n.includes("corte")) return "bi-scissors";
+    if (n.includes("spa") || n.includes("premium")) return "bi-stars";
+    if (n.includes("dental")) return "bi-award";
+    if (n.includes("baño") || n.includes("bano")) return "bi-droplet";
+    return "bi-paw-fill";
+}
+
+function pintarResumen() {
+    const total = servicios.length;
+    const visibles = servicios.filter((s) => s.visible !== false).length;
+    const set = (id, valor) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = String(valor);
+    };
+    set("stat-total", total);
+    set("stat-visible", visibles);
+    set("stat-ocultos", total - visibles);
+    const copy = document.getElementById("texto-catalogo");
+    if (copy) {
+        copy.textContent = total
+            ? `${visibles} visibles · ${total - visibles} ocultos`
+            : "Aún no hay servicios";
+    }
+}
+
 function mostrarServicios() {
     contenedorServicios.innerHTML = "";
+    pintarResumen();
+
+    const q = (document.getElementById("buscar-servicio")?.value || "").trim().toLowerCase();
+    const lista = servicios.filter((servicio) => {
+        if (!q) return true;
+        return `${servicio.nombre} ${servicio.descripcion}`.toLowerCase().includes(q);
+    });
 
     if (servicios.length === 0) {
         contenedorServicios.innerHTML = `
-            <p class="servicios-vacio">
-                Aún no hay servicios. Crea el primero con el formulario.
-            </p>
+            <div class="servicios-vacio">
+                <i class="bi bi-plus-circle"></i>
+                <strong>Crea el primer servicio</strong>
+                <p>El catálogo vacío no muestra nada al cliente en Reservar.</p>
+            </div>
         `;
         return;
     }
 
-    servicios.forEach((servicio) => {
+    if (lista.length === 0) {
+        contenedorServicios.innerHTML = `
+            <div class="servicios-vacio">
+                <i class="bi bi-search"></i>
+                <strong>Sin coincidencias</strong>
+                <p>Prueba con otro nombre o descripción.</p>
+            </div>
+        `;
+        return;
+    }
+
+    lista.forEach((servicio) => {
         const oculto = !servicio.visible;
         const precio = Number(servicio.precio).toLocaleString("es-CO");
 
         contenedorServicios.insertAdjacentHTML("beforeend", `
             <article class="servicio ${oculto ? "servicio--oculto" : ""}">
-                <div class="icono-servicio">
-                    <i class="bi ${oculto ? "bi-eye-slash" : "bi-paw-fill"}"></i>
+                <div class="icono-servicio" aria-hidden="true">
+                    <i class="bi ${iconoServicio(servicio.nombre)}"></i>
                 </div>
-
                 <div class="info-servicio">
-                    <h5>${escaparHtml(servicio.nombre)}${oculto ? " <span class=\"etiqueta-oculto\">Oculto</span>" : ""}</h5>
+                    <h3>
+                        ${escaparHtml(servicio.nombre)}
+                        <span class="etiqueta-estado ${oculto ? "etiqueta-estado--oculto" : ""}">
+                            ${oculto ? "Oculto" : "Visible"}
+                        </span>
+                    </h3>
                     <p>${escaparHtml(servicio.descripcion)}</p>
                     <div class="datos-servicio">
                         <span>$ ${precio}</span>
-                        <span>
-                            <i class="bi bi-clock"></i>
-                            ${escaparHtml(servicio.duracion)}
-                        </span>
+                        <span><i class="bi bi-clock"></i>${escaparHtml(servicio.duracion)}</span>
                     </div>
                 </div>
-
                 <div class="acciones-servicio">
                     <button type="button" class="btn btn-sm btn-editar" data-accion="editar" data-id="${servicio.id}">
                         <i class="bi bi-pencil-square"></i>
@@ -283,7 +335,7 @@ function mostrarServicios() {
                     </button>
                     <button type="button" class="btn btn-sm btn-eliminar" data-accion="eliminar" data-id="${servicio.id}">
                         <i class="bi bi-trash3"></i>
-                        Eliminar
+                        Quitar
                     </button>
                 </div>
             </article>
@@ -310,6 +362,14 @@ function avisar(titulo, texto, icono) {
 }
 
 mostrarServicios();
+
+document.getElementById("buscar-servicio")?.addEventListener("input", mostrarServicios);
+
+const saludo = document.getElementById("admin-saludo");
+const sesion = JSON.parse(localStorage.getItem("sesion") || "null");
+if (saludo && sesion?.nombre) {
+    saludo.textContent = sesion.nombre.split(" ")[0];
+}
 
 document.querySelector(".logout")?.addEventListener("click", (e) => {
     e.preventDefault();

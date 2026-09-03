@@ -24,51 +24,56 @@ const promo = `<section class="promo">
 document.getElementById("promo").innerHTML = promo
 
 
-const finPromo=new Date("2026-09-03T23:59:59").getTime();
+const finPromo = new Date("2026-09-30T23:59:59").getTime();
 
-const dias=document.getElementById("dias");
-const horas=document.getElementById("horas");
-const minutos=document.getElementById("minutos");
-const segundos=document.getElementById("segundos");
+const dias = document.getElementById("dias");
+const horas = document.getElementById("horas");
+const minutos = document.getElementById("minutos");
+const segundos = document.getElementById("segundos");
 
-function actualizarContador(){
+const anterior = { d: null, h: null, m: null, s: null };
+let ticker = null;
 
-const ahora=new Date().getTime();
-
-const diferencia=finPromo-ahora;
-
-if(diferencia<=0){
-
-dias.textContent="00";
-horas.textContent="00";
-minutos.textContent="00";
-segundos.textContent="00";
-
-return;
-
+function pad(n) {
+    return String(n).padStart(2, "0");
 }
 
-const d=Math.floor(diferencia/(1000*60*60*24));
+function voltear(el, valor) {
+    const texto = pad(valor);
+    if (el.textContent === texto) return;
+    el.textContent = texto;
+    el.classList.remove("flip");
+    void el.offsetWidth;
+    el.classList.add("flip");
+}
 
-const h=Math.floor((diferencia%(1000*60*60*24))/(1000*60*60));
+function actualizarContador() {
+    const diferencia = finPromo - Date.now();
 
-const m=Math.floor((diferencia%(1000*60*60))/(1000*60));
+    if (diferencia <= 0) {
+        dias.textContent = "00";
+        horas.textContent = "00";
+        minutos.textContent = "00";
+        segundos.textContent = "00";
+        if (ticker) clearInterval(ticker);
+        return;
+    }
 
-const s=Math.floor((diferencia%(1000*60))/1000);
+    const d = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((diferencia % (1000 * 60)) / 1000);
 
-dias.textContent=String(d).padStart(2,"0");
-horas.textContent=String(h).padStart(2,"0");
-minutos.textContent=String(m).padStart(2,"0");
-segundos.textContent=String(s).padStart(2,"0");
+    if (anterior.s !== s) voltear(segundos, s);
+    if (anterior.m !== m) voltear(minutos, m);
+    if (anterior.h !== h) voltear(horas, h);
+    if (anterior.d !== d) voltear(dias, d);
 
-//ANIMACION FLIP CONTEO DE MINUTOS Y SEGUNDOS
-[minutos,segundos].forEach(el=>{
-el.classList.remove("flip");
-void el.offsetWidth;
-el.classList.add("flip");
-});
+    anterior.d = d;
+    anterior.h = h;
+    anterior.m = m;
+    anterior.s = s;
 }
 
 actualizarContador();
-
-setInterval(actualizarContador,1000);
+ticker = setInterval(actualizarContador, 1000);

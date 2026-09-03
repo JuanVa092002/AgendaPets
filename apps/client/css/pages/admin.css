@@ -1,0 +1,2 @@
+/* Panel admin — entrada única (sin global.css ni padding de navbar público) */
+@import url("_admin-content.css");
