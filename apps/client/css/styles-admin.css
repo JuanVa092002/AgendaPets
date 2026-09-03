@@ -1,2 +1,2 @@
-/* Shim — usar css/pages/admin.css */
-@import url("pages/_admin-content.css");
+/* Shim — usar css/pages/admin.page.css */
+@import url("pages/admin.page.css");
