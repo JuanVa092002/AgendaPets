@@ -1,6 +1,17 @@
+html {
+  overflow-x: clip;
+}
+
 body {
   background-color: var(--ap-cream);
   color: var(--ap-dark-green);
   font-family: "Montserrat", sans-serif;
   padding-top: 80px;
+  overflow-x: clip;
+}
+
+@media (max-width: 767.98px) {
+  body:has(.whatsapp-3d) {
+    padding-bottom: 76px;
+  }
 }

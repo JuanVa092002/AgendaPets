@@ -214,7 +214,36 @@ function obtenerDuracionServicios(servicios = []) {
     if (!Array.isArray(servicios) || servicios.length === 0) {
         return "No especificada";
     }
-    return servicios .map(servicio => servicio.duracion).filter(Boolean).join(" + ");
+    const total = servicios.reduce(
+        (minutos, servicio) => minutos + convertirDuracionAMinutos(servicio.duracion),
+        0
+    );
+    if (total) return formatearDuracionTotal(total);
+    const textos = servicios.map(servicio => servicio.duracion).filter(Boolean);
+    return textos.length ? textos.join(" · ") : "No especificada";
+}
+
+function convertirDuracionAMinutos(duracion) {
+    if (!duracion) return 0;
+    const texto = String(duracion).toLowerCase();
+    const horasMatch = texto.match(/(\d+(?:[.,]\d+)?)\s*(hora|horas|h)\b/);
+    const minutosMatch = texto.match(/(\d+)\s*(min|minuto|minutos)\b/);
+    let minutos = 0;
+    if (horasMatch) {
+        minutos += Math.round(Number(horasMatch[1].replace(",", ".")) * 60);
+    }
+    if (minutosMatch) {
+        minutos += Number(minutosMatch[1]);
+    }
+    return minutos;
+}
+
+function formatearDuracionTotal(minutosTotales) {
+    const horas = Math.floor(minutosTotales / 60);
+    const minutos = minutosTotales % 60;
+    if (horas && minutos) return `${horas} h ${minutos} min`;
+    if (horas) return `${horas} hora${horas > 1 ? "s" : ""}`;
+    return `${minutos} min`;
 }
 
 

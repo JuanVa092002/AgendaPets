@@ -1,6 +1,6 @@
 :root{--ink:#2c3319;--muted:#667056;--green:#4d5c2d;--sage:#7c9a4a;--leaf:#a8c48a;--tan:#e7d9b5;--cream:#f6f3ea;--card:#fffdf8}
 *{box-sizing:border-box}
-.reserva-page{margin:0;min-height:100vh;background:radial-gradient(1200px 600px at 80% -10%,#efe6d2 0%,var(--cream) 45%);color:var(--ink);font-family:Montserrat,sans-serif;padding-bottom:140px}
+.reserva-page{margin:0;min-height:100vh;overflow-x:clip;background:radial-gradient(1200px 600px at 80% -10%,#efe6d2 0%,var(--cream) 45%);color:var(--ink);font-family:Montserrat,sans-serif;padding-bottom:140px}
 .reserva-brand{display:flex;justify-content:space-between;align-items:center;padding:22px 7vw 8px;gap:16px}
 .reserva-brand__right{display:flex;align-items:center;gap:12px}
 .reserva-brand__logo{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font:700 1.15rem Comfortaa,sans-serif}
@@ -46,7 +46,7 @@
 .reserva-card h2{margin:0 0 4px;font-size:1.05rem}
 .reserva-card p{margin:0;color:var(--muted);font-size:.86rem;line-height:1.45}
 .reserva-card>span:nth-child(3){min-width:0}
-.reserva-card>span:last-child{text-align:right;white-space:nowrap}
+.reserva-card>span:last-child{text-align:right;white-space:nowrap;min-width:0;padding-inline:2px}
 .reserva-card strong{display:block;font-size:1.1rem}
 .reserva-form{background:var(--card);border-radius:28px;padding:32px;box-shadow:0 16px 48px rgba(44,51,25,.07)}
 .reserva-form label{display:block;margin-bottom:8px;font:700 .82rem Comfortaa,sans-serif;color:var(--green)}
@@ -116,4 +116,5 @@
 .btn-solid:hover{background:var(--green)}
 .btn-ghost{background:transparent;color:var(--green);box-shadow:inset 0 0 0 1.5px var(--green)}
 @media(max-width:1100px){.fecha-layout{grid-template-columns:1fr}.fecha-left{max-width:none}}
-@media(max-width:640px){.reserva-card{grid-template-columns:20px 44px minmax(0,1fr);padding:16px}.reserva-card>span:last-child{grid-column:3;text-align:left;padding-left:82px}.revision-card__head{flex-wrap:wrap}.revision-edit{margin-left:auto}.revision-card{padding:16px 18px}.reserva-bar{flex-direction:column;align-items:stretch;padding:16px 20px}.reserva-bar div{justify-content:space-between}.btn-solid,.btn-ghost{flex:1}.reserva-main{padding:8px 20px 48px}.reserva-brand{padding:16px 20px 8px;flex-wrap:wrap}.reserva-brand__right{margin-left:auto}}
+@media(max-width:900px){.reserva-card>span:last-child{white-space:normal}}
+@media(max-width:640px){.reserva-card{grid-template-columns:20px 44px minmax(0,1fr);padding:16px;gap:12px;align-items:start}.reserva-card>span:last-child{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 0 0;margin-top:4px;border-top:1px solid #f0ebe0;text-align:left;white-space:normal}.reserva-card>span:last-child small{display:block;text-align:right}.revision-card__head{flex-wrap:wrap}.revision-edit{margin-left:auto}.revision-card{padding:16px 18px}.reserva-bar{flex-direction:column;align-items:stretch;padding:16px 20px}.reserva-bar div{justify-content:space-between}.btn-solid,.btn-ghost{flex:1;min-width:0}.reserva-main{padding:8px 16px 48px}.reserva-brand{padding:16px 16px 8px;flex-wrap:nowrap;align-items:center;gap:8px}.reserva-brand .navbar-brand{min-width:0;flex:1 1 auto}.reserva-brand__right{margin-left:0;flex:0 1 auto;min-width:0;gap:8px}.reserva-brand .brand-text{font-size:18px}.reserva-brand .logo-agenda{height:36px}.reserva-brand .sesion-chip--in{max-width:none;gap:6px;padding:4px}.reserva-brand .sesion-chip__copy,.reserva-brand .sesion-chip__dot{display:none}.agenda-week{display:none}.reserva-stepper span{font-size:.62rem}.reserva-stepper{margin:12px 0 20px}.reserva-page{padding-bottom:168px}.reserva-form{padding:20px 16px}}

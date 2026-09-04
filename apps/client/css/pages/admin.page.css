@@ -502,4 +502,11 @@ textarea.form-control { resize: vertical; min-height: 88px; }
     }
     .acciones-servicio .btn { flex: 1; min-width: 0; }
     .admin-user__chip { display: none; }
+    .nav-admin {
+        width: 100%;
+        justify-content: flex-start;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .admin-brand small { display: none; }
 }

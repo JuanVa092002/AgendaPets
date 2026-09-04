@@ -137,8 +137,10 @@
 
 @media (max-width:991.98px){
   .sesion-chip__copy small{display:none}
-  .sesion-chip--in{max-width:100%}
+  .sesion-chip--in{max-width:100%;width:100%;justify-content:center;flex-wrap:wrap}
+  .sesion-chip__copy strong{max-width:none}
 }
 @media (max-width:640px){
-  .auth-modal{padding:28px 20px 22px}
+  .auth-modal{padding:28px 20px 22px;width:min(420px,calc(100vw - 24px))}
+  .auth-overlay{padding:12px;align-items:end}
 }

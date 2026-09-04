@@ -152,8 +152,8 @@ main > section {
 
 /* Estilo general */
 .bg-shape {
-     opacity: 0.3 !important;
-    z-index: 9999 !important;
+    opacity: 0.3 !important;
+    z-index: 0 !important;
     position: absolute;
     pointer-events: none;
     user-select: none;
@@ -595,6 +595,7 @@ main > section {
 .cita-duracion {
     display: inline-flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 5px;
     margin: 0 !important;
     padding: 6px 12px;
@@ -602,7 +603,11 @@ main > section {
     background: var(--ap-doradosuave);
     color: white !important;
     font-size: 13px !important;
-    white-space: nowrap;
+    max-width: 100%;
+    box-sizing: border-box;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.35;
 }
 
 .cita-total strong,
@@ -774,6 +779,10 @@ main > section {
 
     .cita-total,
     .cita-duracion {
-        width: fit-content;
+        width: 100%;
+    }
+
+    .cita-resumen {
+        padding-right: 3.75rem;
     }
 }

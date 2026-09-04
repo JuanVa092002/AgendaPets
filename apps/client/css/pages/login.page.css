@@ -7,6 +7,7 @@
 .roles {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     gap: 30px;
     margin-top: 40px;
 }
@@ -18,7 +19,7 @@ a {
 
 /* Card */
 .cliente {
-    width: 520px;
+    width: min(520px, calc(100% - 32px));
     margin: 50px auto;
     padding: 40px;
     background: #EFF5E2;
@@ -57,7 +58,7 @@ a {
     display: none;
 }
 .admin {
-    width: 520px;
+    width: min(520px, calc(100% - 32px));
     margin: 50px auto;
     padding: 40px;
     background: #d5e6b2;

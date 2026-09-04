@@ -73,3 +73,24 @@
   margin-bottom: 30px;
   font-family: "Original Surfer", "Comfortaa", cursive;
 }
+
+@media (max-width: 767.98px) {
+  .faq-seccion {
+    padding-top: 48px;
+    padding-bottom: 48px;
+    margin-top: 32px;
+  }
+
+  .fondoContaco {
+    padding-top: 8px;
+  }
+
+  .hero-contacto {
+    padding-top: 0.5rem !important;
+    margin-top: 0 !important;
+  }
+
+  .contenido-contacto {
+    padding-bottom: 48px !important;
+  }
+}
