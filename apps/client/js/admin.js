@@ -138,7 +138,6 @@ function validarServicio({ nombre, duracion, precio, descripcion }) {
     return "";
 }
 
-<<<<<<< HEAD
 function crearServicio({ nombre, duracion, precio, descripcion }) {
     servicios.push({
         id: siguienteId(),
@@ -378,18 +377,3 @@ document.querySelector(".logout")?.addEventListener("click", (e) => {
     else localStorage.removeItem("sesion");
     window.location.href = "../index.html";
 });
-=======
-    console.log(JSON.stringify(servicios, null, 2));
-}
-
-//Ocultar
-const botonesOcultar = document.querySelectorAll("ocultarServicio");
-
-botonesOcultar.forEach(function (boton){
-    boton.addEventListener("click",function(){
-        const servicio = boton.ocultar(".servicio");
-        servicio.style.display = "none";
-    })
-})
-
->>>>>>> 302d924fb921ad4b203f9f0358843eeb1fe2bf0a

@@ -55,247 +55,33 @@
         </div>
     </header>
 
-
-
-        <main class="container py-4">
-
-            <nav class="nav-admin d-flex justify-content-center align-items-center gap-3 mb-4">
-                <a href="#" class="nav-link activo">
-                    Mis servicios
-                </a>
-                <span>|</span>
-                <a href="#" class="nav-link">
-                    Citas
-                </a>
-                <span>|</span>
-                <a href="#" class="nav-link">
-                    Mi info
-                </a>
-                <span>|</span>
-                <a href="#" class="nav-link">
-                    Dashboard
-                </a>
-            </nav>
-
-            <div class="row justify-content-center g-4">
-
-                <div class="col-12 col-lg-5">
-                    <section class="admin-card h-100">
-
-                        <div class="card-title-admin">
-                            <i class="bi bi-plus-circle"></i>
-                            <span>Agregar servicio</span>
-                        </div>
-
-                        <div class="card-body-admin">
-                            <form id="form-servicio">
-                                <div class="mb-2">
-                                    <label for="nombre" class="form-label">
-                                        Nombre:
-                                    </label>
-                                    <input type="text"
-                                        id="nombre"
-                                        class="form-control"
-                                        placeholder="Ej: Lavado + shampoo premium...">
-                                </div>
-
-
-                                <div class="mb-2">
-                                    <label for="duracion" class="form-label">
-                                        Duración:
-                                    </label>
-                                    <input type="text"
-                                        id="duracion"
-                                        class="form-control"
-                                        placeholder="Ej: 1 hora">
-                                </div>
-
-                                <div class="mb-2">
-                                    <label for="precio" class="form-label">
-                                        Precio:
-                                    </label>
-                                    <input type="number"
-                                        id="precio"
-                                        class="form-control"
-                                        placeholder="Ej: 1000">
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="descripcion" class="form-label">
-                                        Descripción:
-                                    </label>
-
-                                    <textarea id="descripcion"
-                                        class="form-control"
-                                        rows="2"
-                                        placeholder="Se lava con shampoo especial de marca premium..."></textarea>
-                                </div>
-
-
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-crear">
-                                        Crear
-                                    </button>
-                                </div>
-
-                            </form>
-                        </div>
-                    </section>
-                </div>
-
-                <div class="col-12 col-lg-5">
-
-                    <section class="admin-card h-100">
-
-                        <div class="card-title-admin">
-                            <i class="bi bi-exclamation-circle-fill"></i>
-                            <span>Mis servicios disponibles</span>
-                        </div>
-
-                        <div class="card-body-admin servicios">
-
-                            <article class="servicio">
-
-                                <div class="icono-servicio">
-                                    <i class="bi bi-paw-fill"></i>
-                                </div>
-
-                                <div class="info-servicio">
-
-                                    <h5>Nombre 1</h5>
-
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit, sed do eiusmod tempor
-                                        incididunt ut labore et dolore magna aliqua.
-                                    </p>
-
-                                    <div class="datos-servicio">
-                                        <span>$ 10000</span>
-                                        <span>
-                                            <i class="bi bi-clock"></i>
-                                            1 Hora
-                                        </span>
-                                    </div>
-
-                                </div>
-
-                                <div class="acciones-servicio">
-
-                                    <button class="btn btn-sm btn-editar">
-                                        <i class="bi bi-pencil-square"></i>
-                                        Editar
-                                    </button>
-
-                                    <button class="btn btn-sm btn-ocultar">
-                                        <i class="bi bi-eye-slash"></i>
-                                        Ocultar
-                                    </button>
-
-                                    <button class="btn btn-sm btn-eliminar">
-                                        <i class="bi bi-trash3"></i>
-                                        Eliminar
-                                    </button>
-
-                                </div>
-
-                            </article>
-
-                            <article class="servicio">
-
-                                <div class="icono-servicio">
-                                    <i class="bi bi-paw-fill"></i>
-                                </div>
-
-                                <div class="info-servicio">
-
-                                    <h5>Nombre 2</h5>
-
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit, sed do eiusmod tempor
-                                        incididunt ut labore et dolore magna aliqua.
-                                    </p>
-
-                                    <div class="datos-servicio">
-                                        <span>$ 20000</span>
-                                        <span>
-                                            <i class="bi bi-clock"></i>
-                                            1 Hora
-                                        </span>
-                                    </div>
-
-                                </div>
-
-                                <div class="acciones-servicio">
-
-                                    <button class="btn btn-sm btn-editar">
-                                        <i class="bi bi-pencil-square"></i>
-                                        Editar
-                                    </button>
-
-                                    <button class="btn btn-sm btn-ocultar">
-                                        <i class="bi bi-eye-slash"></i>
-                                        Ocultar
-                                    </button>
-
-                                    <button class="btn btn-sm btn-eliminar">
-                                        <i class="bi bi-trash3"></i>
-                                        Eliminar
-                                    </button>
-
-                                </div>
-
-                            </article>
-
-                            <article class="servicio">
-
-                                <div class="icono-servicio">
-                                    <i class="bi bi-paw-fill"></i>
-                                </div>
-
-                                <div class="info-servicio">
-
-                                    <h5>Nombre 3</h5>
-
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit, sed do eiusmod tempor
-                                        incididunt ut labore et dolore magna aliqua.
-                                    </p>
-
-                                    <div class="datos-servicio">
-                                        <span>$ 30000</span>
-                                        <span>
-                                            <i class="bi bi-clock"></i>
-                                            1 Hora
-                                        </span>
-                                    </div>
-
-                                </div>
-
-                                <div class="acciones-servicio">
-
-                                    <button class="btn btn-sm btn-editar">
-                                        <i class="bi bi-pencil-square"></i>
-                                        Editar
-                                    </button>
-
-                                    <button class="btn btn-sm btn-ocultar ocultarServicio">
-                                        <i class="bi bi-eye-slash "></i>
-                                        Ocultar
-                                    </button>
-
-                                    <button class="btn btn-sm btn-eliminar">
-                                        <i class="bi bi-trash3"></i>
-                                        Eliminar
-                                    </button>
-
-                                </div>
-                            </article>
-                        </div>
-                    </section>
-                </div>
+    <main class="admin-shell">
+        <section class="admin-hero">
+            <p class="admin-kicker">Gestión del catálogo</p>
+            <h1>Servicios que ve el cliente</h1>
+            <p class="admin-lead">Crea, edita u oculta. Lo visible aquí es lo que aparece al reservar.</p>
+            <div class="admin-stats" aria-label="Resumen del catálogo">
+                <article class="admin-stat">
+                    <i class="bi bi-collection"></i>
+                    <div>
+                        <strong id="stat-total">0</strong>
+                        <span>En catálogo</span>
+                    </div>
+                </article>
+                <article class="admin-stat">
+                    <i class="bi bi-eye"></i>
+                    <div>
+                        <strong id="stat-visible">0</strong>
+                        <span>Visibles</span>
+                    </div>
+                </article>
+                <article class="admin-stat">
+                    <i class="bi bi-eye-slash"></i>
+                    <div>
+                        <strong id="stat-ocultos">0</strong>
+                        <span>Ocultos</span>
+                    </div>
+                </article>
             </div>
         </section>
 
