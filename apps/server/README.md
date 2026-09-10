@@ -1,7 +1,7 @@
 <div align="center">
 
 <!-- LOGO DEL PROYECTO -->
-<img src="" alt="Logo AgendaPets" width="200"/>
+<!-- <img src="" alt="Logo AgendaPets" width="200"/> -->
 
 # 🐾 AgendaPets - Backend API
 
