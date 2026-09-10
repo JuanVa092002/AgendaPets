@@ -14,7 +14,7 @@
 
 ---
 
-Proyecto desarrollado como parte del **Programming Bootcamp**
+
 
 </div>
 
@@ -389,7 +389,7 @@ Al iniciar, se crean automáticamente datos de prueba:
 | Repositorio | Descripción | Estado |
 |-------------|-------------|--------|
 | **Backend_AgendaPets** | API REST (este repositorio) | ✅ Completado |
-| **Frontend_AgendaPets** | Aplicación web del cliente | 🛠️ En desarrollo |
+| **Frontend_AgendaPets** | Aplicación web del cliente | 🛠️ Completada pendiente conexión |
 
 ---
 
@@ -399,6 +399,6 @@ Al iniciar, se crean automáticamente datos de prueba:
 
 **Plataforma de reservas para pet grooming**
 
-*Desarrollado en el Programming Bootcamp*
+
 
 </div>
