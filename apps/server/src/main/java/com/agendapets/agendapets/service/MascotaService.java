@@ -3,10 +3,13 @@ package com.agendapets.agendapets.service;
 import com.agendapets.agendapets.dto.MascotaRequestDTO;
 import com.agendapets.agendapets.dto.MascotaResponseDTO;
 import com.agendapets.agendapets.model.Mascota;
+import com.agendapets.agendapets.model.TipoMascota;
+import com.agendapets.agendapets.model.TamanoMascota;
 import com.agendapets.agendapets.model.Usuario;
 import com.agendapets.agendapets.repository.MascotaRepository;
 import com.agendapets.agendapets.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +22,7 @@ public class MascotaService {
 
     private final MascotaRepository mascotaRepository;
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public MascotaResponseDTO crear(MascotaRequestDTO dto) {
@@ -43,7 +47,7 @@ public class MascotaService {
             usuario = usuarioRepository.save(Usuario.builder()
                     .nombre("Dueño de " + dto.getNombre())
                     .correo(correo)
-                    .contrasena("cliente123")
+                    .contrasena(passwordEncoder.encode("cliente123"))
                     .estado(true)
                     .rol("CLIENTE")
                     .build());
@@ -52,9 +56,9 @@ public class MascotaService {
         Mascota mascota = Mascota.builder()
                 .nombre(dto.getNombre())
                 .raza(dto.getRaza() != null ? dto.getRaza() : "Mestizo")
-                .tipo(dto.getTipo() != null && !dto.getTipo().isBlank() ? dto.getTipo() : "Perro")
+                .tipo(dto.getTipo() != null && !dto.getTipo().isBlank() ? TipoMascota.valueOf(dto.getTipo()) : TipoMascota.Perro)
                 .notas(dto.getNotas())
-                .tamano(dto.getTamano() != null && !dto.getTamano().isBlank() ? dto.getTamano() : "Mediano")
+                .tamano(dto.getTamano() != null && !dto.getTamano().isBlank() ? TamanoMascota.valueOf(dto.getTamano()) : TamanoMascota.Mediano)
                 .usuario(usuario)
                 .build();
 
@@ -101,10 +105,10 @@ public class MascotaService {
             mascota.setRaza(dto.getRaza());
         }
         if (dto.getTipo() != null && !dto.getTipo().isBlank()) {
-            mascota.setTipo(dto.getTipo());
+            mascota.setTipo(TipoMascota.valueOf(dto.getTipo()));
         }
         if (dto.getTamano() != null && !dto.getTamano().isBlank()) {
-            mascota.setTamano(dto.getTamano());
+            mascota.setTamano(TamanoMascota.valueOf(dto.getTamano()));
         }
         if (dto.getNotas() != null) {
             mascota.setNotas(dto.getNotas());
@@ -127,8 +131,8 @@ public class MascotaService {
                 .id(m.getIdMascota())
                 .nombre(m.getNombre())
                 .raza(m.getRaza())
-                .tipo(m.getTipo())
-                .tamano(m.getTamano())
+                .tipo(m.getTipo() != null ? m.getTipo().name() : null)
+                .tamano(m.getTamano() != null ? m.getTamano().name() : null)
                 .notas(m.getNotas())
                 .usuarioId(m.getUsuario() != null ? m.getUsuario().getUsuarioId() : null)
                 .nombreDueno(m.getUsuario() != null ? m.getUsuario().getNombre() : "")

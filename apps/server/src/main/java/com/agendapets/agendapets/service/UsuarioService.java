@@ -1,11 +1,11 @@
 package com.agendapets.agendapets.service;
 
-import com.agendapets.agendapets.dto.LoginRequestDTO;
 import com.agendapets.agendapets.dto.UsuarioRequestDTO;
 import com.agendapets.agendapets.dto.UsuarioResponseDTO;
 import com.agendapets.agendapets.model.Usuario;
 import com.agendapets.agendapets.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public UsuarioResponseDTO registrar(UsuarioRequestDTO dto) {
@@ -36,32 +37,13 @@ public class UsuarioService {
         Usuario usuario = Usuario.builder()
                 .nombre(dto.getNombre())
                 .correo(correo)
-                .contrasena(contrasena)
+                .contrasena(passwordEncoder.encode(contrasena))
                 .estado(dto.getEstado() != null ? dto.getEstado() : true)
                 .rol(dto.getRol() != null && !dto.getRol().isBlank() ? dto.getRol().toUpperCase() : "CLIENTE")
                 .build();
 
         Usuario guardado = usuarioRepository.save(usuario);
         return mapToResponseDTO(guardado);
-    }
-
-    @Transactional(readOnly = true)
-    public UsuarioResponseDTO login(LoginRequestDTO dto) {
-        if (dto.getCorreo() == null || dto.getContrasena() == null) {
-            throw new IllegalArgumentException("Correo y contraseña son requeridos.");
-        }
-        Usuario usuario = usuarioRepository.findByCorreo(dto.getCorreo().trim())
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ese correo."));
-
-        if (!Boolean.TRUE.equals(usuario.getEstado())) {
-            throw new IllegalStateException("Esta cuenta se encuentra inactiva.");
-        }
-
-        if (!usuario.getContrasena().equals(dto.getContrasena())) {
-            throw new IllegalArgumentException("Contraseña incorrecta.");
-        }
-
-        return mapToResponseDTO(usuario);
     }
 
     @Transactional(readOnly = true)
@@ -94,7 +76,7 @@ public class UsuarioService {
             usuario.setNombre(dto.getNombre());
         }
         if (dto.getContrasenaEfectiva() != null && !dto.getContrasenaEfectiva().isBlank()) {
-            usuario.setContrasena(dto.getContrasenaEfectiva());
+            usuario.setContrasena(passwordEncoder.encode(dto.getContrasenaEfectiva()));
         }
         if (dto.getEstado() != null) {
             usuario.setEstado(dto.getEstado());

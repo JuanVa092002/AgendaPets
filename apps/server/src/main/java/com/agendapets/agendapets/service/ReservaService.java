@@ -6,12 +6,15 @@ import com.agendapets.agendapets.dto.ServicioResponseDTO;
 import com.agendapets.agendapets.model.Mascota;
 import com.agendapets.agendapets.model.Reserva;
 import com.agendapets.agendapets.model.Servicio;
+import com.agendapets.agendapets.model.TipoMascota;
+import com.agendapets.agendapets.model.TamanoMascota;
 import com.agendapets.agendapets.model.Usuario;
 import com.agendapets.agendapets.repository.MascotaRepository;
 import com.agendapets.agendapets.repository.ReservaRepository;
 import com.agendapets.agendapets.repository.ServicioRepository;
 import com.agendapets.agendapets.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +36,7 @@ public class ReservaService {
     private final UsuarioRepository usuarioRepository;
     private final MascotaService mascotaService;
     private final ServicioService servicioService;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public ReservaResponseDTO crear(ReservaRequestDTO dto) {
@@ -52,7 +56,7 @@ public class ReservaService {
                 return usuarioRepository.save(Usuario.builder()
                         .nombre(dto.getNombreDueno() != null ? dto.getNombreDueno() : "Cliente")
                         .correo(correoDueno)
-                        .contrasena("cliente123")
+                        .contrasena(passwordEncoder.encode("cliente123"))
                         .estado(true)
                         .rol("CLIENTE")
                         .build());
@@ -63,9 +67,9 @@ public class ReservaService {
 
             mascota = mascotaRepository.save(Mascota.builder()
                     .nombre(nombreMascota)
-                    .tipo(dto.getTipoMascota() != null ? dto.getTipoMascota() : "Perro")
+                    .tipo(dto.getTipoMascota() != null ? TipoMascota.valueOf(dto.getTipoMascota()) : TipoMascota.Perro)
                     .raza(dto.getRazaMascota() != null ? dto.getRazaMascota() : "Mestizo")
-                    .tamano(dto.getTamanoMascota() != null ? dto.getTamanoMascota() : "Mediano")
+                    .tamano(dto.getTamanoMascota() != null ? TamanoMascota.valueOf(dto.getTamanoMascota()) : TamanoMascota.Mediano)
                     .notas(dto.getNotasMascota())
                     .usuario(usuario)
                     .build());

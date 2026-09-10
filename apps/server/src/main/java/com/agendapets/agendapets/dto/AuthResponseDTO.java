@@ -1,6 +1,5 @@
 package com.agendapets.agendapets.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,10 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LoginRequestDTO {
-    @NotBlank(message = "El correo es obligatorio")
+public class AuthResponseDTO {
+    private String token;
+    private String tipo;
+    private Long usuarioId;
+    private String nombre;
     private String correo;
-
-    @NotBlank(message = "La contraseña es obligatoria")
-    private String contrasena;
+    private String rol;
 }

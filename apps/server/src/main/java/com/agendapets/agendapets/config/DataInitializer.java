@@ -3,6 +3,8 @@ package com.agendapets.agendapets.config;
 import com.agendapets.agendapets.model.Mascota;
 import com.agendapets.agendapets.model.Reserva;
 import com.agendapets.agendapets.model.Servicio;
+import com.agendapets.agendapets.model.TipoMascota;
+import com.agendapets.agendapets.model.TamanoMascota;
 import com.agendapets.agendapets.model.Usuario;
 import com.agendapets.agendapets.repository.MascotaRepository;
 import com.agendapets.agendapets.repository.ReservaRepository;
@@ -11,6 +13,7 @@ import com.agendapets.agendapets.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -27,6 +30,7 @@ public class DataInitializer implements CommandLineRunner {
     private final ServicioRepository servicioRepository;
     private final MascotaRepository mascotaRepository;
     private final ReservaRepository reservaRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) {
@@ -41,7 +45,7 @@ public class DataInitializer implements CommandLineRunner {
         Usuario admin = usuarioRepository.save(Usuario.builder()
                 .nombre("Peluquería Canina Admin")
                 .correo("admin@agendapets.com")
-                .contrasena("admin123")
+                .contrasena(passwordEncoder.encode("admin123"))
                 .estado(true)
                 .rol("ADMIN")
                 .build());
@@ -49,7 +53,7 @@ public class DataInitializer implements CommandLineRunner {
         Usuario carlos = usuarioRepository.save(Usuario.builder()
                 .nombre("Carlos Pérez")
                 .correo("carlos.perez@email.com")
-                .contrasena("cliente123")
+                .contrasena(passwordEncoder.encode("cliente123"))
                 .estado(true)
                 .rol("CLIENTE")
                 .build());
@@ -57,7 +61,7 @@ public class DataInitializer implements CommandLineRunner {
         Usuario laura = usuarioRepository.save(Usuario.builder()
                 .nombre("Laura Gómez")
                 .correo("laura.gomez@email.com")
-                .contrasena("cliente123")
+                .contrasena(passwordEncoder.encode("cliente123"))
                 .estado(true)
                 .rol("CLIENTE")
                 .build());
@@ -65,7 +69,7 @@ public class DataInitializer implements CommandLineRunner {
         Usuario ana = usuarioRepository.save(Usuario.builder()
                 .nombre("Ana Martínez")
                 .correo("ana.martinez@email.com")
-                .contrasena("cliente123")
+                .contrasena(passwordEncoder.encode("cliente123"))
                 .estado(false)
                 .rol("CLIENTE")
                 .build());
@@ -110,36 +114,36 @@ public class DataInitializer implements CommandLineRunner {
         Mascota firulais = mascotaRepository.save(Mascota.builder()
                 .nombre("Firulais")
                 .raza("Golden Retriever")
-                .tipo("Perro")
+                .tipo(TipoMascota.Perro)
                 .notas("Es muy amigable pero le tiene miedo al secador")
-                .tamano("Grande")
+                .tamano(TamanoMascota.Grande)
                 .usuario(carlos)
                 .build());
 
         Mascota milo = mascotaRepository.save(Mascota.builder()
                 .nombre("Milo")
                 .raza("Poodle")
-                .tipo("Perro")
+                .tipo(TipoMascota.Perro)
                 .notas("Piel sensible, usar champú hipoalergénico")
-                .tamano("Pequeno")
+                .tamano(TamanoMascota.Pequeno)
                 .usuario(carlos)
                 .build());
 
         Mascota luna = mascotaRepository.save(Mascota.builder()
                 .nombre("Luna")
                 .raza("Siamés")
-                .tipo("Gato")
+                .tipo(TipoMascota.Gato)
                 .notas("Suele ponerse nerviosa en el baño")
-                .tamano("Pequeno")
+                .tamano(TamanoMascota.Pequeno)
                 .usuario(laura)
                 .build());
 
         Mascota max = mascotaRepository.save(Mascota.builder()
                 .nombre("Max")
                 .raza("Bulldog Francés")
-                .tipo("Perro")
+                .tipo(TipoMascota.Perro)
                 .notas("Requiere cuidado especial en las arrugas de la cara")
-                .tamano("Mediano")
+                .tamano(TamanoMascota.Mediano)
                 .usuario(ana)
                 .build());
 
