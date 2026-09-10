@@ -29,14 +29,15 @@ public class Mascota {
     @Column(name = "raza", length = 100)
     private String raza;
 
-    @Column(name = "tipo", nullable = false, length = 50)
-    private String tipo;
+    @Enumerated(EnumType.STRING)
+    private TipoMascota tipo;
 
     @Column(name = "notas", columnDefinition = "TEXT")
     private String notas;
 
-    @Column(name = "tamano", nullable = false, length = 50)
-    private String tamano;
+    @Enumerated(EnumType.STRING)
+    private TamanoMascota tamano;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id", nullable = false)
