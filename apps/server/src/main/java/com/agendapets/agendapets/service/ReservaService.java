@@ -6,6 +6,7 @@ import com.agendapets.agendapets.dto.ServicioResponseDTO;
 import com.agendapets.agendapets.model.Mascota;
 import com.agendapets.agendapets.model.Reserva;
 import com.agendapets.agendapets.model.Servicio;
+import com.agendapets.agendapets.model.Rol;
 import com.agendapets.agendapets.model.TipoMascota;
 import com.agendapets.agendapets.model.TamanoMascota;
 import com.agendapets.agendapets.model.Usuario;
@@ -14,6 +15,8 @@ import com.agendapets.agendapets.repository.ReservaRepository;
 import com.agendapets.agendapets.repository.ServicioRepository;
 import com.agendapets.agendapets.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,22 +46,37 @@ public class ReservaService {
         LocalDate fecha = dto.getFecha() != null ? dto.getFecha() : LocalDate.now();
         LocalTime hora = dto.getHoraEfectiva();
 
+        boolean admin = esAdmin();
+        String correoAutenticado = admin ? null : correoActual();
+
         // 1. Obtener o crear Mascota
         Mascota mascota = null;
         if (dto.getIdMascota() != null) {
             mascota = mascotaRepository.findById(dto.getIdMascota()).orElse(null);
+            if (mascota != null && !admin) {
+                String dueno = mascota.getUsuario() != null ? mascota.getUsuario().getCorreo() : null;
+                if (dueno == null || !dueno.equalsIgnoreCase(correoAutenticado)) {
+                    throw new IllegalStateException("No tienes permiso para reservar con esta mascota.");
+                }
+            }
         }
         if (mascota == null) {
             // Buscar o crear usuario
             String correoDueno = dto.getCorreoDueno() != null ? dto.getCorreoDueno().trim()
-                    : (dto.getDuenoId() != null ? dto.getDuenoId().trim() : "cliente@agendapets.com");
+                    : (dto.getDuenoId() != null ? dto.getDuenoId().trim() : null);
+            if (correoAutenticado != null) {
+                correoDueno = correoAutenticado;
+            } else if (correoDueno == null) {
+                correoDueno = "cliente@agendapets.com";
+            }
+            String finalCorreoDueno = correoDueno;
             Usuario usuario = usuarioRepository.findByCorreo(correoDueno).orElseGet(() -> {
                 return usuarioRepository.save(Usuario.builder()
                         .nombre(dto.getNombreDueno() != null ? dto.getNombreDueno() : "Cliente")
-                        .correo(correoDueno)
+                        .correo(finalCorreoDueno)
                         .contrasena(passwordEncoder.encode("cliente123"))
                         .estado(true)
-                        .rol("CLIENTE")
+                        .rol(Rol.CLIENTE)
                         .build());
             });
 
@@ -103,13 +121,23 @@ public class ReservaService {
 
     @Transactional(readOnly = true)
     public List<ReservaResponseDTO> listarTodas() {
-        return reservaRepository.findAll().stream()
+        List<Reserva> reservas = esAdmin()
+                ? reservaRepository.findAll()
+                : reservaRepository.findByMascotaUsuarioCorreoIgnoreCase(correoActual());
+        return reservas.stream()
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<ReservaResponseDTO> listarPorUsuario(Long usuarioId) {
+        if (!esAdmin()) {
+            Long idActual = usuarioRepository.findByCorreo(correoActual())
+                    .map(Usuario::getUsuarioId).orElse(null);
+            if (!usuarioId.equals(idActual)) {
+                throw new IllegalStateException("No tienes permiso para ver las reservas de otro usuario.");
+            }
+        }
         return reservaRepository.findByMascotaUsuarioUsuarioId(usuarioId).stream()
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
@@ -117,6 +145,9 @@ public class ReservaService {
 
     @Transactional(readOnly = true)
     public List<ReservaResponseDTO> listarPorCorreo(String correo) {
+        if (!esAdmin() && !correo.trim().equalsIgnoreCase(correoActual())) {
+            throw new IllegalStateException("No tienes permiso para ver las reservas de otro usuario.");
+        }
         return reservaRepository.findByMascotaUsuarioCorreoIgnoreCase(correo.trim()).stream()
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
@@ -126,6 +157,7 @@ public class ReservaService {
     public ReservaResponseDTO obtenerPorId(Long id) {
         Reserva reserva = reservaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Reserva no encontrada con ID: " + id));
+        verificarAccesoReserva(reserva);
         return mapToResponseDTO(reserva);
     }
 
@@ -133,6 +165,7 @@ public class ReservaService {
     public ReservaResponseDTO actualizar(Long id, ReservaRequestDTO dto) {
         Reserva reserva = reservaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Reserva no encontrada con ID: " + id));
+        verificarAccesoReserva(reserva);
 
         if (dto.getFecha() != null) {
             reserva.setFecha(dto.getFecha());
@@ -155,6 +188,7 @@ public class ReservaService {
     public ReservaResponseDTO cambiarEstado(Long id, String nuevoEstado) {
         Reserva reserva = reservaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Reserva no encontrada con ID: " + id));
+        verificarAccesoReserva(reserva);
         reserva.setEstado(nuevoEstado.toUpperCase());
         return mapToResponseDTO(reservaRepository.save(reserva));
     }
@@ -199,5 +233,30 @@ public class ReservaService {
                 .servicio(nombreServicio)
                 .precioTotal(total)
                 .build();
+    }
+
+    private boolean esAdmin() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth != null && auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+    }
+
+    private String correoActual() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !(auth.getPrincipal() instanceof String correo)) {
+            throw new IllegalStateException("No hay un usuario autenticado.");
+        }
+        return correo;
+    }
+
+    private void verificarAccesoReserva(Reserva reserva) {
+        if (esAdmin()) {
+            return;
+        }
+        String dueno = reserva.getMascota() != null && reserva.getMascota().getUsuario() != null
+                ? reserva.getMascota().getUsuario().getCorreo() : null;
+        if (dueno == null || !dueno.equalsIgnoreCase(correoActual())) {
+            throw new IllegalStateException("No tienes permiso para acceder a esta reserva.");
+        }
     }
 }

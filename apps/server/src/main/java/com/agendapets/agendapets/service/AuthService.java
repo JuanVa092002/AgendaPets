@@ -44,7 +44,7 @@ public class AuthService {
                 .usuarioId(usuario.getUsuarioId())
                 .nombre(usuario.getNombre())
                 .correo(usuario.getCorreo())
-                .rol(usuario.getRol())
+                .rol(usuario.getRol().name())
                 .build();
     }
 }

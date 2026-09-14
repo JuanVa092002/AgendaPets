@@ -1,6 +1,6 @@
 # Documentación Completa - AgendaPets Backend
 
-> **Guía para desarrolladores junior** - Explicación detallada de cada componente del proyecto.
+> **Guía para desarrolladores** - Explicación detallada de cada componente del proyecto.
 
 ---
 
@@ -20,6 +20,8 @@
 12. [Pruebas con Postman/curl](#12-pruebas-con-postmancurl)
 13. [Errores comunes y soluciones](#13-errores-comunes-y-soluciones)
 14. [Glosario de términos](#14-glosario-de-términos)
+15. [Auditoría completa (57 pruebas)](#15-auditoría-completa-57-pruebas)
+16. [Correcciones pendientes para frontend](#16-correcciones-pendientes-para-frontend)
 
 ---
 
@@ -37,8 +39,8 @@
 
 | Rol | Puede hacer |
 |-----|-------------|
-| **ADMIN** | Ver todos los usuarios, eliminar usuarios, crear/editar/eliminar servicios, ver todas las reservas |
-| **CLIENTE** | Crear mascotas, crear reservas, ver sus propias reservas |
+| **ADMIN** | Control total del negocio: usuarios (ver, editar, eliminar), servicios (crear, editar, eliminar) y **todas** las mascotas y reservas (crear, editar, cambiar estado, eliminar) |
+| **CLIENTE** | Registrarse (siempre como CLIENTE), crear y gestionar **solo sus propias** mascotas y reservas (incluida la edición de los servicios de su reserva). No puede crear/editar/eliminar servicios, ni ver o tocar datos de otros usuarios |
 
 ---
 
@@ -273,7 +275,25 @@ USUARIOS (1) ──────────> (N) MASCOTAS (1) ──────
 | correo | VARCHAR(150) | Correo electrónico (único) |
 | contrasena | VARCHAR(255) | Contraseña hasheada con BCrypt |
 | estado | BOOLEAN | true = activo, false = inactivo |
-| rol | VARCHAR(20) | "ADMIN" o "CLIENTE" |
+| rol | ENUM `Rol` | `ADMIN` o `CLIENTE` (valores fijos, previene errores tipográficos) |
+
+### Enum Rol (control de acceso)
+
+El campo `rol` de la tabla USUARIOS usa un **enum** en lugar de un String libre. Esto garantiza que solo existan dos valores válidos: `ADMIN` y `CLIENTE`.
+
+```java
+public enum Rol {
+    ADMIN,    // Acceso total al negocio
+    CLIENTE   // Acceso limitado a sus propias mascotas y reservas
+}
+```
+
+**Por qué se usa un enum:**
+- Si alguien escribe `"admin"`, `"Admin"` o `"ADMINN"`, el compilador lo detecta como error
+- Si se envía un valor inválido en un request (por ejemplo `"rol":"INVALIDO"`), el servicio devuelve `400` con el mensaje: `"Rol inválido: INVALIDO. Roles válidos: ADMIN, CLIENTE"`
+- En la base de datos se almacena como texto (`VARCHAR(20)`) pero Java lo maneja como tipo seguro
+
+**Nota:** Los DTOs de request/response usan `String` para el campo `rol` por flexibilidad en el JSON. La conversión `String → Rol` ocurre en `UsuarioService` usando `Rol.valueOf()`.
 
 ### Tabla MASCOTAS
 
@@ -354,6 +374,10 @@ JWT (JSON Web Token) es un token que se genera cuando el usuario inicia sesión 
    → Setea la autenticación en SecurityContext
    → Spring verifica los permisos según el rol
 ```
+
+> **Nota de seguridad (corregido en esta sesión):** el endpoint `POST /registro` **siempre** crea al usuario con rol `CLIENTE`. Aunque el JSON envíe un campo `rol` (por ejemplo `"rol": "ADMIN"`), ese valor se ignora: `UsuarioService.registrar` asigna `rol = "CLIENTE"` de forma fija. Esto impide que un usuario se auto-registre como administrador (escalada de privilegios). El rol real siempre se lee de la base de datos al validar cada petición, nunca se confía en el contenido del token.
+
+> **Nota (login):** al iniciar sesión, la contraseña ingresada se compara con un hash BCrypt (`passwordEncoder.matches`). Si en la base de datos la contraseña está en **texto plano**, BCrypt no puede coincidir y el login devuelve `401 Usuario o contraseña incorrectos` aunque la contraseña sea correcta. Los usuarios creados con `/registro` siempre guardan el hash correcto, y `DataInitializer` corrige automáticamente las contraseñas en texto plano (ver sección 11).
 
 ### Estructura del token JWT
 
@@ -454,14 +478,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     .requestMatchers(HttpMethod.POST, "/api/auth/login", "/registro").permitAll()
     .requestMatchers(HttpMethod.GET, "/api/servicios", "/servicios").permitAll()
 
-    // Solo ADMIN
+    // Solo ADMIN: usuarios (ver, editar, eliminar)
+    .requestMatchers(HttpMethod.GET, "/api/usuarios/**", "/usuarios/**").hasRole("ADMIN")
+    .requestMatchers(HttpMethod.PUT, "/api/usuarios/**", "/usuarios/**").hasRole("ADMIN")
+    .requestMatchers(HttpMethod.DELETE, "/api/usuarios/**", "/usuarios/**").hasRole("ADMIN")
+
+    // Solo ADMIN: gestión del negocio (servicios y cualquier borrado)
     .requestMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
     .requestMatchers(HttpMethod.POST, "/api/servicios", "/servicios").hasRole("ADMIN")
-    .requestMatchers(HttpMethod.GET, "/api/usuarios", "/usuarios").hasRole("ADMIN")
+    .requestMatchers(HttpMethod.PUT, "/api/servicios/**", "/servicios/**").hasRole("ADMIN")
 
     // CLIENTE o ADMIN
     .requestMatchers(HttpMethod.POST, "/api/mascotas", "/mascotas").hasAnyRole("CLIENTE", "ADMIN")
     .requestMatchers(HttpMethod.POST, "/api/reservas", "/reservas").hasAnyRole("CLIENTE", "ADMIN")
+    .requestMatchers(HttpMethod.PATCH, "/api/reservas/**", "/reservas/**").hasAnyRole("CLIENTE", "ADMIN")
 
     // Cualquier otro: autenticado
     .anyRequest().authenticated()
@@ -476,14 +506,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 | POST /api/auth/login | ✅ | ✅ | ✅ |
 | GET /api/servicios | ✅ | ✅ | ✅ |
 | GET /api/usuarios | ✅ | ❌ | ❌ |
-| DELETE /api/usuarios/** | ✅ | ❌ | ❌ |
+| GET /api/usuarios/{id} | ✅ | ❌ | ❌ |
+| PUT /api/usuarios/{id} | ✅ | ❌ | ❌ |
+| DELETE /api/usuarios/{id} | ✅ | ❌ | ❌ |
 | POST /api/servicios | ✅ | ❌ | ❌ |
-| POST /api/mascotas | ✅ | ✅ | ❌ |
-| POST /api/reservas | ✅ | ✅ | ❌ |
+| PUT /api/servicios/{id} | ✅ | ❌ | ❌ |
+| DELETE /api/servicios/{id} | ✅ | ❌ | ❌ |
+| POST /api/mascotas | ✅ | ✅* | ❌ |
+| PUT /api/mascotas/{id} | ✅ | ✅* | ❌ |
+| DELETE /api/mascotas/{id} | ✅ | ❌ | ❌ |
+| POST /api/reservas | ✅ | ✅* | ❌ |
+| PUT /api/reservas/{id} | ✅ | ✅* | ❌ |
+| PATCH /api/reservas/{id}/estado | ✅ | ✅* | ❌ |
+| DELETE /api/reservas/{id} | ✅ | ❌ | ❌ |
 | GET /api/mascotas | ✅ | ✅* | ❌ |
 | GET /api/reservas | ✅ | ✅* | ❌ |
 
-*Los CLIENTE solo ven sus propios datos (filtrado en el Service)
+*El CLIENTE **solo puede operar sobre sus propios datos** (validado en el Service mediante el correo del token en el `SecurityContext`; si intenta acceder a datos de otro usuario recibe **403**). El ADMIN siempre tiene acceso total.
+
+> **Nota (corregido en esta sesión):** además de las reglas por URL del `SecurityConfig`, `MascotaService` y `ReservaService` validan la **propiedad** del recurso:
+> - `verificarAccesoMascota(mascota)` y `verificarAccesoReserva(reserva)`: permiten la operación si el rol es ADMIN o si el dueño del recurso es el usuario autenticado.
+> - Las listas `GET /api/mascotas` y `GET /api/reservas` se filtran automáticamente: un CLIENTE solo ve sus propios datos.
+> - Al **crear** reservas, un CLIENTE no puede usar una mascota de otro usuario (`No tienes permiso para reservar con esta mascota.`).
 
 ---
 
@@ -639,7 +683,22 @@ $env:JWT_SECRET="tu-clave-secreta-de-al-menos-32-caracteres"
 
 ## 11. Datos de prueba
 
-Al iniciar la aplicación, se crean automáticamente:
+### Cómo funciona `DataInitializer` (corregido en esta sesión)
+
+Al iniciar la aplicación, `DataInitializer` **verifica qué datos faltan y solo crea los que no existen**. Antes usaba `usuarioRepository.count() > 0` y no sembraba **nada** si la tabla ya tenía datos; eso causó que en bases pobladas los usuarios de prueba nunca se crearan y, al insertarlos a mano en texto plano, el login fallara.
+
+La verificación es **idempotente** (se ejecuta en cada arranque sin duplicar registros):
+
+| Recurso | Clave de verificación |
+|---------|-----------------------|
+| **Usuarios** | `findByCorreo(correo)` |
+| **Servicios** | `findByNombreContainingIgnoreCase(nombre)` |
+| **Mascotas** | nombre + correo del dueño |
+| **Reservas** | mascota + fecha + hora |
+
+**Corrección de contraseñas:** si un usuario ya existe pero su `contrasena` **no tiene formato BCrypt** (`^$2[aby]\$\d{2}\$...`, es decir, está en texto plano), la **re-hashea automáticamente** con `BCryptPasswordEncoder` y registra una advertencia en el log. Así el login vuelve a funcionar sin intervención manual.
+
+Datos que se asegura que existan en cada arranque:
 
 ### Usuarios
 
@@ -761,6 +820,47 @@ curl -X PATCH http://localhost:8080/api/reservas/1/estado \
 
 ---
 
+### 12.7 Pruebas de verificación del JWT (realizadas en esta sesión)
+
+Batería para confirmar que la autenticación JWT funciona de punta a punta:
+
+| # | Prueba | Resultado esperado |
+|---|--------|--------------------|
+| 1 | `POST /api/auth/login` con credenciales correctas | **200** + `token`, `tipo: Bearer`, `usuarioId`, `rol` |
+| 2 | Login con contraseña incorrecta | **401** `Usuario o contraseña incorrectos` |
+| 3 | Login de usuario inactivo (`ana.martinez@email.com`) | **401** `Esta cuenta se encuentra inactiva.` |
+| 4 | `GET /api/mascotas` **sin** header `Authorization` | **401** `Token invalido, ausente o expirado` |
+| 5 | `GET /api/mascotas` con token inválido/corrupto | **401** |
+| 6 | `GET /api/mascotas` con token válido de CLIENTE | **200** |
+| 7 | Token con firma hecha con otra clave (editar payload en jwt.io) | **401** (el payload NO es de confianza, solo la firma) |
+| 8 | Decodificar el token en [jwt.io](https://jwt.io) | `sub` = correo, `rol`, `iat`, `exp` = +8 horas |
+
+> **Problema detectado y corregido:** todos los logins daban `401 Usuario o contraseña incorrectos` incluso con contraseñas correctas porque los usuarios sembrados directamente en Neon tenían la contraseña en **texto plano** (`admin123`, `cliente123`, etc.). BCrypt no puede comparar contra texto plano, así que `matches()` siempre daba `false`. Se re-hashearon esas filas a BCrypt en la base de datos y, con la corrección de `DataInitializer` (sección 11), el problema queda solucionado de forma automática en el futuro.
+
+### 12.8 Pruebas de permisos por rol (estado final de esta sesión)
+
+Con tokens de ADMIN y CLIENTE se comprobó la autorización:
+
+| Prueba con token **CLIENTE** | Resultado |
+|---|---|
+| `POST /api/servicios` / `PUT` / `DELETE` sobre servicios | **403** |
+| `GET /api/usuarios`, `GET/PUT/DELETE /api/usuarios/{id}` | **403** |
+| `GET /api/mascotas?correo=otro@email.com` o ver/reservar mascotas ajenas | **403** |
+| `GET /api/reservas/3`, `PUT`, `PATCH`, `DELETE` de una reserva ajena | **403** |
+| `POST /registro` con `"rol":"ADMIN"` en el body | **201**, pero el usuario se crea con rol **`cliente`** (sin escalada) |
+| `POST /registro` con `"rol":"INVALIDO"` en el body | **400**, error `Rol inválido: INVALIDO. Roles válidos: ADMIN, CLIENTE` (validación del enum) |
+| `POST /api/mascotas` y `POST /api/reservas` (propias) | **201** |
+| `PUT` y `PATCH` sobre sus **propias** reservas (incluye cambiar los servicios) | **200** |
+| `GET /api/mascotas` y `GET /api/reservas` | **200**, solo sus datos |
+
+| Prueba con token **ADMIN** | Resultado |
+|---|---|
+| `GET /api/usuarios` (listar todos), ver/editar usuario por id | **200** |
+| `POST /api/servicios`, `DELETE /api/servicios/{id}` | **201** / **200** |
+| Ver o editar cualquier mascota o reserva (incluida la ajena) | **200** |
+
+---
+
 ## 13. Errores comunes y soluciones
 
 ### Errores de autenticación
@@ -769,7 +869,9 @@ curl -X PATCH http://localhost:8080/api/reservas/1/estado \
 |-------|-------|----------|
 | `401 Token invalido, ausente o expirado` | No se envió header o token expiró | Hacer login de nuevo para obtener token nuevo |
 | `403 No tienes permiso para realizar esta accion` | El rol del token no tiene acceso | Verificar el rol del usuario |
+| `400 Rol inválido: X. Roles válidos: ADMIN, CLIENTE` | Se envió un valor de rol que no existe en el enum `Rol` | Usar solo `ADMIN` o `CLIENTE` en el campo `rol` |
 | `401 Usuario o contraseña incorrectos` | Credenciales erróneas | Verificar correo y contraseña |
+| `401 Usuario o contraseña incorrectos` (con credenciales correctas) | La contraseña en la BD está en **texto plano** en vez de hash BCrypt | Reiniciar la app: `DataInitializer` la re-hashea automáticamente. Evitar insertar usuarios a mano; usar siempre `POST /registro` |
 
 ### Errores de compilación
 
@@ -882,4 +984,223 @@ curl -X PATCH http://localhost:8080/api/reservas/1/estado \
 
 ---
 
-*Documento generado para el proyecto AgendaPets Backend - Guía para desarrolladores .*
+## 15. Auditoría completa (57 pruebas)
+
+Se ejecutó una batería de 57 pruebas HTTP contra el backend corriendo en puerto 8081, verificando autenticación, autorización, validación de datos, ownership y manejo de errores. También se verificó la integridad de los datos en Neon PostgreSQL.
+
+### Resultado general
+
+| Batería | Pruebas | PASS | FAIL | Descripción |
+|---------|---------|------|------|-------------|
+| 1. Auth | 6 | 6 | 0 | Login, credenciales, usuario inactivo |
+| 2. Registro | 8 | 7 | 1 | Validación, enum, duplicados, aliases |
+| 3. Usuarios | 8 | 8 | 0 | CRUD con roles ADMIN/CLIENTE |
+| 4. Mascotas | 10 | 10 | 0 | CRUD con ownership |
+| 5. Servicios | 8 | 8 | 0 | CRUD con permisos por rol |
+| 6. Reservas | 10 | 10 | 0 | CRUD con ownership y estados |
+| 7. Edge Cases | 7 | 6 | 1 | Tokens, JSON malformado, rutas |
+| **TOTAL** | **57** | **55** | **2** | **96.5% pass rate** |
+| Neon | 4 | 4 | 0 | Integridad de datos |
+
+### Detalle de pruebas
+
+#### Batería 1: Auth (6/6 PASS)
+
+| # | Prueba | Esperado | Resultado |
+|---|--------|----------|-----------|
+| T1 | Login admin (`admin@agendapets.com`) | 200 + token | 200 PASS |
+| T2 | Login cliente (`carlos.perez@email.com`) | 200 + token | 200 PASS |
+| T3 | Login sin campo `correo` | 400 | 400 PASS |
+| T4 | Login sin campo `contrasena` | 400 | 400 PASS |
+| T5 | Login contraseña incorrecta | 401 | 401 PASS |
+| T6 | Login usuario inactivo (`ana.martinez@email.com`) | 401 | 401 PASS |
+
+#### Batería 2: Registro (7/8 PASS)
+
+| # | Prueba | Esperado | Resultado |
+|---|--------|----------|-----------|
+| T7 | Registro válido con `correo`/`contrasena` | 201 | 201 PASS |
+| T8 | Registro `"rol":"INVALIDO"` | 400 | 400 PASS |
+| T9 | Registro `"rol":"ADMIN"` → crea CLIENTE | 201, rol=cliente | 201 PASS |
+| T10 | Registro correo duplicado | 400 | 400 PASS |
+| T11 | Registro sin `correo` | 400 | 400 PASS |
+| T12 | Registro sin `contrasena` | 400 | 400 PASS |
+| T13 | Registro `contrasena` con 3 caracteres | 400 | 400 PASS |
+| T14 | Registro con alias `email`/`password` | 201 | **400 FAIL** |
+
+> **T14 - Bug conocido:** El frontend NO puede enviar `email`/`password` como alias en registro. Debe usar `correo`/`contrasena`. Ver §16 para la corrección pendiente.
+
+#### Batería 3: Usuarios CRUD (8/8 PASS)
+
+| # | Prueba | Esperado | Resultado |
+|---|--------|----------|-----------|
+| T15 | ADMIN lista todos los usuarios | 200 | 200 PASS |
+| T16 | CLIENTE intenta listar usuarios | 403 | 403 PASS |
+| T17 | ADMIN obtiene usuario por ID | 200 | 200 PASS |
+| T18 | ADMIN obtiene usuario inexistente (ID 999) | 404 | 404 PASS |
+| T19 | ADMIN actualiza nombre de usuario | 200 | 200 PASS |
+| T20 | ADMIN envía `"rol":"SUPERADMIN"` en update | 400 | 400 PASS |
+| T21 | CLIENTE intenta obtener usuario por ID | 403 | 403 PASS |
+| T22 | ADMIN elimina usuario de prueba | 200 | 200 PASS |
+
+#### Batería 4: Mascotas CRUD (10/10 PASS)
+
+| # | Prueba | Esperado | Resultado |
+|---|--------|----------|-----------|
+| T23 | ADMIN crea mascota | 201 | 201 PASS |
+| T24 | CLIENTE crea mascota propia | 201 | 201 PASS |
+| T25 | CLIENTE crea mascota sin `nombre` | 400 | 400 PASS |
+| T26 | CLIENTE crea mascota para otro usuario | 403 | 403 PASS |
+| T27 | CLIENTE lista sus mascotas | 200 | 200 PASS |
+| T28 | CLIENTE intenta listar mascotas de otro | 403 | 403 PASS |
+| T29 | CLIENTE actualiza mascota propia | 200 | 200 PASS |
+| T30 | CLIENTE actualiza mascota de Laura | 403 | 403 PASS |
+| T31 | CLIENTE intenta eliminar mascota | 403 | 403 PASS |
+| T32 | ADMIN elimina mascota de prueba | 200 | 200 PASS |
+
+#### Batería 5: Servicios CRUD (8/8 PASS)
+
+| # | Prueba | Esperado | Resultado |
+|---|--------|----------|-----------|
+| T33 | Público lista servicios (sin auth) | 200 | 200 PASS |
+| T34 | Sin token obtiene servicio por ID | 401 | 401 PASS |
+| T35 | ADMIN crea servicio | 201 | 201 PASS |
+| T36 | CLIENTE intenta crear servicio | 403 | 403 PASS |
+| T37 | ADMIN crea servicio sin `nombre` | 400 | 400 PASS |
+| T38 | ADMIN crea servicio con precio negativo | 400 | 400 PASS |
+| T39 | ADMIN actualiza servicio | 200 | 200 PASS |
+| T40 | ADMIN elimina servicio | 200 | 200 PASS |
+
+#### Batería 6: Reservas CRUD (10/10 PASS)
+
+| # | Prueba | Esperado | Resultado |
+|---|--------|----------|-----------|
+| T41 | CLIENTE crea reserva propia | 201 | 201 PASS |
+| T42 | CLIENTE crea reserva con `servicioIds` | 201 | 201 PASS |
+| T43 | CLIENTE crea reserva con mascota ajena | 403 | 403 PASS |
+| T44 | CLIENTE lista sus reservas | 200 | 200 PASS |
+| T45 | CLIENTE intenta listar reservas de otro | 403 | 403 PASS |
+| T46 | CLIENTE actualiza fecha de reserva propia | 200 | 200 PASS |
+| T47 | CLIENTE actualiza reserva de Laura | 403 | 403 PASS |
+| T48 | PATCH cambia estado a CONFIRMADA | 200 | 200 PASS |
+| T49 | CLIENTE cambia estado de reserva ajena | 403 | 403 PASS |
+| T50 | ADMIN elimina reserva | 200 | 200 PASS |
+
+#### Batería 7: Edge Cases (6/7 PASS)
+
+| # | Prueba | Esperado | Resultado |
+|---|--------|----------|-----------|
+| T51 | Token JWT inválido/falso | 401 | 401 PASS |
+| T52 | Header `Authorization` sin prefijo `Bearer` | 401 | 401 PASS |
+| T53 | `GET /api/servicios/1` sin token | 401 | 401 PASS |
+| T54 | `POST /api/mascotas` con body `{}` vacío | 400 | 400 PASS |
+| T55 | `POST /api/auth/login` con JSON malformado | 400 | **401 FAIL** |
+| T56 | `GET /api/noexiste` (ruta inexistente) | 401 | 401 PASS |
+| T57 | `DELETE /api/mascotas/1` sin token | 401 | 401 PASS |
+
+> **T55 - Bug conocido:** JSON malformado en login devuelve 401 en vez de 400. Spring Security intercepta antes del controller. Ver §16 para la corrección pendiente.
+
+### Verificación Neon PostgreSQL
+
+| Verificación | Query | Resultado |
+|---|---|---|
+| N1: Contraseñas hasheadas | `SELECT substring(contrasena, 1, 3), length(contrasena) FROM usuarios` | 15/15 con `$2a$`/`$2b$`, 60 chars PASS |
+| N2: Usuarios test | `SELECT * FROM usuarios WHERE correo LIKE '%@test.com'` | 6 usuarios, todos rol=CLIENTE PASS |
+| N3: Mascotas con dueños | `SELECT m.*, u.correo FROM mascotas m JOIN usuarios u...` | 13 mascotas, dueños correctos PASS |
+| N4: Reservas y estados | `SELECT r.*, m.nombre FROM reservas r JOIN mascotas m...` | 10 reservas, estados correctos PASS |
+
+---
+
+## 16. Correcciones pendientes para frontend
+
+Estas son correcciones identificadas en la auditoría (§15) que deben implementarse antes de la integración con el frontend. No son críticas pero mejoran la experiencia del desarrollador frontend.
+
+### Bug 1: Alias `email`/`password` no funcionan en registro
+
+**Problema:** El frontend envía `email`/`password` pero recibe error 400 `"El correo es obligatorio"`.
+
+**Causa:** `@Valid` en `UsuarioController.java:23` valida `correo`/`contrasena` antes de que el servicio pueda usar `getCorreoEfectivo()`/`getContrasenaEfectiva()`.
+
+**Corrección:**
+
+1. Quitar `@Valid` del controller (`UsuarioController.java:23`):
+```java
+// ANTES:
+public ResponseEntity<?> registrar(@Valid @RequestBody UsuarioRequestDTO dto) {
+// DESPUÉS:
+public ResponseEntity<?> registrar(@RequestBody UsuarioRequestDTO dto) {
+```
+
+2. Agregar validación manual en `UsuarioService.java:registrar()` después de la línea 36:
+```java
+String contrasena = dto.getContrasenaEfectiva();
+if (contrasena == null || contrasena.isBlank()) {
+    throw new IllegalArgumentException("La contraseña es obligatoria.");
+}
+if (contrasena.length() < 6) {
+    throw new IllegalArgumentException("La contraseña debe tener al menos 6 caracteres.");
+}
+```
+
+**Resultado:** Ambos formatos funcionan:
+- `{"correo":"x@test.com","contrasena":"123456"}` → 201
+- `{"email":"x@test.com","password":"123456"}` → 201
+
+---
+
+### Bug 2: JSON malformado devuelve 401 en vez de 400
+
+**Problema:** Si el frontend envía JSON corrupto (ej: `{"correo":"admin@agendapets.com","contrasena":}`), recibe 401 en vez de 400.
+
+**Causa:** Spring Security intercepta antes del controller. El `AuthenticationEntryPoin` siempre retorna 401.
+
+**Corrección:** Agregar handler en `GlobalExceptionHandler.java`:
+
+```java
+@ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
+public ResponseEntity<Map<String, String>> manejarJsonMalformado(
+        org.springframework.http.converter.HttpMessageNotReadableException ex) {
+    Map<String, String> cuerpo = new HashMap<>();
+    cuerpo.put("error", "El cuerpo de la petición no es JSON válido");
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(cuerpo);
+}
+```
+
+**Nota:** Si Spring Security intercepta antes del controller (no lo atrapa `@ControllerAdvice`), se necesita un validador de content-type en el filtro JWT. Probar primero con esta solución.
+
+---
+
+### Bug 3: `GET /api/servicios/{id}` requiere auth
+
+**Problema:** El frontend puede listar servicios sin token (`GET /api/servicios`), pero para ver un servicio individual necesita token (`GET /api/servicios/1`).
+
+**Causa:** La regla `permitAll` en `SecurityConfig.java:45` solo matchea rutas exactas, no wildcards.
+
+**Corrección:** Modificar `SecurityConfig.java:45`:
+
+```java
+// ANTES:
+.requestMatchers(HttpMethod.GET, "/api/servicios", "/servicios").permitAll()
+// DESPUÉS:
+.requestMatchers(HttpMethod.GET, "/api/servicios", "/servicios",
+                 "/api/servicios/**", "/servicios/**").permitAll()
+```
+
+**Resultado:** Ver un servicio individual no requiere token (igual que listar todos).
+
+---
+
+### Resumen de cambios pendientes
+
+| # | Archivo | Línea | Cambio | Riesgo |
+|---|---------|-------|--------|--------|
+| 1 | `UsuarioController.java` | 23 | Quitar `@Valid` | Bajo |
+| 2 | `UsuarioService.java` | ~37 | Agregar validación manual de contraseña | Bajo |
+| 3 | `GlobalExceptionHandler.java` | Nueva | Handler `HttpMessageNotReadableException` | Bajo |
+| 4 | `SecurityConfig.java` | 45 | Agregar wildcards GET servicios | Bajo |
+
+> **Nota:** Estos cambios no rompen funcionalidad existente. Solo mejoran la experiencia del frontend. Se recomienda implementarlos antes de iniciar la integración con el frontend.
+
+---
+
+*Documento generado para el proyecto AgendaPets Backend - Guía para desarrolladores.*

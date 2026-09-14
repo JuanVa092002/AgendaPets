@@ -387,7 +387,7 @@ curl http://localhost:8080/api/mascotas \
 
 Para una explicación detallada de cada componente del proyecto, consulta:
 
-📄 **[documentacion.md](documentacion.md)** - Guía completa para desarrolladores junior que incluye:
+📄 **[documentacion.md](documentacion.md)** - Guía completa para desarrolladores que incluye:
 - Explicación detallada de cada capa (Controller, Service, Repository, Model)
 - Modelo de datos completo
 - Flujo de autenticación JWT explicado paso a paso
