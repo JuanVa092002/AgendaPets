@@ -29,16 +29,17 @@ public class Usuario {
     @Column(name = "correo", nullable = false, unique = true, length = 150)
     private String correo;
 
-    @Column(name = "contrasena", nullable = false, length = 150)
+    @Column(name = "contrasena", nullable = false, length = 255)
     private String contrasena;
 
     @Column(name = "estado")
     @Builder.Default
     private Boolean estado = true;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "rol", nullable = false, length = 20)
     @Builder.Default
-    private String rol = "CLIENTE";
+    private Rol rol = Rol.CLIENTE;
 
     @JsonIgnore
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)

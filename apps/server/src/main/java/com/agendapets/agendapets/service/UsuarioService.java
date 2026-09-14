@@ -1,11 +1,12 @@
 package com.agendapets.agendapets.service;
 
-import com.agendapets.agendapets.dto.LoginRequestDTO;
 import com.agendapets.agendapets.dto.UsuarioRequestDTO;
 import com.agendapets.agendapets.dto.UsuarioResponseDTO;
+import com.agendapets.agendapets.model.Rol;
 import com.agendapets.agendapets.model.Usuario;
 import com.agendapets.agendapets.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public UsuarioResponseDTO registrar(UsuarioRequestDTO dto) {
@@ -33,35 +35,24 @@ public class UsuarioService {
             throw new IllegalArgumentException("La contraseña es obligatoria.");
         }
 
+        if (dto.getRol() != null && !dto.getRol().isBlank()) {
+            try {
+                Rol.valueOf(dto.getRol().toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Rol inválido: " + dto.getRol() + ". Roles válidos: ADMIN, CLIENTE");
+            }
+        }
+
         Usuario usuario = Usuario.builder()
                 .nombre(dto.getNombre())
                 .correo(correo)
-                .contrasena(contrasena)
+                .contrasena(passwordEncoder.encode(contrasena))
                 .estado(dto.getEstado() != null ? dto.getEstado() : true)
-                .rol(dto.getRol() != null && !dto.getRol().isBlank() ? dto.getRol().toUpperCase() : "CLIENTE")
+                .rol(Rol.CLIENTE)
                 .build();
 
         Usuario guardado = usuarioRepository.save(usuario);
         return mapToResponseDTO(guardado);
-    }
-
-    @Transactional(readOnly = true)
-    public UsuarioResponseDTO login(LoginRequestDTO dto) {
-        if (dto.getCorreo() == null || dto.getContrasena() == null) {
-            throw new IllegalArgumentException("Correo y contraseña son requeridos.");
-        }
-        Usuario usuario = usuarioRepository.findByCorreo(dto.getCorreo().trim())
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ese correo."));
-
-        if (!Boolean.TRUE.equals(usuario.getEstado())) {
-            throw new IllegalStateException("Esta cuenta se encuentra inactiva.");
-        }
-
-        if (!usuario.getContrasena().equals(dto.getContrasena())) {
-            throw new IllegalArgumentException("Contraseña incorrecta.");
-        }
-
-        return mapToResponseDTO(usuario);
     }
 
     @Transactional(readOnly = true)
@@ -94,13 +85,17 @@ public class UsuarioService {
             usuario.setNombre(dto.getNombre());
         }
         if (dto.getContrasenaEfectiva() != null && !dto.getContrasenaEfectiva().isBlank()) {
-            usuario.setContrasena(dto.getContrasenaEfectiva());
+            usuario.setContrasena(passwordEncoder.encode(dto.getContrasenaEfectiva()));
         }
         if (dto.getEstado() != null) {
             usuario.setEstado(dto.getEstado());
         }
         if (dto.getRol() != null && !dto.getRol().isBlank()) {
-            usuario.setRol(dto.getRol().toUpperCase());
+            try {
+                usuario.setRol(Rol.valueOf(dto.getRol().toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Rol inválido: " + dto.getRol() + ". Roles válidos: ADMIN, CLIENTE");
+            }
         }
 
         return mapToResponseDTO(usuarioRepository.save(usuario));
@@ -121,7 +116,7 @@ public class UsuarioService {
                 .correo(u.getCorreo())
                 .email(u.getCorreo())
                 .estado(u.getEstado())
-                .rol(u.getRol() != null ? u.getRol().toLowerCase() : "cliente")
+                .rol(u.getRol() != null ? u.getRol().name().toLowerCase() : "cliente")
                 .build();
     }
 }
