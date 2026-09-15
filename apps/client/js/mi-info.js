@@ -9,15 +9,15 @@ const infoInicial = {
 
 async function obtenerInfoNegocio() {
     try {
-        if (window.AgendaApi && typeof AgendaApi.obtenerNegocio === "function") {
-            const data = await AgendaApi.obtenerNegocio();
+        if (window.AgendaApi && typeof window.AgendaApi.obtenerNegocio === "function") {
+            const data = await window.AgendaApi.obtenerNegocio();
             if (data && data.nombre) {
                 localStorage.setItem(KEY_INFO, JSON.stringify(data));
                 return data;
             }
         }
     } catch (error) {
-        console.warn("No se pudo conectar con la API de negocio, usando cache local:", error);
+        console.warn("No se pudo conectar con la API, usando respaldo local:", error);
     }
     const guardada = localStorage.getItem(KEY_INFO);
     return guardada ? JSON.parse(guardada) : infoInicial;
@@ -31,9 +31,7 @@ async function actualizarInfoEnPantalla() {
     });
 
     const chipAdmin = document.getElementById("admin-saludo");
-    if (chipAdmin) {
-        chipAdmin.textContent = info.nombre;
-    }
+    if (chipAdmin) chipAdmin.textContent = info.nombre;
 
     const footerCorreo = document.querySelector(".footer-correo");
     if (footerCorreo) footerCorreo.textContent = info.correo;
@@ -43,16 +41,9 @@ async function actualizarInfoEnPantalla() {
 
     const footerDireccion = document.querySelector(".footer-direccion");
     if (footerDireccion) footerDireccion.textContent = info.direccion;
-
-    const contactoCorreo = document.querySelector(".mapa-split__lista .bi-envelope-fill + span");
-    if (contactoCorreo) contactoCorreo.textContent = info.correo;
-
-    const contactoTelefono = document.querySelector(".mapa-split__lista .bi-telephone-fill + span");
-    if (contactoTelefono) contactoTelefono.textContent = info.telefono;
-
-    const contactoDireccion = document.querySelector(".mapa-split__lista .bi-geo-alt-fill + span");
-    if (contactoDireccion) contactoDireccion.textContent = info.direccion;
 }
+
+window.actualizarInfoEnPantalla = actualizarInfoEnPantalla;
 
 document.addEventListener("DOMContentLoaded", async () => {
     await actualizarInfoEnPantalla();
@@ -69,9 +60,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         formulario.addEventListener("submit", async (e) => {
             e.preventDefault();
 
-            const submitBtn = formulario.querySelector("button[type='submit']");
-            if (submitBtn) submitBtn.disabled = true;
-
             const nuevosDatos = {
                 nombre: document.getElementById("negocio-nombre").value.trim(),
                 correo: document.getElementById("admin-correo").value.trim(),
@@ -81,8 +69,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             try {
                 let guardado = nuevosDatos;
-                if (window.AgendaApi && typeof AgendaApi.actualizarNegocio === "function") {
-                    guardado = await AgendaApi.actualizarNegocio(nuevosDatos);
+                if (window.AgendaApi && typeof window.AgendaApi.actualizarNegocio === "function") {
+                    guardado = await window.AgendaApi.actualizarNegocio(nuevosDatos);
                 }
                 
                 localStorage.setItem(KEY_INFO, JSON.stringify(guardado));
@@ -90,8 +78,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 if (window.Swal) {
                     Swal.fire({
-                        title: "Información actualizada",
-                        text: "Los datos del negocio se han guardado en la base de datos.",
+                        title: "Guardado en la Base de Datos",
+                        text: "Los cambios ahora son globales para cualquier navegador.",
                         icon: "success",
                         confirmButtonColor: "#7C9A4A"
                     });
@@ -100,13 +88,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 console.error(err);
                 if (window.Swal) {
                     Swal.fire({
-                        title: "Error al guardar",
-                        text: err.message || "No se pudo sincronizar la información con el servidor.",
+                        title: "Error al actualizar",
+                        text: err.message || "No se pudo guardar la información.",
                         icon: "error"
                     });
                 }
-            } finally {
-                if (submitBtn) submitBtn.disabled = false;
             }
         });
     }
