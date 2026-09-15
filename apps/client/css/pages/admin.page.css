@@ -199,11 +199,34 @@
     font-weight: 600;
 }
 
+/* Configuración base genérica */
 .admin-workspace {
     display: grid;
-    grid-template-columns: minmax(300px, 0.92fr) minmax(0, 1.2fr);
     gap: 22px;
     align-items: start;
+}
+
+/* 1. Vista de Servicios (mis-servicios.html): Formulario compacto, Catálogo amplio */
+.admin-workspace--servicios {
+    grid-template-columns: minmax(300px, 0.92fr) minmax(0, 1.2fr);
+}
+
+/* 2. Vista de Mi Info (mi-info.html): Proporción 50/50 equilibrada */
+.admin-workspace--info {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* 3. Vista de Dashboard (dashboard.html): Historial amplio, Panel lateral compacto */
+.admin-workspace--dashboard {
+    grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
+}
+
+@media (max-width: 991px) {
+    .admin-workspace--servicios,
+    .admin-workspace--info,
+    .admin-workspace--dashboard {
+        grid-template-columns: 1fr;
+    }
 }
 
 .admin-card {
@@ -486,6 +509,35 @@ textarea.form-control { resize: vertical; min-height: 88px; }
     .admin-workspace { grid-template-columns: 1fr; }
     .header-admin { flex-wrap: wrap; }
     .nav-admin { order: 3; width: 100%; justify-content: center; }
+}
+
+.admin-workspace--info {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    align-items: start;
+}
+
+/* Personalización Verde para los Switches de Bootstrap */
+.form-check-input:checked {
+    background-color: var(--sage) !important;
+    border-color: var(--sage) !important;
+}
+
+.form-check-input:focus {
+    border-color: var(--sage) !important;
+    box-shadow: 0 0 0 0.25rem rgba(124, 154, 74, 0.25) !important;
+}
+
+/* Indicador lateral verde como en image_d0c102.png */
+.horario-item--activo {
+    border-left: 4px solid var(--sage) !important;
+}
+
+@media (max-width: 991px) {
+    .admin-workspace--info {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 640px) {
