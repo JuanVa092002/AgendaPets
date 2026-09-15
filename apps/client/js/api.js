@@ -144,6 +144,15 @@
         body: JSON.stringify({ estado: estado })
       }).then(mapReserva);
     },
+    obtenerNegocio: function () {
+      return request("/api/negocio");
+    },
+    actualizarNegocio: function (datos) {
+      return request("/api/negocio", {
+        method: "PUT",
+        body: JSON.stringify(datos)
+      });
+    },
     mapServicio: mapServicio,
     mapReserva: mapReserva
   };
