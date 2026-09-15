@@ -22,6 +22,7 @@
 14. [Glosario de términos](#14-glosario-de-términos)
 15. [Auditoría completa (57 pruebas)](#15-auditoría-completa-57-pruebas)
 16. [Correcciones pendientes para frontend](#16-correcciones-pendientes-para-frontend)
+17. [Roadmap - Escalabilidad a futuro](#17-roadmap---escalabilidad-a-futuro)
 
 ---
 
@@ -1200,6 +1201,48 @@ public ResponseEntity<Map<String, String>> manejarJsonMalformado(
 | 4 | `SecurityConfig.java` | 45 | Agregar wildcards GET servicios | Bajo |
 
 > **Nota:** Estos cambios no rompen funcionalidad existente. Solo mejoran la experiencia del frontend. Se recomienda implementarlos antes de iniciar la integración con el frontend.
+
+---
+
+## 17. Roadmap - Escalabilidad a Futuro
+
+### Fase 1: Seguridad ✅
+
+- [x] Hashing de contraseñas con BCrypt
+- [x] Autenticación JWT (tokens de sesión)
+- [x] Autorización por roles (ADMIN vs CLIENTE)
+- [x] Protección de endpoints según el rol
+- [x] Manejo centralizado de errores (GlobalExceptionHandler)
+
+### Fase 2: Funcionalidad
+
+- [ ] Sistema de notificaciones (email/SMS al confirmar reserva)
+- [ ] Calendario visual de disponibilidad
+- [ ] Sistema de reseñas y calificaciones
+- [ ] Gestión de horarios y disponibilidad del negocio
+- [ ] Página de perfil del cliente con historial
+
+### Fase 3: Integración Frontend
+
+- [x] Integración con frontend AgendaPets (Vercel)
+- [ ] Panel administrativo completo
+- [ ] Dashboard con estadísticas del negocio
+
+### Fase 4: Infraestructura
+
+- [x] Docker (multi-stage build)
+- [x] Deploy en Render (backend)
+- [x] Deploy en Vercel (frontend)
+- [ ] CI/CD con GitHub Actions
+- [ ] Tests unitarios y de integración
+- [ ] Monitorización y logging estructurado
+
+### Fase 5: Expansión
+
+- [ ] App móvil con Flutter / React Native
+- [ ] Sistema de pagos integrado
+- [ ] Múltiples sucursales
+- [ ] API pública para terceros
 
 ---
 
