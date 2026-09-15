@@ -12,6 +12,12 @@ body {
 
 @media (max-width: 767.98px) {
   body:has(.whatsapp-3d) {
-    padding-bottom: 76px;
+    padding-bottom: 0;
+  }
+
+  .whatsapp-3d {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
   }
 }

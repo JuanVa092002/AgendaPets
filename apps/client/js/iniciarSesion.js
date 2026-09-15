@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const avisar = (icon, title, text) =>
     Swal.fire({ icon, title, text, confirmButtonColor: colorOk });
 
-  const entrar = (idCorreo, idPassword, rolPedido) => {
+    const entrar = async (idCorreo, idPassword, rolPedido) => {
     const correo = (document.getElementById(idCorreo)?.value || "").trim().toLowerCase();
     const password = document.getElementById(idPassword)?.value || "";
 
@@ -53,12 +53,15 @@ document.addEventListener("DOMContentLoaded", () => {
       return avisar("error", "No se pudo entrar", "Recarga la página e inténtalo de nuevo.");
     }
 
-    const resultado = AgendaAuth.autenticar(correo, password);
+    const resultado = await AgendaAuth.autenticar(correo, password);
     if (resultado.error === "not_found") {
       return avisar("info", "Cuenta no encontrada", "No hay una cuenta con ese correo. Crea una desde Iniciar sesión.");
     }
     if (resultado.error === "bad_pass") {
       return avisar("error", "Contraseña incorrecta", "Revísalas e inténtalo de nuevo.");
+    }
+    if (resultado.error) {
+      return avisar("error", "No se pudo entrar", resultado.message || "Inténtalo de nuevo.");
     }
 
     const usuario = resultado.usuario;

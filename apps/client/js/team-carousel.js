@@ -63,14 +63,33 @@ document.addEventListener("DOMContentLoaded", () => {
     renderDots();
   };
 
+  let autoTimer = null;
+
+  const startAuto = () => {
+    stopAuto();
+    autoTimer = setInterval(() => {
+      index = index >= maxIndex() ? 0 : index + 1;
+      update();
+    }, 8000);
+  };
+
+  const stopAuto = () => {
+    if (autoTimer) {
+      clearInterval(autoTimer);
+      autoTimer = null;
+    }
+  };
+
   prevBtn.addEventListener("click", () => {
     index = Math.max(0, index - 1);
     update();
+    startAuto();
   });
 
   nextBtn.addEventListener("click", () => {
     index = Math.min(maxIndex(), index + 1);
     update();
+    startAuto();
   });
 
   let touchStartX = 0;
@@ -78,6 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "touchstart",
     (e) => {
       touchStartX = e.changedTouches[0].screenX;
+      stopAuto();
     },
     { passive: true }
   );
@@ -90,10 +110,15 @@ document.addEventListener("DOMContentLoaded", () => {
       if (delta < 0) index = Math.min(maxIndex(), index + 1);
       else index = Math.max(0, index - 1);
       update();
+      startAuto();
     },
     { passive: true }
   );
 
+  root.addEventListener("mouseenter", stopAuto);
+  root.addEventListener("mouseleave", startAuto);
+
   window.addEventListener("resize", update);
   update();
+  startAuto();
 });

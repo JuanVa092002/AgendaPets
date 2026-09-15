@@ -1,54 +1,9 @@
-const STORAGE_KEY = "servicios";
-
 (function protegerAdmin() {
     const s = JSON.parse(localStorage.getItem("sesion") || "null");
-    if (!s || s.rol !== "admin") {
+    if (!s || !s.token || String(s.rol || "").toLowerCase() !== "admin") {
         window.location.replace("../index.html");
     }
 })();
-
-const serviciosIniciales = [
-    {
-        id: 1,
-        nombre: "Baño básico",
-        duracion: "1 hora",
-        precio: 60000,
-        descripcion: "Baño completo con shampoo especializado, secado y cepillado .",
-        visible: true
-    },
-    {
-        id: 2,
-        nombre: "Corte de pelo",
-        duracion: "1 hora y 30 minutos",
-        precio: 35000,
-        descripcion: "Corte personalizado según raza, con cepillado y limpieza del pelaje.",
-        visible: true
-    },
-    {
-        id: 3,
-        nombre: "Corte de uñas",
-        duracion: "30 minutos",
-        precio: 15000,
-        descripcion: "Corte de uñas seguro para mantener higiene y comodidad.",
-        visible: true
-    },
-    {
-        id: 4,
-        nombre: "Limpieza dental",
-        duracion: "45 minutos",
-        precio: 45000,
-        descripcion: "Limpieza bucal para reducir placa y cuidar dientes y encías.",
-        visible: true
-    },
-    {
-        id: 5,
-        nombre: "Baño premium",
-        duracion: "2 horas",
-        precio: 75000,
-        descripcion: "Baño premium con tratamiento del pelaje, secado y cepillado.",
-        visible: true
-    }
-];
 
 const formulario = document.getElementById("form-servicio");
 const contenedorServicios = document.getElementById("contenedorServicios");
@@ -58,9 +13,9 @@ const btnCancelar = document.getElementById("btn-cancelar");
 const textoFormulario = document.getElementById("texto-formulario");
 const iconoFormulario = document.getElementById("icono-formulario");
 
-let servicios = cargarServicios();
+let servicios = [];
 
-formulario.addEventListener("submit", (event) => {
+formulario.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const datos = leerFormulario();
@@ -71,10 +26,14 @@ formulario.addEventListener("submit", (event) => {
         return;
     }
 
-    if (datos.id) {
-        actualizarServicio(datos);
-    } else {
-        crearServicio(datos);
+    try {
+        if (datos.id) {
+            await actualizarServicio(datos);
+        } else {
+            await crearServicio(datos);
+        }
+    } catch (err) {
+        avisar("No se pudo guardar", err.message || "Inténtalo de nuevo.", "error");
     }
 });
 
@@ -90,32 +49,53 @@ contenedorServicios.addEventListener("click", (event) => {
     const accion = boton.dataset.accion;
 
     if (accion === "editar") iniciarEdicion(id);
-    if (accion === "ocultar") alternarVisibilidad(id);
+    if (accion === "ocultar") void alternarVisibilidad(id);
     if (accion === "eliminar") confirmarEliminacion(id);
 });
 
-function cargarServicios() {
-    const guardados = localStorage.getItem(STORAGE_KEY);
-
-    if (!guardados) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(serviciosIniciales));
-        return [...serviciosIniciales];
-    }
-
-    return JSON.parse(guardados).map((servicio) => ({
-        ...servicio,
-        precio: Number(servicio.precio),
-        visible: servicio.visible !== false
-    }));
+function minutosDeDuracion(texto) {
+    const valor = String(texto || "").toLowerCase();
+    const horas = valor.match(/(\d+(?:[.,]\d+)?)\s*(hora|horas|h)\b/);
+    const minutos = valor.match(/(\d+)\s*(min|minuto|minutos)\b/);
+    let total = 0;
+    if (horas) total += Math.round(Number(horas[1].replace(",", ".")) * 60);
+    if (minutos) total += Number(minutos[1]);
+    if (total) return total;
+    const solo = valor.replace(/\D+/g, "");
+    return solo ? Number(solo) : 30;
 }
 
-function guardarServicios() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(servicios));
+function payloadServicio(datos, extra) {
+    return Object.assign({
+        nombre: datos.nombre,
+        descripcion: datos.descripcion,
+        precio: datos.precio,
+        duracion: datos.duracion,
+        duracionServicio: minutosDeDuracion(datos.duracion)
+    }, extra || {});
 }
 
-function siguienteId() {
-    if (servicios.length === 0) return 1;
-    return Math.max(...servicios.map((servicio) => servicio.id)) + 1;
+async function cargarServicios() {
+    servicios = await AgendaApi.servicios();
+    mostrarServicios();
+}
+
+async function crearServicio({ nombre, duracion, precio, descripcion }) {
+    await AgendaApi.crearServicio(payloadServicio({ nombre, duracion, precio, descripcion }, { visible: true }));
+    await cargarServicios();
+    formulario.reset();
+    avisar("Servicio creado", `"${nombre}" ya está en la lista.`, "success");
+}
+
+async function actualizarServicio({ id, nombre, duracion, precio, descripcion }) {
+    const actual = servicios.find((item) => item.id === id);
+    await AgendaApi.actualizarServicio(id, payloadServicio(
+        { nombre, duracion, precio, descripcion },
+        { visible: actual ? actual.visible !== false : true }
+    ));
+    await cargarServicios();
+    salirModoEdicion();
+    avisar("Servicio actualizado", `"${nombre}" se guardó correctamente.`, "success");
 }
 
 function leerFormulario() {
@@ -136,37 +116,6 @@ function validarServicio({ nombre, duracion, precio, descripcion }) {
     if (!Number.isFinite(precio) || precio <= 0) return "El precio debe ser un número mayor a 0.";
     if (descripcion.length < 10) return "La descripción debe tener al menos 10 caracteres.";
     return "";
-}
-
-function crearServicio({ nombre, duracion, precio, descripcion }) {
-    servicios.push({
-        id: siguienteId(),
-        nombre,
-        duracion,
-        precio,
-        descripcion,
-        visible: true
-    });
-
-    guardarServicios();
-    mostrarServicios();
-    formulario.reset();
-    avisar("Servicio creado", `"${nombre}" ya está en la lista.`, "success");
-}
-
-function actualizarServicio({ id, nombre, duracion, precio, descripcion }) {
-    const servicio = servicios.find((item) => item.id === id);
-    if (!servicio) return;
-
-    servicio.nombre = nombre;
-    servicio.duracion = duracion;
-    servicio.precio = precio;
-    servicio.descripcion = descripcion;
-
-    guardarServicios();
-    mostrarServicios();
-    salirModoEdicion();
-    avisar("Servicio actualizado", `"${nombre}" se guardó correctamente.`, "success");
 }
 
 function iniciarEdicion(id) {
@@ -201,13 +150,15 @@ function salirModoEdicion() {
     btnCancelar.classList.add("d-none");
 }
 
-function alternarVisibilidad(id) {
+async function alternarVisibilidad(id) {
     const servicio = servicios.find((item) => item.id === id);
     if (!servicio) return;
-
-    servicio.visible = !servicio.visible;
-    guardarServicios();
-    mostrarServicios();
+    try {
+        await AgendaApi.actualizarServicio(id, payloadServicio(servicio, { visible: servicio.visible === false }));
+        await cargarServicios();
+    } catch (err) {
+        avisar("No se pudo actualizar", err.message || "Inténtalo de nuevo.", "error");
+    }
 }
 
 function confirmarEliminacion(id) {
@@ -223,22 +174,25 @@ function confirmarEliminacion(id) {
         cancelButtonColor: "#7C9A4A",
         confirmButtonText: "Sí, eliminar",
         cancelButtonText: "Cancelar"
-    }).then((resultado) => {
+    }).then(async (resultado) => {
         if (!resultado.isConfirmed) return;
-        eliminarServicio(id);
+        try {
+            await eliminarServicio(id);
+        } catch (err) {
+            avisar("No se pudo eliminar", err.message || "Inténtalo de nuevo.", "error");
+        }
     });
 }
 
-function eliminarServicio(id) {
+async function eliminarServicio(id) {
     const servicio = servicios.find((item) => item.id === id);
-    servicios = servicios.filter((item) => item.id !== id);
-    guardarServicios();
+    await AgendaApi.eliminarServicio(id);
 
     if (Number(inputId.value) === id) {
         salirModoEdicion();
     }
 
-    mostrarServicios();
+    await cargarServicios();
     avisar("Servicio eliminado", `"${servicio.nombre}" ya no está en la lista.`, "success");
 }
 
@@ -362,6 +316,9 @@ function avisar(titulo, texto, icono) {
 }
 
 mostrarServicios();
+cargarServicios().catch((err) => {
+    avisar("No se pudieron cargar los servicios", err.message || "Recarga la página.", "error");
+});
 
 document.getElementById("buscar-servicio")?.addEventListener("input", mostrarServicios);
 

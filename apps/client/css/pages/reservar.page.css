@@ -1,4 +1,4 @@
-:root{--ink:#2c3319;--muted:#667056;--green:#4d5c2d;--sage:#7c9a4a;--leaf:#a8c48a;--tan:#e7d9b5;--cream:#f6f3ea;--card:#fffdf8}
+:root{--ink:#2c3319;--muted:#667056;--green:#4d5c2d;--sage:#4f8020;--leaf:#a8c48a;--tan:#e7d9b5;--cream:#f6f3ea;--card:#fffdf8}
 *{box-sizing:border-box}
 .reserva-page{margin:0;min-height:100vh;overflow-x:clip;background:radial-gradient(1200px 600px at 80% -10%,#efe6d2 0%,var(--cream) 45%);color:var(--ink);font-family:Montserrat,sans-serif;padding-bottom:140px}
 .reserva-brand{display:flex;justify-content:space-between;align-items:center;padding:22px 7vw 8px;gap:16px}
@@ -33,7 +33,7 @@
 .reserva-stepper b{width:30px;height:30px;border-radius:50%;background:var(--tan);color:var(--green);display:grid;place-items:center;font-size:.85rem}
 .reserva-stepper .is-active,.reserva-stepper .is-done{color:var(--green)}
 .reserva-stepper .is-active b,.reserva-stepper .is-done b{background:var(--sage);color:#fff}
-.reserva-main h1{font:500 clamp(2rem,4vw,3.1rem)/1.1 Fraunces,serif;text-align:center;margin:0 0 10px}
+.reserva-main h1{font:500 clamp(2rem,4vw,3.1rem)/1.1 "Original Surfer","Comfortaa",cursive;text-align:center;margin:0 0 10px}
 .lead{text-align:center;color:var(--muted);margin:0 auto 40px;max-width:520px;font-weight:500}
 #lista-servicios,.reserva-form,.reserva-resumen{max-width:720px;margin-inline:auto}
 #lista-servicios{display:grid;gap:20px;padding-bottom:24px}
@@ -61,7 +61,7 @@
 .fecha-cal td button{width:34px;height:34px;max-width:100%;border:0;border-radius:50%;background:transparent;font-weight:600;color:var(--ink)}
 .fecha-cal td button:hover:not(:disabled){background:#eef5e3}
 .fecha-cal td button.is-on{background:var(--sage);color:#fff}
-.fecha-cal td button:disabled{color:#c9c4b6}
+.fecha-cal td button:disabled{color:#A0A090}
 .fecha-horas__label{font:700 .95rem Comfortaa,sans-serif;margin:0 0 16px}
 .hora-grupo{margin-bottom:18px}
 .hora-grupo small{display:block;color:var(--muted);margin-bottom:10px;font-weight:600}

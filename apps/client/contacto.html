@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contactanos| AgendaPets</title>
+    <link rel="icon" type="image/png" href="./assets/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -220,6 +221,58 @@
 
         </section>
 
+        <!-- MAPA DE UBICACIÓN -->
+        <section class="mapa-seccion">
+            <div class="container">
+                <div class="text-center mb-4">
+                    <span
+                        class="badge bg-success bg-opacity-10 text-success fw-bold px-3 py-2 rounded-pill mb-2 fs-6">
+                        <i class="bi bi-geo-alt-fill me-1"></i> Encuéntranos
+                    </span>
+                    <h2 class="titulo-faq">Nuestra ubicación</h2>
+                </div>
+                <div class="mapa-split">
+                    <div class="mapa-split__mapa">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.52!2d-74.12808!3d4.675631!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNMKwNDAnMzIuMyJOIDc0wrAwNyc0MS4xIlc!5e0!3m2!1ses!2sco!4v1726000000000"
+                            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <div class="mapa-split__info">
+                        <h3 class="mapa-split__titulo">AgendaPets</h3>
+                        <p class="mapa-split__subtitulo">Peluquería canina profesional</p>
+                        <ul class="mapa-split__lista">
+                            <li>
+                                <i class="bi bi-geo-alt-fill"></i>
+                                <span>Chapinero, Bogotá</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-telephone-fill"></i>
+                                <span>+57 310 555 7890</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-clock-fill"></i>
+                                <span>Lun - Vie: 8am - 6pm</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-clock-fill"></i>
+                                <span>Sáb: 9am - 4pm</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-envelope-fill"></i>
+                                <span>AgendaPets@outlook.com</span>
+                            </li>
+                        </ul>
+                        <a href="https://maps.google.com/?q=4.675631,-74.12808" target="_blank"
+                            rel="noopener noreferrer" class="mapa-split__btn">
+                            <i class="bi bi-box-arrow-up-right"></i> Cómo llegar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         
         <a href="https://wa.me" class="whatsapp-3d" target="_blank" rel="noopener noreferrer">
             <!-- Icono de WhatsApp en SVG -->
@@ -239,6 +292,8 @@
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./js/contacto.js"></script>
+    <script src="./js/config.js"></script>
+    <script src="./js/api.js"></script>
     <script src="./js/auth.js"></script>
     <script src="./js/nav-footer.js" defer></script>
 
