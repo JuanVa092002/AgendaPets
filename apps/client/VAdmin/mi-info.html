@@ -72,14 +72,14 @@
                     <label for="negocio-nombre" class="form-label">
                         <i class="bi bi-shop"></i> Negocio
                     </label>
-                    <input type="text" id="negocio-nombre" class="form-control" value="Pets" placeholder="Nombre de tu negocio">
+                    <input type="text" id="negocio-nombre" class="form-control" placeholder="Nombre de tu negocio" required>
                 </div>
 
                 <div class="admin-field">
                     <label for="admin-correo" class="form-label">
                         <i class="bi bi-envelope"></i> Correo
                     </label>
-                    <input type="email" id="admin-correo" class="form-control" value="admin@agendapets.com" placeholder="Correo electrónico">
+                    <input type="email" id="admin-correo" class="form-control" placeholder="Correo electrónico" required>
                 </div>
 
                 <div class="admin-field-row">
@@ -87,13 +87,13 @@
                         <label for="admin-direccion" class="form-label">
                             <i class="bi bi-geo-alt"></i> Dirección
                         </label>
-                        <input type="text" id="admin-direccion" class="form-control" value="Chapinero, Bogotá">
+                        <input type="text" id="admin-direccion" class="form-control" placeholder="Ej. Chapinero, Bogotá" required>
                     </div>
                     <div class="admin-field">
                         <label for="admin-telefono" class="form-label">
                             <i class="bi bi-telephone"></i> Teléfono
                         </label>
-                        <input type="text" id="admin-telefono" class="form-control" value="+57 310 555 7890">
+                        <input type="text" id="admin-telefono" class="form-control" placeholder="Ej. +57 310 555 7890" required>
                     </div>
                 </div>
 
@@ -101,7 +101,7 @@
                     <label for="admin-password" class="form-label">
                         <i class="bi bi-lock"></i> Contraseña
                     </label>
-                    <input type="password" id="admin-password" class="form-control" placeholder="Mínimo 12 caracteres">
+                    <input type="password" id="admin-password" class="form-control" value="******" disabled style="opacity: 0.6; cursor: not-allowed;">
                 </div>
 
                 <div class="admin-form-actions mt-4">
@@ -221,6 +221,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js/auth.js"></script>
+    <script src="../js/mi-info.js"></script>
 </body>
 
 </html>

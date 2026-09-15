@@ -33,7 +33,14 @@
      transition: transform 0.3s ease;
  }
 
-
+ .brand-subtitulo {
+    font-size: 0.8rem;
+    font-family: 'Comfortaa', sans-serif;
+    font-weight: 700;
+    color: #4D5C2D !important;
+    display: block;
+    line-height: 1.2;
+}
 
  /* =========================
    CONTENEDOR DEL MENÚ
