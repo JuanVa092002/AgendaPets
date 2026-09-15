@@ -17,14 +17,25 @@ async function obtenerInfoNegocio() {
             }
         }
     } catch (error) {
-        console.warn("No se pudo conectar con la API, usando respaldo local:", error);
+        console.warn("API de negocio no disponible, usando respaldo local:", error);
     }
     const guardada = localStorage.getItem(KEY_INFO);
     return guardada ? JSON.parse(guardada) : infoInicial;
 }
 
 async function actualizarInfoEnPantalla() {
-    const info = await obtenerInfoNegocio();
+    const local = localStorage.getItem(KEY_INFO);
+    if (local) {
+        const infoLocal = JSON.parse(local);
+        aplicarEnDOM(infoLocal);
+    }
+
+    const infoServidor = await obtenerInfoNegocio();
+    aplicarEnDOM(infoServidor);
+}
+
+function aplicarEnDOM(info) {
+    if (!info || !info.nombre) return;
 
     document.querySelectorAll(".brand-subtitulo, .footer-subtitulo, #admin-negocio-subtitulo").forEach(el => {
         el.textContent = info.nombre;
@@ -52,10 +63,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (formulario) {
         const info = await obtenerInfoNegocio();
 
-        document.getElementById("negocio-nombre").value = info.nombre || "";
-        document.getElementById("admin-correo").value = info.correo || "";
-        document.getElementById("admin-direccion").value = info.direccion || "";
-        document.getElementById("admin-telefono").value = info.telefono || "";
+        if (document.getElementById("negocio-nombre")) document.getElementById("negocio-nombre").value = info.nombre || "";
+        if (document.getElementById("admin-correo")) document.getElementById("admin-correo").value = info.correo || "";
+        if (document.getElementById("admin-direccion")) document.getElementById("admin-direccion").value = info.direccion || "";
+        if (document.getElementById("admin-telefono")) document.getElementById("admin-telefono").value = info.telefono || "";
 
         formulario.addEventListener("submit", async (e) => {
             e.preventDefault();
@@ -74,22 +85,22 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
                 
                 localStorage.setItem(KEY_INFO, JSON.stringify(guardado));
-                await actualizarInfoEnPantalla();
+                aplicarEnDOM(guardado);
 
                 if (window.Swal) {
                     Swal.fire({
-                        title: "Guardado en la Base de Datos",
-                        text: "Los cambios ahora son globales para cualquier navegador.",
+                        title: "¡Guardado exitoso!",
+                        text: "Los datos se han guardado en la base de datos.",
                         icon: "success",
                         confirmButtonColor: "#7C9A4A"
                     });
                 }
             } catch (err) {
-                console.error(err);
+                console.error("Error al guardar:", err);
                 if (window.Swal) {
                     Swal.fire({
-                        title: "Error al actualizar",
-                        text: err.message || "No se pudo guardar la información.",
+                        title: "Error al guardar",
+                        text: err.message || "No se pudo guardar la información en el servidor.",
                         icon: "error"
                     });
                 }
