@@ -178,8 +178,7 @@
           <button type="button" class="auth-switch__btn is-on" data-auth="register" role="tab">Crear cuenta</button>
         </div>
         <div class="auth-rol" id="auth-rol-wrap" hidden>
-          <button type="button" class="auth-rol__btn is-on" data-rol="cliente">Usuario</button>
-          <button type="button" class="auth-rol__btn" data-rol="admin">Admin</button>
+        
         </div>
         <form class="auth-form" id="auth-form" novalidate>
           <div id="auth-nombre-wrap">
