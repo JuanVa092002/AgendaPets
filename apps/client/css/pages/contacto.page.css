@@ -51,14 +51,11 @@
 .botonEnviar {
   background-color: #4F8020;
   border: #384320;
+  margin-bottom: 15px;
 }
 
 .botonEnviar:hover {
   background-color: #A8C48A;
-}
-
-.botonEnviar {
-  margin-bottom: 15px;
 }
 
 /* Estilos para la sección FAQ */
