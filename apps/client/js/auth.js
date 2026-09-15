@@ -1,8 +1,6 @@
 (function () {
   const KEY_U = "usuarios";
   const KEY_SES = "sesion";
-  const ADMIN_EMAIL = "admin@agendapets.com";
-  const ADMIN_PASS = "Admin123";
   let modo = "register";
   let intent = "session";
   let rolLogin = "cliente";
@@ -27,9 +25,11 @@
 
   function guardarSesion(u) {
     localStorage.setItem(KEY_SES, JSON.stringify({
-      email: u.email,
+      email: u.email || u.correo,
       nombre: u.nombre,
       rol: esAdmin(u) ? "admin" : "cliente",
+      token: u.token || "",
+      usuarioId: u.usuarioId || null,
     }));
     localStorage.removeItem("usuarioSesion");
     avisarSesion();
@@ -40,30 +40,22 @@
   }
 
   function esAdmin(u) {
-    return (u?.rol || "") === "admin";
+    return String(u?.rol || "").toLowerCase() === "admin";
+  }
+
+  function usuarioDesdeAuth(auth) {
+    return {
+      email: auth.correo || auth.email,
+      correo: auth.correo || auth.email,
+      nombre: auth.nombre,
+      rol: auth.rol,
+      token: auth.token,
+      usuarioId: auth.usuarioId,
+    };
   }
 
   function rutaPanelAdmin() {
     return /\/VAdmin\//i.test(location.pathname) ? "mis-servicios.html" : "VAdmin/mis-servicios.html";
-  }
-
-  function asegurarAdmin() {
-    const lista = usuarios();
-    const i = lista.findIndex((u) => (u.email || "").toLowerCase() === ADMIN_EMAIL);
-    if (i >= 0) {
-      if (lista[i].rol !== "admin") {
-        lista[i] = { ...lista[i], rol: "admin" };
-        guardarUsuarios(lista);
-      }
-      return;
-    }
-    guardarUsuarios(lista.concat({
-      email: ADMIN_EMAIL,
-      password: ADMIN_PASS,
-      nombre: "Administrador",
-      rol: "admin",
-      creado: Date.now(),
-    }));
   }
 
   function cerrarSesion() {
@@ -217,8 +209,7 @@
     nombreReserva = opts.nombre || "";
     rolLogin = opts.rol === "admin" ? "admin" : "cliente";
     const correo = (opts.email || "").trim().toLowerCase();
-    const existe = correo && usuarios().some((u) => (u.email || "").toLowerCase() === correo);
-    modo = existe ? "login" : "register";
+    modo = opts.modo || "login";
     $("auth-email").value = correo;
     $("auth-password").value = "";
     $("auth-confirm").value = "";
@@ -252,7 +243,7 @@
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor);
   }
 
-  function enviar(e) {
+  async function enviar(e) {
     e.preventDefault();
     const email = $("auth-email").value.trim().toLowerCase();
     const pass = $("auth-password").value;
@@ -267,59 +258,65 @@
     if (pass.length < 6) {
       return mostrarAlerta("Contraseña corta", "Usa mínimo 6 caracteres.", "warning");
     }
-    const lista = usuarios();
-    const hallado = lista.find((u) => (u.email || "").toLowerCase() === email);
-
-    let usuario = hallado;
-    if (modo === "register") {
-      if (pass !== confirm) {
-        return mostrarAlerta("No coinciden", "La confirmación debe ser igual a la contraseña.", "error");
+    const enviarBtn = document.querySelector("#auth-form button[type=submit]");
+    if (enviarBtn) enviarBtn.disabled = true;
+    try {
+      let auth;
+      if (modo === "register") {
+        if (pass !== confirm) {
+          return mostrarAlerta("No coinciden", "La confirmación debe ser igual a la contraseña.", "error");
+        }
+        await AgendaApi.registro({ nombre: nombre || nombreReserva || "Cliente", correo: email, contrasena: pass });
+        auth = await AgendaApi.login({ correo: email, contrasena: pass });
+      } else {
+        auth = await AgendaApi.login({ correo: email, contrasena: pass });
       }
-      if (hallado) {
+      const usuario = usuarioDesdeAuth(auth);
+      if (rolLogin === "admin" && !esAdmin(usuario)) {
+        return mostrarAlerta("No es administrador", "Esa cuenta es de usuario. Entra como Usuario o usa la cuenta del local.", "warning");
+      }
+      guardarSesion(usuario);
+      aplicarSesionEnFormulario(usuario);
+      pintar();
+      const ok = onSuccess;
+      const esRegistro = modo === "register";
+      const confirmarCita = intent === "confirm";
+      const listo = () => { if (ok) ok(usuario); };
+      const titulo = esRegistro ? "Cuenta creada" : "Sesión iniciada";
+      const vaAlPanel = esAdmin(usuario) && intent !== "confirm";
+      const texto = esRegistro
+        ? "Tu cuenta quedó lista. Ya puedes reservar."
+        : vaAlPanel
+          ? "Entrando al panel de administrador."
+          : `Hola, ${primerNombre(usuario.nombre)}.`;
+      mostrarAlerta(titulo, texto, "success");
+      setTimeout(() => {
+        cerrar();
+        if (vaAlPanel) {
+          window.location.href = rutaPanelAdmin();
+          return;
+        }
+        listo();
+      }, confirmarCita ? 700 : 1400);
+    } catch (err) {
+      const msg = (err && err.message) || "";
+      if (err && err.status === 409) {
         modo = "login";
         pintarModal();
         return mostrarAlerta("Ya tienes cuenta", "Ese correo ya está registrado. Entra con tu contraseña.", "info");
       }
-      usuario = { email, password: pass, nombre: nombre || nombreReserva || "Cliente", rol: "cliente", creado: Date.now() };
-      guardarUsuarios(lista.concat(usuario));
-    } else {
-      if (!hallado) {
+      if (err && err.status === 401) {
+        return mostrarAlerta("Contraseña incorrecta", "Revísalas e inténtalo de nuevo.", "error");
+      }
+      if (/no existe|no encontrado|not found/i.test(msg)) {
         modo = "register";
         pintarModal();
         return mostrarAlerta("Cuenta no encontrada", "No hay una cuenta con ese correo. Crea una para continuar.", "info");
       }
-      if (hallado.password !== pass) {
-        return mostrarAlerta("Contraseña incorrecta", "Revísalas e inténtalo de nuevo.", "error");
-      }
-      if (rolLogin === "admin" && !esAdmin(hallado)) {
-        return mostrarAlerta("No es administrador", "Esa cuenta es de usuario. Entra como Usuario o usa la cuenta del local.", "warning");
-      }
-      usuario = { ...hallado, rol: esAdmin(hallado) ? "admin" : "cliente" };
+      mostrarAlerta("No se pudo entrar", msg || "Inténtalo de nuevo.", "error");
+    } finally {
+      if (enviarBtn) enviarBtn.disabled = false;
     }
-
-    guardarSesion(usuario);
-    aplicarSesionEnFormulario(usuario);
-    pintar();
-    const ok = onSuccess;
-    const esRegistro = modo === "register";
-    const confirmarCita = intent === "confirm";
-    const listo = () => { if (ok) ok(usuario); };
-    const titulo = esRegistro ? "Cuenta creada" : "Sesión iniciada";
-    const vaAlPanel = esAdmin(usuario) && intent !== "confirm";
-    const texto = esRegistro
-      ? "Tu cuenta quedó lista. Ya puedes reservar."
-      : vaAlPanel
-        ? "Entrando al panel de administrador."
-        : `Hola, ${primerNombre(usuario.nombre)}.`;
-    mostrarAlerta(titulo, texto, "success");
-    setTimeout(() => {
-      cerrar();
-      if (vaAlPanel) {
-        window.location.href = rutaPanelAdmin();
-        return;
-      }
-      listo();
-    }, confirmarCita ? 700 : 1400);
   }
 
   function enlazarModal() {
@@ -366,12 +363,17 @@
     if (e.target.closest("[data-auth-out]")) cerrarSesion();
   }
 
-  function autenticar(email, pass) {
-    const correo = (email || "").trim().toLowerCase();
-    const hallado = usuarios().find((u) => (u.email || "").toLowerCase() === correo);
-    if (!hallado) return { error: "not_found" };
-    if (hallado.password !== pass) return { error: "bad_pass" };
-    return { usuario: { ...hallado, rol: esAdmin(hallado) ? "admin" : "cliente" } };
+  async function autenticar(email, pass) {
+    try {
+      const auth = await AgendaApi.login({ correo: email, contrasena: pass });
+      return { usuario: usuarioDesdeAuth(auth) };
+    } catch (err) {
+      if (err && err.status === 401) return { error: "bad_pass" };
+      if (err && (err.status === 404 || /no existe|no encontrado/i.test(err.message || ""))) {
+        return { error: "not_found" };
+      }
+      return { error: "server", message: err && err.message };
+    }
   }
 
   function completarLogin(usuario) {
@@ -381,7 +383,6 @@
 
   let mounted = false;
   function mount() {
-    asegurarAdmin();
     asegurarModal();
     pintar();
     if (mounted) return;
