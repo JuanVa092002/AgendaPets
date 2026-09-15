@@ -1,1 +1,6 @@
 .nojekyll
+.vercel
+.env
+.env.local
+.DS_Store
+

@@ -1,16 +1,8 @@
-const KEY_CITAS = "citas";
-
 const elementos = {
     container: document.getElementById("citasContainer"),
     mensaje: document.getElementById("mensajeCitas"),
     texto: document.getElementById("textoMisCitas")
 };
-
-function obtenerCitas() {
-    return JSON.parse(
-        localStorage.getItem(KEY_CITAS) || "[]"
-    );
-}
 
 function obtenerSesion() {
     if (window.AgendaAuth?.sesion) return AgendaAuth.sesion();
@@ -21,33 +13,36 @@ function obtenerSesion() {
     }
 }
 
-function obtenerMisCitas() {
+async function obtenerMisCitas() {
     const usuario = obtenerSesion();
-    if (!usuario) return [];
-    return obtenerCitas().filter(cita => {
-        const correoCita = (cita.correo || cita.duenoId || "").toLowerCase();
-        const correoUsuario = (usuario.email || "").toLowerCase();
-        if (correoUsuario && correoCita) return correoCita === correoUsuario;
-        const telefono = cita.usuarioTelefono || cita.telefono;
-        return normalizarTelefono(telefono) === normalizarTelefono(usuario.telefono);
-    });
+    if (!usuario || !usuario.token) return [];
+    const citas = await AgendaApi.reservas();
+    return (citas || []).filter(cita => String(cita.estado || "").toUpperCase() !== "CANCELADA");
 }
 
-
-function normalizarTelefono(telefono) {
-    return String(telefono || "").replace(/\D/g, "").slice(-10);
-}
-
-function iniciarMisCitas() {
+async function iniciarMisCitas() {
     const usuario = obtenerSesion();
 
-    if (!usuario) {
+    if (!usuario || !usuario.token) {
         mostrarNecesitaLogin();
         return;
     }
 
     pintarEncabezado(usuario);
-    const citas = obtenerMisCitas();
+    let citas = [];
+    try {
+        citas = await obtenerMisCitas();
+    } catch (err) {
+        elementos.mensaje.innerHTML = `
+            <div class="sin-citas">
+                <i class="bi bi-exclamation-triangle"></i>
+                <h2>No se pudieron cargar tus citas</h2>
+                <p>${err.message || "Recarga la página e inténtalo de nuevo."}</p>
+            </div>
+        `;
+        if (elementos.container) elementos.container.innerHTML = "";
+        return;
+    }
 
     if (!citas.length) {
         mostrarSinCitas();
@@ -311,8 +306,8 @@ async function cancelarCita(id) {
         mostrarNecesitaLogin();
         return;
     }
-    const citas = obtenerCitas();
-    const cita = citas.find(   c => Number(c.id) === id );
+    const citas = await obtenerMisCitas();
+    const cita = citas.find(c => Number(c.id) === id );
 
     if (!cita) {
         Swal.fire({
@@ -337,8 +332,17 @@ async function cancelarCita(id) {
 
     if (!resultado.isConfirmed) return;
 
-    const actualizadas = citas.filter(c => Number(c.id) !== id );
-    localStorage.setItem(  KEY_CITAS,   JSON.stringify(actualizadas) );
+    try {
+        await AgendaApi.cambiarEstadoReserva(id, "CANCELADA");
+    } catch (err) {
+        await Swal.fire({
+            title: "No se pudo cancelar",
+            text: err.message || "Inténtalo de nuevo.",
+            icon: "error",
+            confirmButtonColor: "#7C9A4A"
+        });
+        return;
+    }
     await Swal.fire({
         title: "Cita cancelada",
         text: "La cita fue cancelada correctamente.",
@@ -355,7 +359,7 @@ async function reprogramarCita(id) {
         return;
     }
 
-    const cita = obtenerMisCitas().find(
+    const cita = (await obtenerMisCitas()).find(
         c => Number(c.id) === id
     );
 
