@@ -232,6 +232,12 @@
     $("auth-modal").hidden = false;
     document.body.style.overflow = "hidden";
     ($("auth-email").value ? $("auth-password") : $("auth-email")).focus();
+
+    const collapse = document.querySelector(".navbar-collapse.show");
+    if (collapse) {
+      const bsCollapse = bootstrap.Collapse.getInstance(collapse) || new bootstrap.Collapse(collapse, { toggle: false });
+      bsCollapse.hide();
+    }
   }
 
   function cerrar() {
