@@ -7,7 +7,7 @@
     <meta name="description"
         content="AgendaPets — Reserva citas de peluquería canina en Bogotá en segundos. Confirmación inmediata, cancelación gratis y atención profesional.">
     <title>Inicio | AgendaPets — Reserva citas para tu mascota</title>
-   
+   <link rel="icon" type="image/png" href="./assets/logo.png">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Original+Surfer&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"  rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous"> 
@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="css/components/promo.css">
     <link rel="stylesheet" href="css/components/auth.css">
     <link rel="stylesheet" href="css/components/footer.css">
+     <link rel="stylesheet" href="css/pages/citas.page.css">
 
 
 </head>
@@ -89,6 +90,7 @@
 
         <!-- Social proof: métricas de confianza -->
         <section class="home-stats">
+            
             <div class="home-container">
 
                 <div class="home-stats__grid">
@@ -260,6 +262,16 @@
 
         <!-- Testimonios -->
         <section class="home-testimonials home-section" id="testimonios" aria-labelledby="testimonios-heading">
+
+               <div class="background-shapes" aria-hidden="true">
+            <img class="bg-shape bg-leaf leaf1" src="./assets/contactanos/hoja.svg" alt="">
+            <img class="bg-shape bg-leaf leaf2" src="./assets/contactanos/hoja2.svg" alt="">
+            <img class="bg-shape bg-paw paw1" src="./assets/contactanos/huella.svg" alt="">
+            <img class="bg-shape bg-paw paw2" src="./assets/contactanos/huella.svg" alt="">
+            <img class="bg-shape bg-heart heart1" src="./assets/contactanos/corazon.svg" alt="">
+            <img class="bg-shape bg-heart heart2" src="./assets/contactanos/corazon.svg" alt="">
+        </div>
+
             <div class="home-container">
                 <header class="home-section-header home-section-header--center home-reveal">
                     <p class="home-section-kicker">Voces de la comunidad</p>
@@ -267,7 +279,7 @@
                     <p>Historias reales de quienes ya reservan el cuidado de su peludo con AgendaPets.</p>
                 </header>
             </div>
-        <div id="carouselExampleDark" class="carousel carousel-dark slide">
+        <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="8000">
             <div class="carousel-indicators">
                 <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
                     aria-current="true" aria-label="Slide 1"></button>
@@ -281,7 +293,7 @@
                     aria-label="Slide 5"></button>
             </div>
             <div class="carousel-inner">
-                <div class="carousel-item active" data-bs-interval="10000">
+                <div class="carousel-item active" data-bs-interval="8000">
                     <div class="home-proof__stars" aria-hidden="true">★★★★★</div>
                     <p class="home-proof__quote">
                         "Reservé en menos de un minuto y al día siguiente ya tenía confirmación. Luna salió feliz y
@@ -295,7 +307,7 @@
                         </div>
                     </footer>
                 </div>
-                <div class="carousel-item" data-bs-interval="2000">
+                <div class="carousel-item" data-bs-interval="8000">
                     <div class="home-proof__stars" aria-hidden="true">★★★★★</div>
                     <p class="home-proof__quote">
                         "Reservar en Agenda Pets fue muy facil y atendieron excelente a mi gatito Romeo."
@@ -368,14 +380,20 @@
         <section class="home-cta" aria-labelledby="cta-heading">
             <div class="home-container">
                 <div class="home-cta__panel home-reveal">
-                    <div class="home-cta__content">
-                        <h2 class="home-cta__title" id="cta-heading">¿Tu peludo necesita una cita?</h2>
-                        <p class="home-cta__text">Reserva ahora y recibe confirmación inmediata en tu correo. Sin
-                            llamadas, sin esperas.</p>
-                        <a href="reservar.html" class="home-btn home-btn--inverse">
-                            Reservar mi cita
-                            <i class="bi bi-arrow-right" aria-hidden="true"></i>
-                        </a>
+                    <div class="home-cta__split">
+                        <div class="home-cta__photo">
+                            <img src="./assets/img/anthony-duran-xypTOFe_hqc-unsplash.jpg"
+                                alt="Perro feliz en la peluquería" class="home-cta__img">
+                        </div>
+                        <div class="home-cta__info">
+                            <h2 class="home-cta__title" id="cta-heading">¿Tu peludo necesita una cita?</h2>
+                            <p class="home-cta__text">Reserva ahora y recibe confirmación inmediata en tu correo. Sin
+                                llamadas, sin esperas.</p>
+                            <a href="reservar.html" class="home-btn home-btn--inverse">
+                                Reservar mi cita
+                                <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

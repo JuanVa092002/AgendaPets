@@ -3,11 +3,11 @@
     --ink: #2C3319;
     --muted: #5D6652;
     --green: #4D5C2D;
-    --sage: #7C9A4A;
+    --sage: #4F8020;
     --leaf: #A8C48A;
     --tan: #E7D9B5;
     --card: #FFFDF8;
-    --coral: #D98B7B;
+    --coral: #C27363;
     --radius: 22px;
     --shadow: 0 16px 40px rgba(77, 92, 45, 0.08);
 }
@@ -317,7 +317,7 @@
     box-shadow: 0 0 0 4px rgba(124, 154, 74, 0.18);
 }
 
-.form-control::placeholder { color: #9AA18C; }
+.form-control::placeholder { color: #7A8568; }
 
 textarea.form-control { resize: vertical; min-height: 88px; }
 

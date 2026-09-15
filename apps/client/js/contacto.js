@@ -1,4 +1,4 @@
-// INICIO FORMULARIO CONTACTENOS pendiente reFACTORIZAR
+// INICIO FORMULARIO CONTACTENOS 
 const form = document.getElementById("formulario");
 
 
@@ -37,7 +37,7 @@ form.addEventListener("submit", async (e) => {
     });
 
     if (response.ok) {
-      Swal.fire("Éxito", "Formulario enviado", "success");
+      Swal.fire("Éxito", "Formulario enviado, nos contactaremos tan pronto como nos sea posible.", "success");
       form.reset();
     } else {
       throw new Error();

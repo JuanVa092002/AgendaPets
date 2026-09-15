@@ -12,7 +12,7 @@
 }
 
 .team-section__eyebrow {
-  color: var(--ap-medium-green, #7C9A4A);
+  color: var(--ap-medium-green, #4F8020);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -33,7 +33,7 @@
 }
 
 .team-section__title--accent {
-  color: var(--ap-medium-green, #7C9A4A);
+  color: var(--ap-medium-green, #4F8020);
 }
 
 .team-section__subtitle {
@@ -129,7 +129,7 @@
 }
 
 .team-carousel__dot.is-active {
-  background: var(--ap-medium-green, #7C9A4A);
+  background: var(--ap-medium-green, #4F8020);
   width: 1.75rem;
 }
 
@@ -151,7 +151,7 @@
 /* Anillo circular — anula height:260px / width:100% de styles.css */
 .team-carousel .team-card__photo-ring {
   background: linear-gradient(180deg, #E7D9B5 0%, #A8C48A 100%);
-  border: 3px solid var(--ap-medium-green, #7C9A4A);
+  border: 3px solid var(--ap-medium-green, #4F8020);
   border-radius: 50%;
   box-shadow: 0 0 0 4px rgba(124, 154, 74, 0.15);
   flex-shrink: 0;
@@ -193,7 +193,7 @@
 }
 
 .team-carousel .team-card__role {
-  color: var(--ap-medium-green, #7C9A4A);
+  color: var(--ap-medium-green, #4F8020);
   font-size: 0.9rem;
   font-weight: 600;
   margin-bottom: 0.75rem;
@@ -232,7 +232,7 @@
 }
 
 .team-carousel .team-card__social-link:hover {
-  background-color: var(--ap-medium-green, #7C9A4A);
+  background-color: var(--ap-medium-green, #4F8020);
   color: #fff;
   transform: translateY(-2px);
 }

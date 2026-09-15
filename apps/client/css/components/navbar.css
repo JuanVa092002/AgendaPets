@@ -105,7 +105,7 @@
   font-size: 12px;
   font-weight: 500;
   color: var(--ap-blanco); /* Texto oscuro para máxima legibilidad sobre el coral */
-  background-color: var(--ap-coral);
+  background-color: #AB5549;
   
   /* Bordes y estructura */
   border: 2px solid var(--ap-verdeOscuroNuevo); /* Borde sutil que le da estructura de botón de interfaz */
@@ -119,7 +119,7 @@
  }
 
  .btn-reserva:hover {
-    background-color: var(--ap-acento); /* Cambia a tu color acento para indicar acción */
+    background-color: #8B4538; /* Hover más oscuro, contraste AA con crema */
   color: var(--ap-crema); /* El texto cambia a tu crema claro para contrastar con el acento */
   border-color: var(--ap-verdeOscuroNuevo);
   transform: translateY(-2px); /* Se eleva sutilmente */
