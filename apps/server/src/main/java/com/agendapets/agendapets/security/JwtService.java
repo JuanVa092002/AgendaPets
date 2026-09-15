@@ -3,6 +3,7 @@ package com.agendapets.agendapets.security;
 import com.agendapets.agendapets.model.Usuario;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,13 @@ public class JwtService {
     private String jwtSecret;
 
     private static final long EXPIRACION_MS = 1000L * 60 * 60 * 8;
+
+    @PostConstruct
+    void validarSecreto() {
+        if (jwtSecret == null || jwtSecret.length() < 32) {
+            throw new IllegalStateException("JWT_SECRET debe tener al menos 32 caracteres.");
+        }
+    }
 
     private SecretKey obtenerLlave() {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));

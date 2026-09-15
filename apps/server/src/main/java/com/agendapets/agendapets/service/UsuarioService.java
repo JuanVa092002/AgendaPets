@@ -2,6 +2,7 @@ package com.agendapets.agendapets.service;
 
 import com.agendapets.agendapets.dto.UsuarioRequestDTO;
 import com.agendapets.agendapets.dto.UsuarioResponseDTO;
+import com.agendapets.agendapets.exception.UsuarioDuplicadoException;
 import com.agendapets.agendapets.model.Rol;
 import com.agendapets.agendapets.model.Usuario;
 import com.agendapets.agendapets.repository.UsuarioRepository;
@@ -27,7 +28,7 @@ public class UsuarioService {
             throw new IllegalArgumentException("El correo es obligatorio.");
         }
         if (usuarioRepository.existsByCorreo(correo)) {
-            throw new IllegalArgumentException("El correo ya se encuentra registrado.");
+            throw new UsuarioDuplicadoException("El correo ya se encuentra registrado.");
         }
 
         String contrasena = dto.getContrasenaEfectiva();

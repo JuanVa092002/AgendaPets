@@ -32,6 +32,11 @@ public class ReservaController {
         return ResponseEntity.ok(reservaService.listarTodas());
     }
 
+    @GetMapping({"/reservas/ocupadas", "/api/reservas/ocupadas"})
+    public ResponseEntity<List<Map<String, String>>> listarOcupadas() {
+        return ResponseEntity.ok(reservaService.listarHorariosOcupados());
+    }
+
     @GetMapping({"/reservas/usuario/{correo}", "/api/reservas/usuario/{correo}"})
     public ResponseEntity<List<ReservaResponseDTO>> listarPorCorreo(@PathVariable String correo) {
         return ResponseEntity.ok(reservaService.listarPorCorreo(correo));
@@ -57,6 +62,10 @@ public class ReservaController {
             Map<String, String> error = new HashMap<>();
             error.put("error", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        } catch (IllegalStateException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
         }
     }
 
@@ -68,6 +77,10 @@ public class ReservaController {
             Map<String, String> error = new HashMap<>();
             error.put("error", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        } catch (IllegalStateException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
         }
     }
 

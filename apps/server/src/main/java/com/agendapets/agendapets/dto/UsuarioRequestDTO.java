@@ -1,5 +1,6 @@
 package com.agendapets.agendapets.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -17,28 +18,22 @@ public class UsuarioRequestDTO {
 
     @NotBlank(message = "El correo es obligatorio")
     @Email(message = "El correo debe ser válido")
+    @JsonAlias("email")
     private String correo;
-    private String email;
 
     @NotBlank(message = "La contraseña es obligatoria")
     @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
+    @JsonAlias("password")
     private String contrasena;
-    private String password;
 
     private Boolean estado;
     private String rol;
 
     public String getCorreoEfectivo() {
-        if (correo != null && !correo.isBlank()) {
-            return correo.trim();
-        }
-        return email != null ? email.trim() : null;
+        return correo != null ? correo.trim() : null;
     }
 
     public String getContrasenaEfectiva() {
-        if (contrasena != null && !contrasena.isBlank()) {
-            return contrasena;
-        }
-        return password;
+        return contrasena;
     }
 }

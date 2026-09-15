@@ -5,6 +5,8 @@ import com.agendapets.agendapets.dto.ServicioResponseDTO;
 import com.agendapets.agendapets.model.Servicio;
 import com.agendapets.agendapets.repository.ServicioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +34,7 @@ public class ServicioService {
                 .descripcion(dto.getDescripcion())
                 .precio(dto.getPrecio())
                 .duracionServicio(dto.getDuracionServicioMinutos())
+                .visible(dto.getVisible() != null ? dto.getVisible() : true)
                 .build();
 
         return mapToResponseDTO(servicioRepository.save(servicio));
@@ -39,7 +42,9 @@ public class ServicioService {
 
     @Transactional(readOnly = true)
     public List<ServicioResponseDTO> listarTodos() {
+        boolean admin = esAdmin();
         return servicioRepository.findAll().stream()
+                .filter(s -> admin || s.getVisible() == null || s.getVisible())
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }
@@ -68,6 +73,9 @@ public class ServicioService {
         if (dto.getDuracionServicio() != null || (dto.getDuracion() != null && !dto.getDuracion().isBlank())) {
             servicio.setDuracionServicio(dto.getDuracionServicioMinutos());
         }
+        if (dto.getVisible() != null) {
+            servicio.setVisible(dto.getVisible());
+        }
 
         return mapToResponseDTO(servicioRepository.save(servicio));
     }
@@ -90,7 +98,13 @@ public class ServicioService {
                 .precio(s.getPrecio())
                 .duracionServicio(s.getDuracionServicio())
                 .duracion(duracionTexto)
-                .visible(true)
+                .visible(s.getVisible() == null || s.getVisible())
                 .build();
+    }
+
+    private boolean esAdmin() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth != null && auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
     }
 }

@@ -25,7 +25,7 @@ public class AuthService {
     }
 
     public AuthResponseDTO iniciarSesion(LoginRequestDTO datos) {
-        Usuario usuario = usuarioRepository.findByCorreo(datos.getCorreo().trim())
+        Usuario usuario = usuarioRepository.findByCorreo(datos.getCorreoEfectivo())
                 .orElseThrow(() -> new CredencialesInvalidasException("Usuario o contraseña incorrectos"));
 
         if (!Boolean.TRUE.equals(usuario.getEstado())) {

@@ -22,11 +22,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -87,7 +90,7 @@ public class ReservaService {
                     .nombre(nombreMascota)
                     .tipo(dto.getTipoMascota() != null ? TipoMascota.valueOf(dto.getTipoMascota()) : TipoMascota.Perro)
                     .raza(dto.getRazaMascota() != null ? dto.getRazaMascota() : "Mestizo")
-                    .tamano(dto.getTamanoMascota() != null ? TamanoMascota.valueOf(dto.getTamanoMascota()) : TamanoMascota.Mediano)
+                    .tamano(parseTamano(dto.getTamanoMascota()))
                     .notas(dto.getNotasMascota())
                     .usuario(usuario)
                     .build());
@@ -257,6 +260,43 @@ public class ReservaService {
                 ? reserva.getMascota().getUsuario().getCorreo() : null;
         if (dueno == null || !dueno.equalsIgnoreCase(correoActual())) {
             throw new IllegalStateException("No tienes permiso para acceder a esta reserva.");
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public List<Map<String, String>> listarHorariosOcupados() {
+        DateTimeFormatter hf = DateTimeFormatter.ofPattern("HH:mm");
+        return reservaRepository.findAll().stream()
+                .filter(r -> r.getEstado() == null || !r.getEstado().equalsIgnoreCase("CANCELADA"))
+                .filter(r -> r.getFecha() != null && r.getHora() != null)
+                .map(r -> {
+                    Map<String, String> item = new HashMap<>();
+                    item.put("id", String.valueOf(r.getReservaId()));
+                    item.put("fecha", r.getFecha().toString());
+                    item.put("hora", r.getHora().format(hf));
+                    return item;
+                })
+                .collect(Collectors.toList());
+    }
+
+    private TamanoMascota parseTamano(String raw) {
+        if (raw == null || raw.isBlank()) {
+            return TamanoMascota.Mediano;
+        }
+        String n = Normalizer.normalize(raw, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "")
+                .toLowerCase()
+                .trim();
+        if (n.startsWith("peq")) {
+            return TamanoMascota.Pequeno;
+        }
+        if (n.startsWith("gran")) {
+            return TamanoMascota.Grande;
+        }
+        try {
+            return TamanoMascota.valueOf(raw);
+        } catch (IllegalArgumentException ex) {
+            return TamanoMascota.Mediano;
         }
     }
 }

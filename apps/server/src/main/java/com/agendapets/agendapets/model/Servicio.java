@@ -32,4 +32,8 @@ public class Servicio {
 
     @Column(name = "duracion_servicio", nullable = false)
     private Integer duracionServicio;
+
+    @Builder.Default
+    @Column(name = "visible", nullable = false, columnDefinition = "boolean default true")
+    private Boolean visible = true;
 }

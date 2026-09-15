@@ -2,6 +2,8 @@ HELP.md
 guide.md
 test.txt
 target/
+.env
+.env.local
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
