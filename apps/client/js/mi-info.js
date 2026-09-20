@@ -36,7 +36,7 @@ async function actualizarInfoEnPantalla() {
 
 function aplicarEnDOM(info) {
     if (!info || !info.nombre) return;
-    document.querySelectorAll(".brand-subtitulo, .footer-subtitulo, #admin-negocio-subtitulo, .mapa-split__titulo").forEach(el => {
+    document.querySelectorAll(".brand-subtitulo, .footer-subtitulo, #admin-negocio-subtitulo, #admin-saludo, .admin-user__chip, .mapa-split__titulo").forEach(el => {
         el.textContent = info.nombre;
     });
     document.querySelectorAll(".footer-correo, .contacto-correo").forEach(el => {
