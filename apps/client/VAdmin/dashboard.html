@@ -39,7 +39,7 @@
         </nav>
         <div class="admin-user">
             <span class="admin-user__chip" id="admin-saludo">Administrador</span>
-            <button type="button" class="logout" data-auth-out style="background: none; border: none; padding: 0;">
+            <button type="button" class="logout" onclick="window.AgendaAuth ? AgendaAuth.cerrarSesion() : (localStorage.removeItem('sesion'), window.location.href='../index.html')">
                 <i class="bi bi-box-arrow-right"></i>
                 Salir
             </button>
