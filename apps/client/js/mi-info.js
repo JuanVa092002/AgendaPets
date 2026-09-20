@@ -56,7 +56,7 @@ function formatearHorariosAgrupados(horarios) {
             rango: `${formatearHoraAMPM(horarios[dia].inicio)} – ${formatearHoraAMPM(horarios[dia].fin)}`
         }));
 
-    if (abiertos.length === 0) return ["Cerrado temporalmente"];
+    if (abiertos.length === 0) return [{ dias: "Todos los días", horas: "Cerrado" }];
 
     const grupos = [];
     let grupoActual = null;
@@ -77,7 +77,10 @@ function formatearHorariosAgrupados(horarios) {
         const diaTexto = g.inicioDia === g.finDia 
             ? nombresCortos[g.inicioDia] 
             : `${nombresCortos[g.inicioDia]} – ${nombresCortos[g.finDia]}`;
-        return `${diaTexto}: ${g.rango}`;
+        return {
+            dias: diaTexto,
+            horas: g.rango
+        };
     });
 }
 
@@ -85,13 +88,12 @@ function aplicarHorariosEnDOM(horariosJsonRaw) {
     if (!horariosJsonRaw) return;
     try {
         const horarios = typeof horariosJsonRaw === "string" ? JSON.parse(horariosJsonRaw) : horariosJsonRaw;
-        const lineas = formatearHorariosAgrupados(horarios);
+        const objetosHorario = formatearHorariosAgrupados(horarios);
 
         const contenedorFooter = document.querySelector(".footer-hours");
         if (contenedorFooter) {
-            contenedorFooter.innerHTML = lineas.map(linea => {
-                const [dias, horas] = linea.split(":");
-                return `<li><span class="day">${dias}</span><span>${horas || ""}</span></li>`;
+            contenedorFooter.innerHTML = objetosHorario.map(item => {
+                return `<li><span class="day">${item.dias}</span><span>${item.horas}</span></li>`;
             }).join("");
         }
 
@@ -100,10 +102,10 @@ function aplicarHorariosEnDOM(horariosJsonRaw) {
             listaUbicacion.querySelectorAll(".item-horario-dinamico").forEach(el => el.remove());
             const itemReloj = listaUbicacion.querySelector(".bi-clock-fill")?.closest("li");
             
-            lineas.forEach(linea => {
+            objetosHorario.forEach(item => {
                 const li = document.createElement("li");
                 li.className = "item-horario-dinamico";
-                li.innerHTML = `<i class="bi bi-clock-fill"></i><span>${linea}</span>`;
+                li.innerHTML = `<i class="bi bi-clock-fill"></i><span>${item.dias}: ${item.horas}</span>`;
                 if (itemReloj) {
                     listaUbicacion.insertBefore(li, itemReloj);
                 } else {
