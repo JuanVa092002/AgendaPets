@@ -221,6 +221,23 @@
     grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
 }
 
+#contenedorReservas {
+    max-height: 480px;
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+#contenedorReservas::-webkit-scrollbar {
+    width: 6px;
+}
+#contenedorReservas::-webkit-scrollbar-thumb {
+    background-color: var(--sage, #A3B18A);
+    border-radius: 10px;
+}
+#contenedorReservas::-webkit-scrollbar-track {
+    background-color: #F3EEE3;
+}
+
 @media (max-width: 991px) {
     .admin-workspace--servicios,
     .admin-workspace--info,
