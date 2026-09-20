@@ -70,7 +70,7 @@
         Swal.fire({
             icon: "success",
             title: "Sesión cerrada",
-            text: "Has salido del panel de administración.",
+            text: "Has cerrado tu sesión correctamente.",
             confirmButtonColor: "#7C9A4A",
             showConfirmButton: false,
             timer: 1500,
