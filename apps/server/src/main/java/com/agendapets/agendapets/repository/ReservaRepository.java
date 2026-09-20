@@ -14,4 +14,5 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
     List<Reserva> findByMascotaIdMascota(Long idMascota);
     List<Reserva> findByFecha(LocalDate fecha);
     List<Reserva> findByEstado(String estado);
+    List<Reserva> findByMascotaUsuarioCorreoIgnoreCaseAndEstado(String correo, String estado);
 }
