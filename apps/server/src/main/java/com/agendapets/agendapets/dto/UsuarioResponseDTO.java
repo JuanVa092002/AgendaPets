@@ -14,6 +14,7 @@ public class UsuarioResponseDTO {
     private String nombre;
     private String correo;
     private String email;
+    private String celular;
     private Boolean estado;
     private String rol;
 }

@@ -32,6 +32,9 @@ public class Usuario {
     @Column(name = "contrasena", nullable = false, length = 255)
     private String contrasena;
 
+    @Column(name = "celular", length = 20)
+    private String celular;
+
     @Column(name = "estado")
     @Builder.Default
     private Boolean estado = true;

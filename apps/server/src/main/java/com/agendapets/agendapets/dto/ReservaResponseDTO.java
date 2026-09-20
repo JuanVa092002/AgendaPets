@@ -26,6 +26,7 @@ public class ReservaResponseDTO {
     private String mascotaNombre;
     private String duenoNombre;
     private String correoDueno;
+    private String celularDueno;
     @Builder.Default
     private List<ServicioResponseDTO> servicios = new ArrayList<>();
     private String servicio;

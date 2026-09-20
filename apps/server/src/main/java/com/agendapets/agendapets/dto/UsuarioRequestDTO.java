@@ -26,6 +26,9 @@ public class UsuarioRequestDTO {
     @JsonAlias("password")
     private String contrasena;
 
+    @Size(max = 20, message = "El celular no puede superar los 20 caracteres")
+    private String celular;
+
     private Boolean estado;
     private String rol;
 

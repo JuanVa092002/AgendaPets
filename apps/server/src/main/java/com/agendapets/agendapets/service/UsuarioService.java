@@ -48,6 +48,7 @@ public class UsuarioService {
                 .nombre(dto.getNombre())
                 .correo(correo)
                 .contrasena(passwordEncoder.encode(contrasena))
+                .celular(dto.getCelular())
                 .estado(dto.getEstado() != null ? dto.getEstado() : true)
                 .rol(Rol.CLIENTE)
                 .build();
@@ -88,6 +89,9 @@ public class UsuarioService {
         if (dto.getContrasenaEfectiva() != null && !dto.getContrasenaEfectiva().isBlank()) {
             usuario.setContrasena(passwordEncoder.encode(dto.getContrasenaEfectiva()));
         }
+        if (dto.getCelular() != null) {
+            usuario.setCelular(dto.getCelular());
+        }
         if (dto.getEstado() != null) {
             usuario.setEstado(dto.getEstado());
         }
@@ -116,6 +120,7 @@ public class UsuarioService {
                 .nombre(u.getNombre())
                 .correo(u.getCorreo())
                 .email(u.getCorreo())
+                .celular(u.getCelular())
                 .estado(u.getEstado())
                 .rol(u.getRol() != null ? u.getRol().name().toLowerCase() : "cliente")
                 .build();
