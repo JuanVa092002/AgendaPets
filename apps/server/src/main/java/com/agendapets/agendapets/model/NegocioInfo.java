@@ -14,6 +14,8 @@ public class NegocioInfo {
     private String correo;
     private String direccion;
     private String telefono;
+    @Column(columnDefinition = "TEXT")
+    private String horariosJson;
 
     public NegocioInfo() {
     }
@@ -23,6 +25,7 @@ public class NegocioInfo {
         this.correo = correo;
         this.direccion = direccion;
         this.telefono = telefono;
+        this.horariosJson = "{}";
     }
 
     public Long getId() { return id; }
@@ -39,4 +42,7 @@ public class NegocioInfo {
 
     public String getTelefono() { return telefono; }
     public void setTelefono(String telefono) { this.telefono = telefono; }
+
+    public String getHorariosJson() { return horariosJson; }
+    public void setHorariosJson(String horariosJson) { this.horariosJson = horariosJson; }
 }

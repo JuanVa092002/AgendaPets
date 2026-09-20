@@ -46,12 +46,13 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/health", "/health").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/login", "/registro", "/api/usuarios/registro").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/servicios", "/servicios", "/api/servicios/**", "/servicios/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/reservas/ocupadas", "/reservas/ocupadas").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/negocio", "/negocio").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/negocio", "/negocio").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/negocio", "/api/negocio/**", "/negocio", "/negocio/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/negocio", "/api/negocio/**", "/negocio", "/negocio/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/usuarios/**", "/usuarios/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/usuarios/**", "/usuarios/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/usuarios/**", "/usuarios/**").hasRole("ADMIN")

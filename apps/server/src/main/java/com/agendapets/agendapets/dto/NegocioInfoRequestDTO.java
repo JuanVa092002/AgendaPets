@@ -6,6 +6,7 @@ public class NegocioInfoRequestDTO {
     private String correo;
     private String direccion;
     private String telefono;
+    private String horariosJson;
 
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
@@ -18,4 +19,7 @@ public class NegocioInfoRequestDTO {
 
     public String getTelefono() { return telefono; }
     public void setTelefono(String telefono) { this.telefono = telefono; }
+
+    public String getHorariosJson() { return horariosJson; }
+    public void setHorariosJson(String horariosJson) { this.horariosJson = horariosJson; }
 }

@@ -31,6 +31,9 @@ public class NegocioInfoService {
         infoActual.setCorreo(dto.getCorreo());
         infoActual.setDireccion(dto.getDireccion());
         infoActual.setTelefono(dto.getTelefono());
+        if (dto.getHorariosJson() != null) {
+            infoActual.setHorariosJson(dto.getHorariosJson());
+        }
 
         return repository.save(infoActual);
     }
