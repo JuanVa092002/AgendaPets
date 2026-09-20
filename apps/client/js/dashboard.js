@@ -244,14 +244,15 @@ function renderizarDetalleCita(id) {
     }
 
     const nombreMascota = cita.mascota || cita.nombre || "Mascota";
-    const tipoMascota = cita.tipo || "Perro";
     const razaMascota = (cita.raza && cita.raza.trim()) ? cita.raza : "Raza no especificada";
     const tamanoMascota = cita.tamano ? `Tamaño: ${cita.tamano}` : "Tamaño no especificado";
     
+    const servicioNombre = cita.servicio || (cita.servicios && cita.servicios.map(s => s.nombre).join(" + ")) || "Servicio General";
     const nombreDueno = cita.dueno || "Cliente";
     const correoDueno = cita.correo || "Sin correo";
     const celularDueno = (cita.celularDueno || cita.celular || "").trim() || "No especificado";
-    
+    const observacionesText = (cita.observaciones && cita.observaciones.trim()) ? cita.observaciones : "Sin observaciones registradas.";
+
     const esExpirada = evaluarEstadoExpirado(cita);
     let textoEstado = (cita.estado || "PENDIENTE").toUpperCase();
     let claseEstado = "etiqueta-estado";
@@ -259,56 +260,70 @@ function renderizarDetalleCita(id) {
     if (esExpirada) {
         textoEstado = "EXPIRADA";
         claseEstado = "etiqueta-estado etiqueta-estado--expirada";
-    } else if (textoEstado === "PENDIENTE") {
-        claseEstado += " bg-warning text-dark";
-    } else if (textoEstado === "CANCELADA") {
-        claseEstado += " bg-danger text-white";
-    } else if (textoEstado === "COMPLETADA") {
-        claseEstado += " bg-success text-white";
+    } else {
+        if (textoEstado === "PENDIENTE") claseEstado += " bg-warning text-dark";
+        if (textoEstado === "CANCELADA") claseEstado += " bg-danger text-white";
+        if (textoEstado === "COMPLETADA") claseEstado += " bg-success text-white";
     }
-
-    const serviciosList = (cita.servicios && cita.servicios.length > 0) 
-        ? cita.servicios.map(s => `<li>${s.nombre} (${s.duracion || '30 min'}) - $${Number(s.precio || 0).toLocaleString('es-CO')}</li>`).join('')
-        : `<li>${cita.servicio || 'Servicio General'}</li>`;
 
     panel.innerHTML = `
         <div class="detalle-reserva-content">
-            <!-- Encabezado: Mascota y Estado -->
-            <div class="d-flex justify-content-between align-items-start mb-3">
-                <div>
-                    <h3 class="m-0 fw-bold" style="color: var(--ink);">${nombreMascota} <small class="fs-6 text-muted">(${tipoMascota})</small></h3>
-                    <p class="text-muted small m-0">${razaMascota}</p>
-                    <p class="text-muted small m-0"><i class="bi bi-bounding-box-circles"></i> ${tamanoMascota}</p>
+            <!-- Contenedor Superior (Fondo crema tenue) -->
+            <div class="p-3 mb-3 rounded-4" style="background-color: #F8F5EE; border: 1px solid #EBE5D8;">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <h3 class="m-0 fw-bold fs-5" style="color: var(--ink, #2C3E50);">${nombreMascota} <small class="text-muted fw-normal">(${razaMascota})</small></h3>
+                    <span class="${claseEstado} px-3 py-1 rounded-pill small">${textoEstado}</span>
                 </div>
-                <span class="${claseEstado} px-3 py-1 rounded-pill">${textoEstado}</span>
+                
+                <p class="small text-muted mb-3"><i class="bi bi-bounding-box-circles me-1"></i>${tamanoMascota}</p>
+
+                <!-- Pastillas de Información (Servicio, Fecha, Hora) -->
+                <div class="d-flex flex-wrap gap-2">
+                    <span class="bg-white px-2 py-1 rounded-3 border small text-dark d-flex align-items-center gap-1 shadow-sm">
+                        <i class="bi bi-scissors text-success"></i> ${servicioNombre}
+                    </span>
+                    <span class="bg-white px-2 py-1 rounded-3 border small text-dark d-flex align-items-center gap-1 shadow-sm">
+                        <i class="bi bi-calendar-event text-success"></i> ${formatearFechaEspanol(cita.fecha)}
+                    </span>
+                    <span class="bg-white px-2 py-1 rounded-3 border small text-dark d-flex align-items-center gap-1 shadow-sm">
+                        <i class="bi bi-clock text-success"></i> ${ampm(cita.hora)}
+                    </span>
+                </div>
             </div>
 
-            <hr class="my-2">
+            <!-- Datos del Cliente (Estilo Lista de la captura) -->
+            <div class="px-1 mb-3">
+                <div class="d-flex justify-content-between py-1 border-bottom">
+                    <span class="text-muted">Dueño:</span>
+                    <strong class="text-end" style="color: var(--ink);">${nombreDueno}</strong>
+                </div>
+                <div class="d-flex justify-content-between py-1 border-bottom">
+                    <span class="text-muted">Correo:</span>
+                    <strong class="text-end" style="color: var(--ink);">${correoDueno}</strong>
+                </div>
+                <div class="d-flex justify-content-between py-1 border-bottom">
+                    <span class="text-muted">Celular:</span>
+                    <strong class="text-end" style="color: var(--ink);">${celularDueno}</strong>
+                </div>
+            </div>
 
-            <!-- Información del Cliente -->
+            <!-- Sección de Observaciones -->
             <div class="mb-3">
-                <span class="d-block fw-bold text-muted small mb-1">DATOS DEL CLIENTE</span>
-                <p class="mb-1"><strong>Dueño:</strong> ${nombreDueno}</p>
-                <p class="mb-1 small text-muted"><i class="bi bi-envelope me-1"></i>${correoDueno}</p>
-                <p class="mb-1 small text-muted"><i class="bi bi-telephone me-1"></i>${celularDueno}</p>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted small fw-bold">Observaciones:</span>
+                    <i class="bi bi-pencil-square text-muted small"></i>
+                </div>
+                <div class="p-3 rounded-3 text-muted small" style="background-color: #FAF8F5; border: 1px dashed #D3CBD", line-height: 1.4;">
+                    ${observacionesText}
+                </div>
             </div>
 
-            <hr class="my-2">
-
-            <!-- Detalles del Servicio y Fecha -->
-            <div class="mb-3">
-                <span class="d-block fw-bold text-muted small mb-1">RESERVA</span>
-                <p class="mb-1"><i class="bi bi-calendar-event me-1"></i>${formatearFechaEspanol(cita.fecha)} a las ${ampm(cita.hora)}</p>
-                <ul class="small ps-3 mb-2">${serviciosList}</ul>
-                <p class="fw-bold mb-0" style="color: var(--green);">Total: $${Number(cita.precioTotal || cita.precio || 0).toLocaleString('es-CO')}</p>
-            </div>
-
-            <!-- Botones de Acción Rápida -->
-            <div class="d-flex gap-2 pt-2">
-                <button type="button" class="btn btn-success flex-fill rounded-pill" onclick="cambiarEstadoCita(${cita.id}, 'COMPLETADA')">
+            <!-- Botones de Acción al Final -->
+            <div class="d-flex gap-2 pt-1">
+                <button type="button" class="btn btn-success flex-fill rounded-pill py-2" onclick="cambiarEstadoCita(${cita.id}, 'COMPLETADA')">
                     <i class="bi bi-check-circle me-1"></i> Completar
                 </button>
-                <button type="button" class="btn btn-outline-danger flex-fill rounded-pill" onclick="cambiarEstadoCita(${cita.id}, 'CANCELADA')">
+                <button type="button" class="btn btn-outline-danger flex-fill rounded-pill py-2" onclick="cambiarEstadoCita(${cita.id}, 'CANCELADA')">
                     <i class="bi bi-x-circle me-1"></i> Cancelar
                 </button>
             </div>
