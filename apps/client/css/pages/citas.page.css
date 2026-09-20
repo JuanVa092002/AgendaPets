@@ -721,6 +721,86 @@ main > section {
 
 
 /* =========================================
+   SECCIONES: BORRADORES Y CONFIRMADAS
+   ========================================= */
+
+.citas-seccion {
+    max-width: 750px;
+    margin: 0 auto 32px;
+}
+
+.citas-seccion__titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 16px;
+    padding: 0 8px;
+    font-family: "Comfortaa", sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--ap-verdeOscuro);
+}
+
+.citas-seccion__titulo i {
+    font-size: 1.2rem;
+    color: var(--ap-medium-green);
+}
+
+.citas-seccion__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: var(--ap-light-green);
+    color: var(--ap-verdeOscuro);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.citas-seccion__lista {
+    display: grid;
+    gap: 0;
+}
+
+
+/* =========================================
+   TARJETA BORRADOR
+   ========================================= */
+
+.cita-card--borrador {
+    border: 2px dashed var(--ap-tan);
+    background: #fdfbf6;
+}
+
+.cita-card--borrador:hover {
+    border-color: var(--ap-medium-green);
+}
+
+.cita-card--borrador .cita-titulo {
+    color: var(--muted);
+    font-size: 20px;
+}
+
+.btn-continuar-borrador {
+    color: var(--ap-verdeOscuroNuevo);
+    font-size: 15px;
+    background: var(--ap-verdeClaroNuevo);
+}
+
+.btn-continuar-borrador i {
+    color: var(--ap-verdeOscuroNuevo);
+}
+
+.btn-continuar-borrador:hover {
+    background: var(--ap-medium-green);
+    color: #fff;
+}
+
+
+/* =========================================
    RESPONSIVE
    ========================================= */
 

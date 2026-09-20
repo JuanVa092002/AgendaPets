@@ -1,5 +1,6 @@
 let catalogo=[];
 let ocupadas=[];
+let borradorId=null;
 const HORAS=["08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00"];
 const DIAS=["LUN","MAR","MIÉ","JUE","VIE","SÁB"];
 const DIA_NOM=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
@@ -134,29 +135,39 @@ function restaurarSnapshot(){
 function irAEditar(paso){guardarSnapshot();mostrarPaso(paso);}
 
 function pintarResumen(){
-    const m=mascota(),[y,mo,d]=estado.fecha.split("-"),diaNom=DIA_NOM[new Date(estado.fecha+"T00:00:00").getDay()],inicial=(m.nombre||"?").charAt(0).toUpperCase();
+    const m=mascota(),esBorrador=Boolean(borradorId);
+    const fechaParts=estado.fecha?estado.fecha.split("-"):null;
+    const diaNom=estado.fecha?DIA_NOM[new Date(estado.fecha+"T00:00:00").getDay()]:"";
+    const inicial=(m.nombre||"?").charAt(0).toUpperCase();
     const serviciosHtml=elegidos().map(s=>`<li><span class="revision-chip"><i class="bi ${icono(s.nombre)}"></i>${s.nombre}</span><span>${money(s.precio)}</span></li>`).join("");
+    const faltantes=[];
+    if(!elegidos().length)faltantes.push("Servicios");
+    if(!m.nombre||m.nombre.length<2)faltantes.push("Nombre de mascota");
+    if(!m.tipo||!m.tamano)faltantes.push("Tipo y tamaño");
+    if(!estado.fecha||!estado.hora)faltantes.push("Fecha y hora");
+    const hint=esBorrador?(faltantes.length?`<p class="revision-draft-warn"><i class="bi bi-exclamation-triangle"></i>Para confirmar la cita completá: ${faltantes.join(", ")}</p>`:`<p class="revision-hint"><i class="bi bi-check-circle"></i>Todo listo. Podés confirmar la cita.</p>`):`<p class="revision-hint"><i class="bi bi-pencil-square"></i>${esReprogramar()?"Revisa el nuevo horario. Si quieres, también puedes cambiar servicios o datos.":"Puedes ajustar servicios, datos o fecha antes de confirmar."}</p>`;
+    const fechaCard=estado.fecha?`<article class="revision-card revision-card--fecha" data-edit="3" role="button" tabindex="0"><div class="revision-card__head"><span class="revision-card__icon revision-card__icon--cal"><i class="bi bi-calendar-check"></i></span><div class="revision-card__copy"><h2>${diaNom}, ${fechaParts[2]} de ${MESES[Number(fechaParts[1])-1]}</h2><p>${ampm(estado.hora)} · GMT-5</p></div><span class="revision-edit"><i class="bi bi-pencil"></i>Cambiar</span></div><div class="revision-fecha-badge"><strong>${ampm(estado.hora)}</strong><small>${diaNom} ${fechaParts[2]}/${fechaParts[1]}</small></div></article>`:`<article class="revision-card revision-card--missing" data-edit="3" role="button" tabindex="0"><div class="revision-card__head"><span class="revision-card__icon revision-card__icon--missing"><i class="bi bi-calendar-plus"></i></span><div class="revision-card__copy"><h2>Sin fecha asignada</h2><p>Elegí un día y horario para tu cita</p></div><span class="revision-edit"><i class="bi bi-pencil"></i>Seleccionar</span></div></article>`;
     $("resumen-cita").innerHTML=`
-        <p class="revision-hint"><i class="bi bi-pencil-square"></i>${esReprogramar()?"Revisa el nuevo horario. Si quieres, también puedes cambiar servicios o datos.":"Puedes ajustar servicios, datos o fecha antes de confirmar."}</p>
+        ${hint}
         <article class="revision-card" data-edit="1" role="button" tabindex="0">
             <div class="revision-card__head"><span class="revision-card__icon"><i class="bi bi-scissors"></i></span><div class="revision-card__copy"><h2>Servicios</h2><p>${elegidos().length} seleccionado${elegidos().length>1?"s":""} · ${money(total())}</p></div><span class="revision-edit"><i class="bi bi-pencil"></i>Cambiar</span></div>
-            <ul class="revision-list">${serviciosHtml}</ul>
+            <ul class="revision-list">${serviciosHtml||"<li>Sin servicios seleccionados</li>"}</ul>
         </article>
         <article class="revision-card" data-edit="2" role="button" tabindex="0">
-            <div class="revision-card__head"><span class="revision-card__avatar">${inicial}</span><div class="revision-card__copy"><h2>${m.nombre}</h2><p>${m.tipo}${m.tamano?` · ${m.tamano}`:""}${m.raza?` · ${m.raza}`:""}</p></div><span class="revision-edit"><i class="bi bi-pencil"></i>Cambiar</span></div>
+            <div class="revision-card__head"><span class="revision-card__avatar">${inicial}</span><div class="revision-card__copy"><h2>${m.nombre||"Sin nombre"}</h2><p>${m.tipo||""}${m.tamano?` · ${m.tamano}`:""}${m.raza?` · ${m.raza}`:""}</p></div><span class="revision-edit"><i class="bi bi-pencil"></i>Cambiar</span></div>
             <div class="revision-meta"><span><i class="bi bi-person"></i>${m.dueno||"Se pide al confirmar"}</span><span><i class="bi bi-envelope"></i>${m.correo||"Se pide al confirmar"}</span>${m.notas?`<span class="revision-note"><i class="bi bi-chat-left-text"></i>${m.notas}</span>`:""}</div>
         </article>
-        <article class="revision-card revision-card--fecha" data-edit="3" role="button" tabindex="0">
-            <div class="revision-card__head"><span class="revision-card__icon revision-card__icon--cal"><i class="bi bi-calendar-check"></i></span><div class="revision-card__copy"><h2>${diaNom}, ${d} de ${MESES[Number(mo)-1]}</h2><p>${ampm(estado.hora)} · GMT-5</p></div><span class="revision-edit"><i class="bi bi-pencil"></i>Cambiar</span></div>
-            <div class="revision-fecha-badge"><strong>${ampm(estado.hora)}</strong><small>${diaNom} ${d}/${mo}</small></div>
-        </article>
+        ${fechaCard}
         <footer class="revision-total"><span>Total estimado</span><strong>${money(total())}</strong></footer>`;
 }
 
 function esReprogramar(){return Boolean(estado.reprogramarId);}
 
 function btnContinuarTexto(){
-    if(estado.paso===4)return esReprogramar()?"Guardar nueva fecha":"Confirmar cita";
+    if(estado.paso===4){
+        if(borradorId)return"Confirmar cita";
+        return esReprogramar()?"Guardar nueva fecha":"Confirmar cita";
+    }
     return"Continuar";
 }
 
@@ -242,6 +253,13 @@ async function guardarReserva(usuario){
             window.location.href="citas-usuario.html";
             return;
         }
+        if(borradorId){
+            datos.estado="PENDIENTE";
+            await AgendaApi.actualizarReserva(borradorId,datos);
+            await Swal.fire({title:"Cita confirmada",text:`La cita de ${m.nombre} fue confirmada correctamente.`,icon:"success",confirmButtonColor:"#7C9A4A"});
+            window.location.href="citas-usuario.html";
+            return;
+        }
         await AgendaApi.crearReserva(datos);
         await Swal.fire({title:"Cita confirmada",text:`La cita de ${m.nombre} fue reservada correctamente.`,icon:"success",confirmButtonColor:"#7C9A4A"});
         window.location.href="index.html";
@@ -249,6 +267,35 @@ async function guardarReserva(usuario){
         avis("No se pudo guardar la cita",err.message||"Inténtalo de nuevo.","error");
     }
 }
+
+async function guardarBorrador(usuario){
+    const m=mascota(),correo=usuario?.email||m.correo;
+    if(correo&&$("dueno-correo")&&correo!==m.correo)$("dueno-correo").value=correo;
+    if(window.AgendaAuth)AgendaAuth.pintar();
+    const datos=payloadReserva(usuario);
+    datos.estado="BORRADOR";
+    try{
+        if(borradorId){
+            await AgendaApi.actualizarReserva(borradorId,datos);
+            await Swal.fire({title:"Borrador actualizado",text:`El borrador de ${m.nombre} se guardó correctamente.`,icon:"success",confirmButtonColor:"#7C9A4A"});
+        }else{
+            await AgendaApi.crearReserva(datos);
+            await Swal.fire({title:"Borrador guardado",text:`Podés continuar con la reserva de ${m.nombre} desde "Mis citas".`,icon:"success",confirmButtonColor:"#7C9A4A"});
+        }
+        window.location.href="citas-usuario.html";
+    }catch(err){
+        avis("No se pudo guardar el borrador",err.message||"Inténtalo de nuevo.","error");
+    }
+}
+
+$("btn-borrador").onclick=()=>{
+    const sesion=window.AgendaAuth?.sesion?.();
+    if(!sesion){
+        Swal.fire({title:"Inicia sesión",text:"Debes iniciar sesión para guardar un borrador.",icon:"warning",confirmButtonColor:"#7C9A4A"});
+        return;
+    }
+    guardarBorrador(sesion);
+};
 
 document.querySelector(".reserva-form")?.addEventListener("submit",e=>e.preventDefault());
 
@@ -393,6 +440,44 @@ async function iniciarReprogramacion(id){
     return true;
 }
 
+async function cargarBorrador(id){
+    let cita=null;
+    try{
+        const lista=await AgendaApi.reservas();
+        cita=lista.find(c=>Number(c.id)===Number(id)&&String(c.estado||"").toUpperCase()==="BORRADOR");
+    }catch(err){
+        avis("No pudimos cargar el borrador",err.message||"Te devolvemos a Mis citas.","error");
+        setTimeout(()=>{location.href="citas-usuario.html";},1400);
+        return false;
+    }
+    if(!cita){
+        avis("No encontramos el borrador","Te devolvemos a Mis citas.","error");
+        setTimeout(()=>{location.href="citas-usuario.html";},1400);
+        return false;
+    }
+    const sesion=window.AgendaAuth?.sesion?.();
+    const correoSesion=(sesion?.email||"").toLowerCase();
+    const correoCita=(cita.correo||cita.duenoId||"").toLowerCase();
+    if(correoSesion&&correoCita&&correoSesion!==correoCita){
+        avis("Ese borrador no es tuyo","Inicia sesión con tu correo para editarlo.","warning");
+        setTimeout(()=>{location.href="citas-usuario.html";},1400);
+        return false;
+    }
+    borradorId=Number(cita.id);
+    estado.ids=idsDeCita(cita);
+    if(cita.fecha)estado.fecha=cita.fecha;
+    if(cita.hora)estado.hora=cita.hora;
+    estado.mesVista=new Date((cita.fecha||hoy)+"T00:00:00");
+    estado.semanaInicio=inicioSemana(estado.mesVista);
+    aplicarCita(cita);
+    if(sesion){
+        if($("dueno-nombre")&&sesion.nombre)$("dueno-nombre").value=sesion.nombre;
+        if($("dueno-correo")&&sesion.email)$("dueno-correo").value=sesion.email;
+    }
+    document.title="Continuar borrador | AgendaPets";
+    return true;
+}
+
 async function iniciarReserva() {
     if (window.AgendaAuth) {
         AgendaAuth.mount();
@@ -422,6 +507,12 @@ async function iniciarReserva() {
     if (reprogramarId) {
         if (!await iniciarReprogramacion(reprogramarId)) return;
         mostrarPaso(3);
+        return;
+    }
+    const borradorParam=Number(params.get("borrador"));
+    if(borradorParam){
+        if(!await cargarBorrador(borradorParam))return;
+        mostrarPaso(4);
         return;
     }
     const pasoURL = Number(params.get("paso"));

@@ -20,14 +20,25 @@ async function obtenerMisCitas() {
     const correoUsuario = String(usuario.email || usuario.correo || "").toLowerCase();
 
     return (citas || []).filter(cita => {
+        const est = String(cita.estado || "").toUpperCase();
         const correoCita = String(cita.correo || cita.duenoId || "").toLowerCase();
-        const noCancelada = String(cita.estado || "").toUpperCase() !== "CANCELADA";
+        const noCancelada = est !== "CANCELADA" && est !== "BORRADOR";
 
         if (usuario.rol !== "admin") {
             return noCancelada && correoCita === correoUsuario;
         }
         return noCancelada;
     });
+}
+
+async function obtenerBorradores() {
+    const usuario = obtenerSesion();
+    if (!usuario || !usuario.token) return [];
+    try {
+        return await AgendaApi.borradores();
+    } catch {
+        return [];
+    }
 }
 
 async function iniciarMisCitas() {
@@ -40,8 +51,9 @@ async function iniciarMisCitas() {
 
     pintarEncabezado(usuario);
     let citas = [];
+    let borradores = [];
     try {
-        citas = await obtenerMisCitas();
+        [citas, borradores] = await Promise.all([obtenerMisCitas(), obtenerBorradores()]);
     } catch (err) {
         elementos.mensaje.innerHTML = `
             <div class="sin-citas">
@@ -54,11 +66,11 @@ async function iniciarMisCitas() {
         return;
     }
 
-    if (!citas.length) {
+    if (!citas.length && !borradores.length) {
         mostrarSinCitas();
         return;
     }
-    pintarCitas(citas);
+    pintarCitas(citas, borradores);
 }
 
 
@@ -105,21 +117,26 @@ function mostrarSinCitas() {
     elementos.container.innerHTML = "";
 }
 
-function pintarCitas(citas) {
-    elementos.mensaje.innerHTML = "";
-    elementos.container.innerHTML =
-        ordenarCitas(citas)
-            .map(crearCardCita)
-            .join("");
-}
-
 function ordenarCitas(citas) {
     return [...citas].sort((a, b) => {
+        if (!a.fecha || !a.hora) return 1;
+        if (!b.fecha || !b.hora) return -1;
         const fechaA = new Date(`${a.fecha}T${a.hora}`);
         const fechaB = new Date(`${b.fecha}T${b.hora}`);
-
         return fechaA - fechaB;
     });
+}
+
+function pintarCitas(citas, borradores) {
+    let html = "";
+    if (borradores && borradores.length) {
+        html += `<div class="citas-seccion"><h3 class="citas-seccion__titulo"><i class="bi bi-file-earmark-text"></i> Borradores <span class="citas-seccion__badge">${borradores.length}</span></h3><div class="citas-seccion__lista">${ordenarCitas(borradores).map(crearCardBorrador).join("")}</div></div>`;
+    }
+    if (citas.length) {
+        html += `<div class="citas-seccion"><h3 class="citas-seccion__titulo"><i class="bi bi-check-circle"></i> Citas confirmadas <span class="citas-seccion__badge">${citas.length}</span></h3><div class="citas-seccion__lista">${ordenarCitas(citas).map(crearCardCita).join("")}</div></div>`;
+    }
+    elementos.mensaje.innerHTML = "";
+    elementos.container.innerHTML = html;
 }
 
 function crearCardCita(cita) {
@@ -211,6 +228,38 @@ function crearCardCita(cita) {
 
             </div>
 
+        </article>
+    `;
+}
+
+function crearCardBorrador(cita) {
+    const servicios = crearServiciosHTML(cita.servicios);
+    const fechaTxt = cita.fecha ? formatearFecha(cita.fecha) : "Sin fecha";
+    const horaTxt = cita.hora ? formatearHora(cita.hora) : "Sin hora";
+
+    return `
+        <article class="cita-card cita-card--borrador" data-cita-id="${cita.id}">
+            <div class="cita-perfil">
+                <img src="./assets/contactanos/huella.svg" alt="Borrador" class="cita-perfil-img">
+            </div>
+            <div class="cita-info">
+                <h2 class="cita-titulo">BORRADOR · <span class="cita-mascota">${cita.mascota || "Sin nombre"}</span></h2>
+                <p><strong>Fecha:</strong> <span>${fechaTxt}</span></p>
+                <p><strong>Hora:</strong> <span>${horaTxt}</span></p>
+                <p class="cita-servicio-titulo"><strong>Servicio:</strong></p>
+                <ul class="cita-servicios">${servicios || "<li>Sin servicios</li>"}</ul>
+                <div class="cita-resumen">
+                    <p class="cita-total">Total: <strong>${formatearDinero(cita.precio)}</strong></p>
+                </div>
+            </div>
+            <div class="cita-acciones">
+                <button type="button" class="btn-cita btn-continuar-borrador" data-accion="continuar-borrador" data-cita-id="${cita.id}">
+                    <i class="bi bi-pencil-square"></i> Continuar
+                </button>
+                <button type="button" class="btn-cita btn-cancelar" data-accion="eliminar-borrador" data-cita-id="${cita.id}">
+                    <i class="bi bi-trash"></i> Eliminar
+                </button>
+            </div>
         </article>
     `;
 }
@@ -308,6 +357,12 @@ async function manejarAccionCita(evento) {
 
     if (boton.dataset.accion === "reprogramar") {
         reprogramarCita(id);  }
+
+    if (boton.dataset.accion === "continuar-borrador") {
+        window.location.href = `reservar.html?borrador=${id}`;  }
+
+    if (boton.dataset.accion === "eliminar-borrador") {
+        await eliminarBorrador(id);  }
 }
 
 async function cancelarCita(id) {
@@ -397,6 +452,46 @@ async function reprogramarCita(id) {
     if (!resultado.isConfirmed) return;
 
     window.location.href = `reservar.html?reprogramar=${id}`;
+}
+
+async function eliminarBorrador(id) {
+    const usuario = obtenerSesion();
+    if (!usuario) {
+        mostrarNecesitaLogin();
+        return;
+    }
+
+    const resultado = await Swal.fire({
+        title: "¿Eliminar borrador?",
+        text: "Se eliminará este borrador de reserva.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "No",
+        confirmButtonColor: "#D98B7B",
+        cancelButtonColor: "#7C9A4A"
+    });
+
+    if (!resultado.isConfirmed) return;
+
+    try {
+        await AgendaApi.cambiarEstadoReserva(id, "CANCELADA");
+    } catch (err) {
+        await Swal.fire({
+            title: "No se pudo eliminar",
+            text: err.message || "Inténtalo de nuevo.",
+            icon: "error",
+            confirmButtonColor: "#7C9A4A"
+        });
+        return;
+    }
+    await Swal.fire({
+        title: "Borrador eliminado",
+        text: "El borrador fue eliminado correctamente.",
+        icon: "success",
+        confirmButtonColor: "#7C9A4A"
+    });
+    iniciarMisCitas();
 }
 
 function arrancarMisCitas() {
