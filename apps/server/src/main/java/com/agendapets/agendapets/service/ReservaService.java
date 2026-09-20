@@ -162,6 +162,14 @@ public class ReservaService {
     }
 
     @Transactional(readOnly = true)
+    public List<ReservaResponseDTO> listarBorradores() {
+        String correo = correoActual();
+        return reservaRepository.findByMascotaUsuarioCorreoIgnoreCaseAndEstado(correo, "BORRADOR").stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
     public ReservaResponseDTO obtenerPorId(Long id) {
         Reserva reserva = reservaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Reserva no encontrada con ID: " + id));
@@ -277,6 +285,7 @@ public class ReservaService {
         DateTimeFormatter hf = DateTimeFormatter.ofPattern("HH:mm");
         return reservaRepository.findAll().stream()
                 .filter(r -> r.getEstado() == null || !r.getEstado().equalsIgnoreCase("CANCELADA"))
+                .filter(r -> r.getEstado() == null || !r.getEstado().equalsIgnoreCase("BORRADOR"))
                 .filter(r -> r.getFecha() != null && r.getHora() != null)
                 .map(r -> {
                     Map<String, String> item = new HashMap<>();

@@ -37,6 +37,11 @@ public class ReservaController {
         return ResponseEntity.ok(reservaService.listarHorariosOcupados());
     }
 
+    @GetMapping({"/reservas/borradores", "/api/reservas/borradores"})
+    public ResponseEntity<List<ReservaResponseDTO>> listarBorradores() {
+        return ResponseEntity.ok(reservaService.listarBorradores());
+    }
+
     @GetMapping({"/reservas/usuario/{correo}", "/api/reservas/usuario/{correo}"})
     public ResponseEntity<List<ReservaResponseDTO>> listarPorCorreo(@PathVariable String correo) {
         return ResponseEntity.ok(reservaService.listarPorCorreo(correo));
