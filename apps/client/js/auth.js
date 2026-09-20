@@ -384,7 +384,10 @@
       });
       return;
     }
-    if (e.target.closest("[data-auth-out]")) cerrarSesion();
+    if (e.target.closest("[data-auth-out]")) {
+            e.preventDefault();
+            cerrarSesion();
+    }
   }
 
   async function autenticar(email, pass) {
