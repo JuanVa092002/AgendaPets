@@ -5,18 +5,32 @@
     }
 })();
 
+let todasLasReservas = [];
+let estadoFiltroActivo = "TODAS";
+
 document.addEventListener("DOMContentLoaded", async () => {
+    inicializarFechasFiltro();
+    enlazarEventosFiltros();
     await cargarDashboard();
 });
 
 async function cargarDashboard() {
     try {
-        const reservas = await AgendaApi.reservas();
-        renderizarHistorialReservas(reservas);
-        actualizarEstadisticas(reservas);
+        todasLasReservas = await AgendaApi.reservas();
+        // Aplica el filtro por fecha (de hoy por defecto) a la lista e indicadores
+        aplicarFiltrosConAnimacion();
     } catch (err) {
-        console.error("Error al cargar datos del dashboard:", err);
+        console.error("Error al cargar reservas del dashboard:", err);
     }
+}
+
+function inicializarFechasFiltro() {
+    const hoyIso = new Date().toISOString().split("T")[0];
+    const inputDesde = document.getElementById("filtro-fecha-desde");
+    const inputHasta = document.getElementById("filtro-fecha-hasta");
+
+    if (inputDesde) inputDesde.value = hoyIso;
+    if (inputHasta) inputHasta.value = hoyIso;
 }
 
 function ampm(horaStr) {
@@ -33,6 +47,14 @@ function formatearFechaEspanol(isoFecha) {
     const [y, m, d] = isoFecha.split("-");
     const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     return `${d} de ${meses[parseInt(m, 10) - 1]}`;
+}
+
+function evaluarEstadoExpirado(reserva) {
+    const hoyIso = new Date().toISOString().split("T")[0];
+    const estadoUpper = String(reserva.estado || "").toUpperCase();
+    const esFechaPasada = reserva.fecha < hoyIso;
+    
+    return esFechaPasada && estadoUpper !== "COMPLETADA" && estadoUpper !== "CANCELADA";
 }
 
 function renderizarHistorialReservas(reservas) {
@@ -124,42 +146,6 @@ function actualizarEstadisticas(reservasEnRango) {
     setTexto("stat-expiradas", expiradas);
 }
 
-let todasLasReservas = [];
-let estadoFiltroActivo = "TODAS";
-
-document.addEventListener("DOMContentLoaded", async () => {
-    inicializarFechasFiltro();
-    enlazarEventosFiltros();
-    await cargarDashboard();
-});
-
-function inicializarFechasFiltro() {
-    const hoyIso = new Date().toISOString().split("T")[0];
-    const inputDesde = document.getElementById("filtro-fecha-desde");
-    const inputHasta = document.getElementById("filtro-fecha-hasta");
-
-    if (inputDesde) inputDesde.value = hoyIso;
-    if (inputHasta) inputHasta.value = hoyIso;
-}
-
-async function cargarDashboard() {
-    try {
-        todasLasReservas = await AgendaApi.reservas();
-        aplicarFiltrosConAnimacion();
-        actualizarEstadisticas(todasLasReservas);
-    } catch (err) {
-        console.error("Error al cargar reservas:", err);
-    }
-}
-
-function evaluarEstadoExpirado(reserva) {
-    const hoyIso = new Date().toISOString().split("T")[0];
-    const estadoUpper = String(reserva.estado || "").toUpperCase();
-    const esFechaPasada = reserva.fecha < hoyIso;
-    
-    return esFechaPasada && estadoUpper !== "COMPLETADA" && estadoUpper !== "CANCELADA";
-}
-
 function obtenerReservasFiltradas() {
     const fechaDesde = document.getElementById("filtro-fecha-desde")?.value || "";
     const fechaHasta = document.getElementById("filtro-fecha-hasta")?.value || "";
@@ -204,7 +190,6 @@ function aplicarFiltrosConAnimacion() {
 }
 
 function enlazarEventosFiltros() {
-
     document.getElementById("filtro-fecha-desde")?.addEventListener("change", aplicarFiltrosConAnimacion);
     document.getElementById("filtro-fecha-hasta")?.addEventListener("change", aplicarFiltrosConAnimacion);
 
