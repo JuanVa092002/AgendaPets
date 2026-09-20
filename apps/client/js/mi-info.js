@@ -56,6 +56,17 @@ function aplicarEnDOM(info) {
     document.querySelectorAll(".footer-direccion, .contacto-direccion").forEach(el => {
         el.textContent = info.direccion;
     });
+    if (info.direccion) {
+        const direccionCodificada = encodeURIComponent(info.direccion);
+        const mapaIframe = document.getElementById("mapa-iframe");
+        if (mapaIframe) {
+            mapaIframe.src = `https://maps.google.com/maps?q=${direccionCodificada}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+        }
+        const mapaBtnLlegar = document.querySelector(".mapa-split__btn");
+        if (mapaBtnLlegar) {
+            mapaBtnLlegar.href = `https://maps.google.com/?q=${direccionCodificada}`;
+        }
+    }
 }
 
 window.actualizarInfoEnPantalla = actualizarInfoEnPantalla;
