@@ -64,49 +64,27 @@
                             <p>Gestión diaria de reservas</p>
                         </div>
                     </div>
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="form-label mb-0"><i class="bi bi-calendar3"></i> Fecha:</span>
-                        <input type="date" class="form-control form-control-sm border-0 bg-white shadow-sm" value="2026-09-14">
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <div class="d-flex align-items-center gap-1">
+                            <span class="form-label mb-0 small text-muted"><i class="bi bi-calendar-event"></i> Desde:</span>
+                            <input type="date" id="filtro-fecha-desde" class="form-control form-control-sm border-0 bg-white shadow-sm">
+                        </div>
+                        <div class="d-flex align-items-center gap-1">
+                            <span class="form-label mb-0 small text-muted">Hasta:</span>
+                            <input type="date" id="filtro-fecha-hasta" class="form-control form-control-sm border-0 bg-white shadow-sm">
+                        </div>
                     </div>
                 </div>
-
+                
                 <div class="card-body-admin">
-                    <nav class="nav-admin mb-3 justify-content-start" style="background: #F3EEE3; width: fit-content;">
-                        <button class="nav-link activo border-0">Todas</button>
-                        <button class="nav-link border-0">Pendientes</button>
-                        <button class="nav-link border-0">Completadas</button>
-                        <button class="nav-link border-0">Confirmadas</button>
+                    <nav class="nav-admin mb-3 justify-content-start" id="filtros-estado" style="background: #F3EEE3; width: fit-content; border-radius: 50px; padding: 4px;">
+                        <button class="nav-link activo border-0" data-estado="TODAS">Todas</button>
+                        <button class="nav-link border-0" data-estado="PENDIENTES">Pendientes</button>
+                        <button class="nav-link border-0" data-estado="COMPLETADAS">Completadas</button>
+                        <button class="nav-link border-0" data-estado="EXPIRADAS">Expiradas</button>
                     </nav>
-                    <div class="servicios" id="contenedorReservas">
-
-                        <div class="servicio">
-                            <div class="icono-servicio">
-                                <i class="bi bi-paw-fill"></i>
-                            </div>
-                            <div class="info-servicio">
-                                <h3>Toby <small class="text-muted fs-6">de Valentina Rios</small></h3>
-                                <p class="mb-1">Baño + corte | Lunes 28 de Julio 10:00 AM</p>
-                                <span class="small text-muted"><i class="bi bi-telephone"></i> 3105552233</span>
-                            </div>
-                            <div class="acciones-servicio">
-                                <span class="etiqueta-estado text-center">Confirmada</span>
-                            </div>
-                        </div>
-                        <div class="servicio">
-                            <div class="icono-servicio">
-                                <i class="bi bi-paw-fill"></i>
-                            </div>
-                            <div class="info-servicio">
-                                <h3>Toby <small class="text-muted fs-6">de Valentina Rios</small></h3>
-                                <p class="mb-1">Baño + corte | Lunes 28 de Julio 10:00 AM</p>
-                                <span class="small text-muted"><i class="bi bi-telephone"></i> 3105552233</span>
-                            </div>
-                            <div class="acciones-servicio">
-                                <span class="etiqueta-estado etiqueta-estado--oculto text-center" style="background: #EAE6D9; color: #5D6652;">Pendiente</span>
-                            </div>
-                        </div>
-
-                    </div>
+                
+                    <div class="servicios" id="contenedorReservas"></div>
                 </div>
             </section>
 

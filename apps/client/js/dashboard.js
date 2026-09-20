@@ -98,3 +98,91 @@ function actualizarEstadisticas(reservas) {
     setTexto(".border-success strong", confirmadas);
     setTexto(".border-danger strong", canceladas);
 }
+
+let todasLasReservas = [];
+let estadoFiltroActivo = "TODAS";
+
+document.addEventListener("DOMContentLoaded", async () => {
+    inicializarFechasFiltro();
+    enlazarEventosFiltros();
+    await cargarDashboard();
+});
+
+function inicializarFechasFiltro() {
+    const hoyIso = new Date().toISOString().split("T")[0];
+    const inputDesde = document.getElementById("filtro-fecha-desde");
+    const inputHasta = document.getElementById("filtro-fecha-hasta");
+
+    if (inputDesde) inputDesde.value = hoyIso;
+    if (inputHasta) inputHasta.value = hoyIso;
+}
+
+async function cargarDashboard() {
+    try {
+        todasLasReservas = await AgendaApi.reservas();
+        aplicarFiltrosConAnimacion();
+        actualizarEstadisticas(todasLasReservas);
+    } catch (err) {
+        console.error("Error al cargar reservas:", err);
+    }
+}
+
+function evaluarEstadoExpirado(reserva) {
+    const hoyIso = new Date().toISOString().split("T")[0];
+    const estadoUpper = String(reserva.estado || "").toUpperCase();
+    const esFechaPasada = reserva.fecha < hoyIso;
+    
+    return esFechaPasada && estadoUpper !== "COMPLETADA" && estadoUpper !== "CANCELADA";
+}
+
+function obtenerReservasFiltradas() {
+    const fechaDesde = document.getElementById("filtro-fecha-desde")?.value || "";
+    const fechaHasta = document.getElementById("filtro-fecha-hasta")?.value || "";
+
+    return todasLasReservas.filter(r => {
+        if (fechaDesde && r.fecha < fechaDesde) return false;
+        if (fechaHasta && r.fecha > fechaHasta) return false;
+
+        const estadoUpper = String(r.estado || "").toUpperCase();
+        const esExpirada = evaluarEstadoExpirado(r);
+
+        if (estadoFiltroActivo === "PENDIENTES") return estadoUpper === "PENDIENTE" && !esExpirada;
+        if (estadoFiltroActivo === "COMPLETADAS") return estadoUpper === "COMPLETADA";
+        if (estadoFiltroActivo === "EXPIRADAS") return esExpirada;
+
+        return true;
+    });
+}
+
+function aplicarFiltrosConAnimacion() {
+    const contenedor = document.getElementById("contenedorReservas");
+    if (!contenedor) return;
+
+    contenedor.classList.add("filtrando");
+
+    setTimeout(() => {
+        const filtradas = obtenerReservasFiltradas();
+        renderizarHistorialReservas(filtradas);
+        contenedor.classList.remove("filtrando");
+    }, 200);
+}
+
+function enlazarEventosFiltros() {
+
+    document.getElementById("filtro-fecha-desde")?.addEventListener("change", aplicarFiltrosConAnimacion);
+    document.getElementById("filtro-fecha-hasta")?.addEventListener("change", aplicarFiltrosConAnimacion);
+
+    const contenedorFiltros = document.getElementById("filtros-estado");
+    if (contenedorFiltros) {
+        contenedorFiltros.addEventListener("click", (e) => {
+            const btn = e.target.closest("button[data-estado]");
+            if (!btn) return;
+
+            contenedorFiltros.querySelectorAll("button").forEach(b => b.classList.remove("activo"));
+            btn.classList.add("activo");
+
+            estadoFiltroActivo = btn.dataset.estado;
+            aplicarFiltrosConAnimacion();
+        });
+    }
+}
