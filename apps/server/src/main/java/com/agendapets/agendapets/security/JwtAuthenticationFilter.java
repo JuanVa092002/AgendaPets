@@ -27,22 +27,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String path = request.getRequestURI();
-        String method = request.getMethod();
-
-        if ("GET".equalsIgnoreCase(method) && ("/api/negocio".equals(path) || "/negocio".equals(path))) {
-            return true;
-        }
-
-        return super.shouldNotFilter(request);
-    }
-
-    @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
+
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         String header = request.getHeader("Authorization");
 
@@ -52,7 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         try {
-            String token = header.substring(7);
+            String token = header.substring(7).trim();
             String correo = jwtService.extraerCorreo(token);
             Usuario usuario = usuarioRepository.findByCorreo(correo).orElseThrow();
 
