@@ -157,8 +157,9 @@ function obtenerReservasFiltradas() {
         const estadoUpper = String(r.estado || "").toUpperCase();
         const esExpirada = evaluarEstadoExpirado(r);
 
-        if (estadoFiltroActivo === "PENDIENTES") return estadoUpper === "PENDIENTE" && !esExpirada;
         if (estadoFiltroActivo === "COMPLETADAS") return estadoUpper === "COMPLETADA";
+        if (estadoFiltroActivo === "PENDIENTES") return estadoUpper === "PENDIENTE" && !esExpirada;
+        if (estadoFiltroActivo === "CANCELADAS") return estadoUpper === "CANCELADA";
         if (estadoFiltroActivo === "EXPIRADAS") return esExpirada;
 
         return true;
