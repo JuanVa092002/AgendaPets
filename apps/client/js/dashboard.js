@@ -87,24 +87,41 @@ function renderizarHistorialReservas(reservas) {
     }).join("");
 }
 
-function actualizarEstadisticas(reservas) {
-    if (!reservas) return;
-    
-    const hoyIso = new Date().toISOString().split("T")[0];
-    const deHoy = reservas.filter(r => r.fecha === hoyIso);
+function actualizarEstadisticas(reservasEnRango) {
+    if (!reservasEnRango) return;
 
-    const confirmadas = deHoy.filter(r => String(r.estado).toUpperCase() === "CONFIRMADA").length;
-    const pendientes = deHoy.filter(r => String(r.estado).toUpperCase() === "PENDIENTE").length;
-    const completadas = deHoy.filter(r => String(r.estado).toUpperCase() === "COMPLETADA").length;
-    const canceladas = deHoy.filter(r => String(r.estado).toUpperCase() === "CANCELADA").length;
+    let completadas = 0;
+    let pendientes = 0;
+    let canceladas = 0;
+    let expiradas = 0;
 
-    const setTexto = (selector, val) => {
-        const el = document.querySelector(selector);
+    reservasEnRango.forEach(r => {
+        const esExpirada = evaluarEstadoExpirado(r);
+        const estadoUpper = String(r.estado || "").toUpperCase();
+
+        if (esExpirada) {
+            expiradas++;
+        } else if (estadoUpper === "COMPLETADA") {
+            completadas++;
+        } else if (estadoUpper === "CANCELADA") {
+            canceladas++;
+        } else if (estadoUpper === "PENDIENTE") {
+            pendientes++;
+        }
+    });
+
+    const totalCitas = reservasEnRango.length;
+
+    const setTexto = (id, val) => {
+        const el = document.getElementById(id);
         if (el) el.textContent = val;
     };
 
-    setTexto(".border-success strong", confirmadas);
-    setTexto(".border-danger strong", canceladas);
+    setTexto("stat-total-citas", `${totalCitas} cita${totalCitas === 1 ? "" : "s"}`);
+    setTexto("stat-completadas", completadas);
+    setTexto("stat-pendientes", pendientes);
+    setTexto("stat-canceladas", canceladas);
+    setTexto("stat-expiradas", expiradas);
 }
 
 let todasLasReservas = [];
@@ -165,6 +182,17 @@ function obtenerReservasFiltradas() {
 function aplicarFiltrosConAnimacion() {
     const contenedor = document.getElementById("contenedorReservas");
     if (!contenedor) return;
+
+    const fechaDesde = document.getElementById("filtro-fecha-desde")?.value || "";
+    const fechaHasta = document.getElementById("filtro-fecha-hasta")?.value || "";
+
+    const reservasEnRango = todasLasReservas.filter(r => {
+        if (fechaDesde && r.fecha < fechaDesde) return false;
+        if (fechaHasta && r.fecha > fechaHasta) return false;
+        return true;
+    });
+
+    actualizarEstadisticas(reservasEnRango);
 
     contenedor.classList.add("filtrando");
 
