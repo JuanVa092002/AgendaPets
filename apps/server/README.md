@@ -24,8 +24,8 @@
 
 | Componente | Plataforma | Estado |
 |------------|-----------|--------|
-| Frontend | Vercel | 🟢 En desarrollo |
-| Backend | Render | 🔜 Pendiente |
+| Frontend | Vercel | Implementado |
+| Backend | Render | Implementado |
 
 > Frontend conectado con el backend: [https://agenda-pets-pi.vercel.app/](https://agenda-pets-pi.vercel.app/)
 

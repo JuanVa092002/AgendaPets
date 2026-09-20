@@ -1,16 +1,7 @@
 package com.agendapets.agendapets.config;
 
-import com.agendapets.agendapets.model.Mascota;
-import com.agendapets.agendapets.model.Reserva;
-import com.agendapets.agendapets.model.Rol;
-import com.agendapets.agendapets.model.Servicio;
-import com.agendapets.agendapets.model.TamanoMascota;
-import com.agendapets.agendapets.model.TipoMascota;
-import com.agendapets.agendapets.model.Usuario;
-import com.agendapets.agendapets.repository.MascotaRepository;
-import com.agendapets.agendapets.repository.ReservaRepository;
-import com.agendapets.agendapets.repository.ServicioRepository;
-import com.agendapets.agendapets.repository.UsuarioRepository;
+import com.agendapets.agendapets.model.*;
+import com.agendapets.agendapets.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -43,6 +34,7 @@ public class DataInitializer implements CommandLineRunner {
     private final MascotaRepository mascotaRepository;
     private final ReservaRepository reservaRepository;
     private final PasswordEncoder passwordEncoder;
+    private final NegocioInfoRepository negocioInfoRepository;
 
     @Override
     public void run(String... args) {
@@ -90,6 +82,16 @@ public class DataInitializer implements CommandLineRunner {
                 luna, List.of(s5));
         crearReservaSemilla(LocalDate.parse("2026-09-12"), LocalTime.parse("11:00:00"), "CANCELADA",
                 max, List.of(s1, s4));
+
+        if (negocioInfoRepository.count() == 0) {
+            negocioInfoRepository.save(new NegocioInfo(
+                    "Huellitas",
+                    "admin@agendapets.com",
+                    "Chapinero, Bogotá",
+                    "+57 310 555 7890"
+            ));
+            log.info("Información semilla del negocio creada correctamente.");
+        }
 
         log.info("Datos semilla verificados correctamente.");
     }
