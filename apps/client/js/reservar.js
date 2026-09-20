@@ -8,6 +8,7 @@ const MESES=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","
 const $=id=>document.getElementById(id);
 const estado={paso:1,ids:[],fecha:null,hora:null,mesVista:new Date(),semanaInicio:inicioSemana(new Date()),reprogramarId:null,citaOriginal:null};
 let snapshotRevision=null;
+let configuracionHorarios = null;
 
 const money=n=>"$ "+Number(n||0).toLocaleString("es-CO");
 const servicios=()=>catalogo.filter(s=>s.visible!==false).map(s=>({...s,id:Number(s.id),precio:Number(s.precio||0)}));
@@ -21,7 +22,22 @@ const avis=(titulo,texto,icon="warning")=>Swal.fire({title:titulo,text:texto,ico
 
 function inicioSemana(f){const d=new Date(f),n=d.getDay();d.setDate(d.getDate()+(n===0?-6:1-n));d.setHours(0,0,0,0);return d;}
 
-const abierta=(iso,h)=>{const d=new Date(iso+"T00:00:00").getDay();if(d===0)return false;if(d===6)return h>="09:00"&&h<"16:00";return true;};
+const abierta = (iso, h) => {
+    const diaIndice = new Date(iso + "T00:00:00").getDay();
+    const mapaDias = ["domingo", "lunes", "martes", "miercoles", "jueves", "viernes", "sabado"];
+    const claveDia = mapaDias[diaIndice];
+
+    if (!configuracionHorarios || !configuracionHorarios[claveDia]) {
+        if (diaIndice === 0) return false;
+        if (diaIndice === 6) return h >= "09:00" && h < "16:00";
+        return h >= "08:00" && h < "17:00";
+    }
+
+    const reg = configuracionHorarios[claveDia];
+    if (!reg.activo) return false;
+
+    return h >= reg.inicio && h < reg.fin;
+};
 const ocupada=(iso,h)=>ocupadas.find(c=>c.fecha===iso&&c.hora===h&&Number(c.id||0)!==Number(estado.reprogramarId||0));
 const clock=h=>{const n=Number(h.slice(0,2));return`${String(n).padStart(2,"0")}.00 ${n<12?"AM":"PM"}`;};
 const rango=h=>{const n=Number(h.slice(0,2));return`${n%12||12} ${n<12?"AM":"PM"} - ${(n+1)%12||12} ${n+1<12?"AM":"PM"}`;};
@@ -59,7 +75,11 @@ function pintarFecha(){
         for(let c=0;c<7;c++){
             if(d<1||d>tot)h+="<td></td>";
             else{
-                const iso=ymd(new Date(y,m,d)),past=iso<hoy||new Date(iso+"T00:00:00").getDay()===0;
+                const iso=ymd(new Date(y,m,d));
+                const claveDia = DIA_NOM[new Date(iso + "T00:00:00").getDay()].normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+                const estaCerrado = configuracionHorarios && configuracionHorarios[claveDia] ? !configuracionHorarios[claveDia].activo : new Date(iso + "T00:00:00").getDay() === 0;
+                const past = iso < hoy || estaCerrado;
+
                 h+=`<td><button type="button" class="${estado.fecha===iso?"is-on":""}" data-fecha="${iso}" ${past?"disabled":""}>${d}</button></td>`;
             }
             d++;
@@ -458,27 +478,34 @@ async function cargarBorrador(id){
     return true;
 }
 
-async function iniciarReserva(){
-    if(window.AgendaAuth){
+async function iniciarReserva() {
+    if (window.AgendaAuth) {
         AgendaAuth.mount();
-        const s=AgendaAuth.sesion();
-        if(s){
-            if($("dueno-nombre"))$("dueno-nombre").value=s.nombre||"";
-            if($("dueno-correo"))$("dueno-correo").value=s.email||"";
+        const s = AgendaAuth.sesion();
+        if (s) {
+            if ($("dueno-nombre")) $("dueno-nombre").value = s.nombre || "";
+            if ($("dueno-correo")) $("dueno-correo").value = s.email || "";
         }
     }
-    try{
-        const [lista,slots]=await Promise.all([AgendaApi.servicios(),AgendaApi.ocupadas()]);
-        catalogo=lista||[];
-        ocupadas=slots||[];
-    }catch(err){
-        avis("No se pudieron cargar los servicios",err.message||"Recarga la página.","error");
+    try {
+        const [lista, slots, negocio] = await Promise.all([
+            AgendaApi.servicios(),
+            AgendaApi.ocupadas(),
+            AgendaApi.obtenerNegocio()
+        ]);
+        catalogo = lista || [];
+        ocupadas = slots || [];
+        if (negocio && negocio.horariosJson) {
+            configuracionHorarios = JSON.parse(negocio.horariosJson);
+        }
+    } catch (err) {
+        avis("No se pudieron cargar los datos", err.message || "Recarga la página.", "error");
     }
     pintarServicios();
-    const params=new URLSearchParams(location.search);
-    const reprogramarId=Number(params.get("reprogramar"));
-    if(reprogramarId){
-        if(!await iniciarReprogramacion(reprogramarId))return;
+    const params = new URLSearchParams(location.search);
+    const reprogramarId = Number(params.get("reprogramar"));
+    if (reprogramarId) {
+        if (!await iniciarReprogramacion(reprogramarId)) return;
         mostrarPaso(3);
         return;
     }
@@ -488,8 +515,8 @@ async function iniciarReserva(){
         mostrarPaso(4);
         return;
     }
-    const pasoURL=Number(params.get("paso"));
-    mostrarPaso(pasoURL||1);
+    const pasoURL = Number(params.get("paso"));
+    mostrarPaso(pasoURL || 1);
 }
 
 iniciarReserva();

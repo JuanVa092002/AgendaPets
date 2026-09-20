@@ -17,9 +17,17 @@ async function obtenerMisCitas() {
     const usuario = obtenerSesion();
     if (!usuario || !usuario.token) return [];
     const citas = await AgendaApi.reservas();
+    const correoUsuario = String(usuario.email || usuario.correo || "").toLowerCase();
+
     return (citas || []).filter(cita => {
         const est = String(cita.estado || "").toUpperCase();
-        return est !== "CANCELADA" && est !== "BORRADOR";
+        const correoCita = String(cita.correo || cita.duenoId || "").toLowerCase();
+        const noCancelada = est !== "CANCELADA" && est !== "BORRADOR";
+
+        if (usuario.rol !== "admin") {
+            return noCancelada && correoCita === correoUsuario;
+        }
+        return noCancelada;
     });
 }
 

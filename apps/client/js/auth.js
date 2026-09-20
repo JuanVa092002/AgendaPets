@@ -60,19 +60,26 @@
 
   function cerrarSesion() {
     localStorage.removeItem(KEY_SES);
+    localStorage.removeItem("usuarioSesion");
     pintar();
     avisarSesion();
+
     const rutaBase = /\/VAdmin\//i.test(location.pathname) ? "../" : "";
-    Swal.fire({
-      icon: "success",
-      title: "Sesión cerrada",
-      text: "Hasta pronto",
-      confirmButtonColor: "#7C9A4A",
-      showConfirmButton: false,
-      timer: 1500,
-    }).then(() => {
-      window.location.href = rutaBase + "index.html";
-    });
+    
+    if (window.Swal) {
+        Swal.fire({
+            icon: "success",
+            title: "Sesión cerrada",
+            text: "Has salido del panel de administración.",
+            confirmButtonColor: "#7C9A4A",
+            showConfirmButton: false,
+            timer: 1500,
+        }).then(() => {
+            window.location.href = rutaBase + "index.html";
+        });
+    } else {
+        window.location.href = rutaBase + "index.html";
+    }
   }
 
   function primerNombre(nombre) {
@@ -377,7 +384,10 @@
       });
       return;
     }
-    if (e.target.closest("[data-auth-out]")) cerrarSesion();
+    if (e.target.closest("[data-auth-out]")) {
+            e.preventDefault();
+            cerrarSesion();
+    }
   }
 
   async function autenticar(email, pass) {

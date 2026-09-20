@@ -320,14 +320,6 @@ cargarServicios().catch((err) => {
     avisar("No se pudieron cargar los servicios", err.message || "Recarga la página.", "error");
 });
 
-document.getElementById("buscar-servicio")?.addEventListener("input", mostrarServicios);
-
-const saludo = document.getElementById("admin-saludo");
-const sesion = JSON.parse(localStorage.getItem("sesion") || "null");
-if (saludo && sesion?.nombre) {
-    saludo.textContent = sesion.nombre.split(" ")[0];
-}
-
 document.querySelector(".logout")?.addEventListener("click", (e) => {
     e.preventDefault();
     if (window.AgendaAuth) AgendaAuth.cerrarSesion();
