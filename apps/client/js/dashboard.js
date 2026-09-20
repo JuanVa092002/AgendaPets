@@ -7,17 +7,18 @@
 
 let todasLasReservas = [];
 let estadoFiltroActivo = "TODAS";
+let citaSeleccionadaId = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
     inicializarFechasFiltro();
     enlazarEventosFiltros();
+    enlazarEventosSeleccionCita(); // Escuchador de clics para Detalles de Cita
     await cargarDashboard();
 });
 
 async function cargarDashboard() {
     try {
         todasLasReservas = await AgendaApi.reservas();
-        // Aplica el filtro por fecha (de hoy por defecto) a la lista e indicadores
         aplicarFiltrosConAnimacion();
     } catch (err) {
         console.error("Error al cargar reservas del dashboard:", err);
@@ -91,8 +92,10 @@ function renderizarHistorialReservas(reservas) {
             if (textoEstado === "CONFIRMADA") claseEstado += " bg-success text-white";
         }
 
+        const esSeleccionada = Number(r.id) === Number(citaSeleccionadaId) ? "is-selected" : "";
+
         return `
-            <div class="servicio" data-id="${r.id}">
+            <div class="servicio ${esSeleccionada}" data-id="${r.id}" style="cursor: pointer;">
                 <div class="icono-servicio">
                     <i class="bi bi-paw-fill"></i>
                 </div>
@@ -208,8 +211,6 @@ function enlazarEventosFiltros() {
         });
     }
 }
-
-let citaSeleccionadaId = null;
 
 function enlazarEventosSeleccionCita() {
     const contenedor = document.getElementById("contenedorReservas");
