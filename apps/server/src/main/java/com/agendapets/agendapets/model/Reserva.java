@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -46,4 +47,7 @@ public class Reserva {
     )
     @Builder.Default
     private List<Servicio> servicios = new ArrayList<>();
+
+    @Column(name = "precio_total", precision = 10, scale = 2)
+    private BigDecimal precioTotal;
 }

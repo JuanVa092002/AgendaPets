@@ -111,12 +111,17 @@ public class ReservaService {
 
         String estado = dto.getEstado() != null && !dto.getEstado().isBlank() ? dto.getEstado().toUpperCase() : "PENDIENTE";
 
+        BigDecimal precioTotal = servicios.stream()
+                .map(s -> s.getPrecio() != null ? s.getPrecio() : BigDecimal.ZERO)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
         Reserva reserva = Reserva.builder()
                 .fecha(fecha)
                 .hora(hora)
                 .estado(estado)
                 .mascota(mascota)
                 .servicios(servicios)
+                .precioTotal(precioTotal)
                 .build();
 
         return mapToResponseDTO(reservaRepository.save(reserva));
@@ -182,6 +187,10 @@ public class ReservaService {
         if (dto.getServicioIds() != null && !dto.getServicioIds().isEmpty()) {
             List<Servicio> nuevosServicios = servicioRepository.findAllById(dto.getServicioIds());
             reserva.setServicios(nuevosServicios);
+            BigDecimal nuevoTotal = nuevosServicios.stream()
+                    .map(s -> s.getPrecio() != null ? s.getPrecio() : BigDecimal.ZERO)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            reserva.setPrecioTotal(nuevoTotal);
         }
 
         return mapToResponseDTO(reservaRepository.save(reserva));
