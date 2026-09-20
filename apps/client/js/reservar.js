@@ -125,7 +125,7 @@ function pintarResumen(){
     if(!m.nombre||m.nombre.length<2)faltantes.push("Nombre de mascota");
     if(!m.tipo||!m.tamano)faltantes.push("Tipo y tamaño");
     if(!estado.fecha||!estado.hora)faltantes.push("Fecha y hora");
-    const hint=esBorrador?(faltantes.length?`<p class="revision-draft-warn"><i class="bi bi-exclamation-triangle"></i>Para confirmar la cita completá: ${faltantes.join(", ")}</p>`:`<p class="revision-hint"><i class="bi bi-check-circle"></i>Todo listo. Podés confirmar la cita.</p>`):`<p class="revision-hint"><i class="bi bi-pencil-square"></i>${esReprogramar()?"Revisa el nuevo horario. Si quieres, también puedes cambiar servicios o datos.":"Puedes ajustar servicios, datos o fecha antes de confirmar."}</p>`;
+    const hint=esBorrador?(faltantes.length?`<p class="revision-draft-warn"><i class="bi bi-exclamation-triangle"></i>Para confirmar la cita completa: ${faltantes.join(", ")}</p>`:`<p class="revision-hint"><i class="bi bi-check-circle"></i>Todo listo. Puedes confirmar la cita.</p>`):`<p class="revision-hint"><i class="bi bi-pencil-square"></i>${esReprogramar()?"Revisa el nuevo horario. Si quieres, también puedes cambiar servicios o datos.":"Puedes ajustar servicios, datos o fecha antes de confirmar."}</p>`;
     const fechaCard=estado.fecha?`<article class="revision-card revision-card--fecha" data-edit="3" role="button" tabindex="0"><div class="revision-card__head"><span class="revision-card__icon revision-card__icon--cal"><i class="bi bi-calendar-check"></i></span><div class="revision-card__copy"><h2>${diaNom}, ${fechaParts[2]} de ${MESES[Number(fechaParts[1])-1]}</h2><p>${ampm(estado.hora)} · GMT-5</p></div><span class="revision-edit"><i class="bi bi-pencil"></i>Cambiar</span></div><div class="revision-fecha-badge"><strong>${ampm(estado.hora)}</strong><small>${diaNom} ${fechaParts[2]}/${fechaParts[1]}</small></div></article>`:`<article class="revision-card revision-card--missing" data-edit="3" role="button" tabindex="0"><div class="revision-card__head"><span class="revision-card__icon revision-card__icon--missing"><i class="bi bi-calendar-plus"></i></span><div class="revision-card__copy"><h2>Sin fecha asignada</h2><p>Elegí un día y horario para tu cita</p></div><span class="revision-edit"><i class="bi bi-pencil"></i>Seleccionar</span></div></article>`;
     $("resumen-cita").innerHTML=`
         ${hint}
@@ -260,7 +260,7 @@ async function guardarBorrador(usuario){
             await Swal.fire({title:"Borrador actualizado",text:`El borrador de ${m.nombre} se guardó correctamente.`,icon:"success",confirmButtonColor:"#7C9A4A"});
         }else{
             await AgendaApi.crearReserva(datos);
-            await Swal.fire({title:"Borrador guardado",text:`Podés continuar con la reserva de ${m.nombre} desde "Mis citas".`,icon:"success",confirmButtonColor:"#7C9A4A"});
+            await Swal.fire({title:"Borrador guardado",text:`Puedes continuar con la reserva de ${m.nombre} desde "Mis citas".`,icon:"success",confirmButtonColor:"#7C9A4A"});
         }
         window.location.href="citas-usuario.html";
     }catch(err){
