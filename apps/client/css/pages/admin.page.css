@@ -416,6 +416,11 @@ textarea.form-control { resize: vertical; min-height: 88px; }
     transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
 
+.servicio.is-selected {
+    border: 2px solid var(--green, #7C9A4A) !important;
+    background-color: #F8F6F0 !important;
+}
+
 #contenedorReservas .servicio {
     transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
     opacity: 1;

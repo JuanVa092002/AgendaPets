@@ -208,3 +208,144 @@ function enlazarEventosFiltros() {
         });
     }
 }
+
+let citaSeleccionadaId = null;
+
+function enlazarEventosSeleccionCita() {
+    const contenedor = document.getElementById("contenedorReservas");
+    if (!contenedor) return;
+
+    contenedor.addEventListener("click", (e) => {
+        const tarjeta = e.target.closest(".servicio[data-id]");
+        if (!tarjeta) return;
+
+        contenedor.querySelectorAll(".servicio").forEach(el => el.classList.remove("is-selected"));
+        tarjeta.classList.add("is-selected");
+
+        const id = Number(tarjeta.dataset.id);
+        citaSeleccionadaId = id;
+        renderizarDetalleCita(id);
+    });
+}
+
+function renderizarDetalleCita(id) {
+    const panel = document.getElementById("panelDetalleCita");
+    if (!panel) return;
+
+    const cita = todasLasReservas.find(r => Number(r.id) === id);
+    if (!cita) {
+        panel.innerHTML = `
+            <div class="text-center text-muted py-5">
+                <i class="bi bi-exclamation-triangle fs-1 d-block mb-2"></i>
+                <p>No se encontró la información de la cita.</p>
+            </div>`;
+        return;
+    }
+
+    const nombreMascota = cita.mascota || cita.nombre || "Mascota";
+    const tipoMascota = cita.tipo || "Perro";
+    const razaMascota = (cita.raza && cita.raza.trim()) ? cita.raza : "Raza no especificada";
+    const tamanoMascota = cita.tamano ? `Tamaño: ${cita.tamano}` : "Tamaño no especificado";
+    
+    const nombreDueno = cita.dueno || "Cliente";
+    const correoDueno = cita.correo || "Sin correo";
+    const celularDueno = (cita.celularDueno || cita.celular || "").trim() || "No especificado";
+    
+    const esExpirada = evaluarEstadoExpirado(cita);
+    let textoEstado = (cita.estado || "PENDIENTE").toUpperCase();
+    let claseEstado = "etiqueta-estado";
+
+    if (esExpirada) {
+        textoEstado = "EXPIRADA";
+        claseEstado = "etiqueta-estado etiqueta-estado--expirada";
+    } else if (textoEstado === "PENDIENTE") {
+        claseEstado += " bg-warning text-dark";
+    } else if (textoEstado === "CANCELADA") {
+        claseEstado += " bg-danger text-white";
+    } else if (textoEstado === "COMPLETADA") {
+        claseEstado += " bg-success text-white";
+    }
+
+    const serviciosList = (cita.servicios && cita.servicios.length > 0) 
+        ? cita.servicios.map(s => `<li>${s.nombre} (${s.duracion || '30 min'}) - $${Number(s.precio || 0).toLocaleString('es-CO')}</li>`).join('')
+        : `<li>${cita.servicio || 'Servicio General'}</li>`;
+
+    panel.innerHTML = `
+        <div class="detalle-reserva-content">
+            <!-- Encabezado: Mascota y Estado -->
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                    <h3 class="m-0 fw-bold" style="color: var(--ink);">${nombreMascota} <small class="fs-6 text-muted">(${tipoMascota})</small></h3>
+                    <p class="text-muted small m-0">${razaMascota}</p>
+                    <p class="text-muted small m-0"><i class="bi bi-bounding-box-circles"></i> ${tamanoMascota}</p>
+                </div>
+                <span class="${claseEstado} px-3 py-1 rounded-pill">${textoEstado}</span>
+            </div>
+
+            <hr class="my-2">
+
+            <!-- Información del Cliente -->
+            <div class="mb-3">
+                <span class="d-block fw-bold text-muted small mb-1">DATOS DEL CLIENTE</span>
+                <p class="mb-1"><strong>Dueño:</strong> ${nombreDueno}</p>
+                <p class="mb-1 small text-muted"><i class="bi bi-envelope me-1"></i>${correoDueno}</p>
+                <p class="mb-1 small text-muted"><i class="bi bi-telephone me-1"></i>${celularDueno}</p>
+            </div>
+
+            <hr class="my-2">
+
+            <!-- Detalles del Servicio y Fecha -->
+            <div class="mb-3">
+                <span class="d-block fw-bold text-muted small mb-1">RESERVA</span>
+                <p class="mb-1"><i class="bi bi-calendar-event me-1"></i>${formatearFechaEspanol(cita.fecha)} a las ${ampm(cita.hora)}</p>
+                <ul class="small ps-3 mb-2">${serviciosList}</ul>
+                <p class="fw-bold mb-0" style="color: var(--green);">Total: $${Number(cita.precioTotal || cita.precio || 0).toLocaleString('es-CO')}</p>
+            </div>
+
+            <!-- Botones de Acción Rápida -->
+            <div class="d-flex gap-2 pt-2">
+                <button type="button" class="btn btn-success flex-fill rounded-pill" onclick="cambiarEstadoCita(${cita.id}, 'COMPLETADA')">
+                    <i class="bi bi-check-circle me-1"></i> Completar
+                </button>
+                <button type="button" class="btn btn-outline-danger flex-fill rounded-pill" onclick="cambiarEstadoCita(${cita.id}, 'CANCELADA')">
+                    <i class="bi bi-x-circle me-1"></i> Cancelar
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+async function cambiarEstadoCita(id, nuevoEstado) {
+    const confirm = await Swal.fire({
+        title: `¿Marcar cita como ${nuevoEstado.toLowerCase()}?`,
+        text: "Se actualizará el estado en el sistema.",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Sí, cambiar",
+        cancelButtonText: "No",
+        confirmButtonColor: "#7C9A4A"
+    });
+
+    if (!confirm.isConfirmed) return;
+
+    try {
+        await AgendaApi.cambiarEstadoReserva(id, nuevoEstado);
+        await Swal.fire({
+            title: "Estado actualizado",
+            text: `La cita ahora está ${nuevoEstado.toLowerCase()}.`,
+            icon: "success",
+            confirmButtonColor: "#7C9A4A"
+        });
+
+        todasLasReservas = await AgendaApi.reservas();
+        aplicarFiltrosConAnimacion();
+        renderizarDetalleCita(id);
+    } catch (err) {
+        Swal.fire({
+            title: "Error",
+            text: err.message || "No se pudo actualizar el estado.",
+            icon: "error",
+            confirmButtonColor: "#7C9A4A"
+        });
+    }
+}
