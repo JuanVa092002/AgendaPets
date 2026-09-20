@@ -129,6 +129,10 @@
       var lista = await request("/api/reservas");
       return (lista || []).map(mapReserva);
     },
+    borradores: async function () {
+      var lista = await request("/api/reservas/borradores");
+      return (lista || []).map(mapReserva);
+    },
     ocupadas: function () {
       return request("/api/reservas/ocupadas");
     },
