@@ -36,22 +36,26 @@ async function actualizarInfoEnPantalla() {
 
 function aplicarEnDOM(info) {
     if (!info || !info.nombre) return;
-
-    document.querySelectorAll(".brand-subtitulo, .footer-subtitulo, #admin-negocio-subtitulo").forEach(el => {
+    document.querySelectorAll(".brand-subtitulo, .footer-subtitulo, #admin-negocio-subtitulo, .mapa-split__titulo").forEach(el => {
         el.textContent = info.nombre;
     });
-
-    const chipAdmin = document.getElementById("admin-saludo");
-    if (chipAdmin) chipAdmin.textContent = info.nombre;
-
-    const footerCorreo = document.querySelector(".footer-correo");
-    if (footerCorreo) footerCorreo.textContent = info.correo;
-
-    const footerTelefono = document.querySelector(".footer-telefono");
-    if (footerTelefono) footerTelefono.textContent = info.telefono;
-
-    const footerDireccion = document.querySelector(".footer-direccion");
-    if (footerDireccion) footerDireccion.textContent = info.direccion;
+    document.querySelectorAll(".footer-correo, .contacto-correo").forEach(el => {
+        el.textContent = info.correo;
+        if (el.tagName === "A" || el.parentElement.tagName === "A") {
+            const anchor = el.tagName === "A" ? el : el.parentElement;
+            anchor.href = `mailto:${info.correo}`;
+        }
+    });
+    document.querySelectorAll(".footer-telefono, .contacto-telefono").forEach(el => {
+        el.textContent = info.telefono;
+        if (el.tagName === "A" || el.parentElement.tagName === "A") {
+            const anchor = el.tagName === "A" ? el : el.parentElement;
+            anchor.href = `tel:${info.telefono.replace(/\s+/g, '')}`;
+        }
+    });
+    document.querySelectorAll(".footer-direccion, .contacto-direccion").forEach(el => {
+        el.textContent = info.direccion;
+    });
 }
 
 window.actualizarInfoEnPantalla = actualizarInfoEnPantalla;
