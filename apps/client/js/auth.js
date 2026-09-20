@@ -62,6 +62,17 @@
     localStorage.removeItem(KEY_SES);
     pintar();
     avisarSesion();
+    const rutaBase = /\/VAdmin\//i.test(location.pathname) ? "../" : "";
+    Swal.fire({
+      icon: "success",
+      title: "Sesión cerrada",
+      text: "Hasta pronto",
+      confirmButtonColor: "#7C9A4A",
+      showConfirmButton: false,
+      timer: 1500,
+    }).then(() => {
+      window.location.href = rutaBase + "index.html";
+    });
   }
 
   function primerNombre(nombre) {
