@@ -331,6 +331,8 @@ if (saludo && sesion?.nombre) {
 document.querySelector(".logout")?.addEventListener("click", (e) => {
     e.preventDefault();
     if (window.AgendaAuth) AgendaAuth.cerrarSesion();
-    else localStorage.removeItem("sesion");
-    window.location.href = "../index.html";
+    else {
+        localStorage.removeItem("sesion");
+        window.location.href = "../index.html";
+    }
 });
