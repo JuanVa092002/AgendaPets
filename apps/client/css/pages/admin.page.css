@@ -492,6 +492,12 @@ textarea.form-control { resize: vertical; min-height: 88px; }
     color: #8A2B1F;
 }
 
+.etiqueta-estado--expirada {
+    background-color: #EAE6D9 !important;
+    color: #6C757D !important;
+    border: 1px solid #D6D0C2;
+}
+
 .acciones-servicio {
     display: flex;
     flex-direction: column;

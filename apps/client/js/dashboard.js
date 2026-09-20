@@ -43,7 +43,7 @@ function renderizarHistorialReservas(reservas) {
         contenedor.innerHTML = `
             <div class="p-4 text-center text-muted">
                 <i class="bi bi-calendar-x fs-2 d-block mb-2"></i>
-                <p>No hay reservas registradas en el sistema.</p>
+                <p>No hay reservas registradas para este filtro.</p>
             </div>
         `;
         return;
@@ -55,11 +55,19 @@ function renderizarHistorialReservas(reservas) {
         const nombreMascota = r.mascota || r.nombre || "Mascota";
         const nombreDueno = r.dueno || "Cliente";
         const servicioNombre = r.servicio || (r.servicios && r.servicios.map(s => s.nombre).join(" + ")) || "Servicio de peluquería";
-        const estado = (r.estado || "PENDIENTE").toUpperCase();
+        const esExpirada = evaluarEstadoExpirado(r);
         
+        let textoEstado = (r.estado || "PENDIENTE").toUpperCase();
         let claseEstado = "etiqueta-estado";
-        if (estado === "PENDIENTE") claseEstado += " etiqueta-estado--oculto";
-        if (estado === "CANCELADA") claseEstado += " bg-danger text-white";
+
+        if (esExpirada) {
+            textoEstado = "EXPIRADA";
+            claseEstado = "etiqueta-estado etiqueta-estado--expirada";
+        } else {
+            if (textoEstado === "PENDIENTE") claseEstado += " etiqueta-estado--oculto";
+            if (textoEstado === "CANCELADA") claseEstado += " bg-danger text-white";
+            if (textoEstado === "CONFIRMADA") claseEstado += " bg-success text-white";
+        }
 
         return `
             <div class="servicio" data-id="${r.id}">
@@ -72,7 +80,7 @@ function renderizarHistorialReservas(reservas) {
                     <span class="small text-muted"><i class="bi bi-envelope me-1"></i>${r.correo || "Sin correo"}</span>
                 </div>
                 <div class="acciones-servicio">
-                    <span class="${claseEstado} text-center">${estado}</span>
+                    <span class="${claseEstado} text-center">${textoEstado}</span>
                 </div>
             </div>
         `;
