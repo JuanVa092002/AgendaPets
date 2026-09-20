@@ -57,9 +57,18 @@ function aplicarEnDOM(info) {
 window.actualizarInfoEnPantalla = actualizarInfoEnPantalla;
 
 document.addEventListener("DOMContentLoaded", async () => {
+    const formulario = document.getElementById("form-mi-info");
+    if (formulario) {
+        const sesion = JSON.parse(localStorage.getItem("sesion") || "null");
+        const esAdmin = sesion && sesion.token && String(sesion.rol || "").toLowerCase() === "admin";
+        if (!esAdmin) {
+            window.location.replace("../iniciarSesion.html");
+            return;
+        }
+    }
+
     await actualizarInfoEnPantalla();
 
-    const formulario = document.getElementById("form-mi-info");
     if (formulario) {
         const info = await obtenerInfoNegocio();
 
@@ -79,6 +88,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             };
 
             try {
+                const sesion = JSON.parse(localStorage.getItem("sesion") || "null");
+                if (!sesion || !sesion.token) {
+                    throw new Error("No hay una sesión de administrador. Inicia sesión otra vez e inténtalo de nuevo.");
+                }
+
                 let guardado = nuevosDatos;
                 if (window.AgendaApi && typeof window.AgendaApi.actualizarNegocio === "function") {
                     guardado = await window.AgendaApi.actualizarNegocio(nuevosDatos);
