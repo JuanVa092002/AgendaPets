@@ -69,6 +69,39 @@ function aplicarEnDOM(info) {
     }
 }
 
+function actualizarEstadoFilaHorario(checkbox) {
+    const fila = checkbox.closest(".horario-fila");
+    if (!fila) return;
+
+    const horasWrap = fila.querySelector(".horas-wrap");
+    const badgeCerrado = fila.querySelector(".badge-cerrado");
+    const label = fila.querySelector(".dia-label");
+
+    if (checkbox.checked) {
+        fila.classList.add("horario-item--activo", "shadow-sm");
+        fila.classList.remove("opacity-75");
+
+        if (horasWrap) horasWrap.classList.remove("d-none");
+        if (badgeCerrado) badgeCerrado.classList.add("d-none");
+
+        if (label) {
+            label.classList.remove("text-muted");
+            label.style.color = "var(--ink)";
+        }
+    } else {
+        fila.classList.remove("horario-item--activo", "shadow-sm");
+        fila.classList.add("opacity-75");
+
+        if (horasWrap) horasWrap.classList.add("d-none");
+        if (badgeCerrado) badgeCerrado.classList.remove("d-none");
+
+        if (label) {
+            label.classList.add("text-muted");
+            label.style.color = "";
+        }
+    }
+}
+
 window.actualizarInfoEnPantalla = actualizarInfoEnPantalla;
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -136,4 +169,28 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
     }
+
+const formHorarios = document.getElementById("form-horarios");
+    if (formHorarios) {
+        formHorarios.querySelectorAll(".check-horario").forEach(checkbox => {
+            actualizarEstadoFilaHorario(checkbox);
+
+            checkbox.addEventListener("change", (e) => {
+                actualizarEstadoFilaHorario(e.target);
+            });
+        });
+
+        formHorarios.addEventListener("submit", (e) => {
+            e.preventDefault();
+            if (window.Swal) {
+                Swal.fire({
+                    title: "Horarios actualizados",
+                    text: "La configuración de horarios ha sido actualizada.",
+                    icon: "success",
+                    confirmButtonColor: "#7C9A4A"
+                });
+            }
+        });
+    }
+
 });

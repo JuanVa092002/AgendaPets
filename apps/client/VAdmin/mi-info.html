@@ -126,84 +126,96 @@
         <div class="card-body-admin">
             <form id="form-horarios" class="d-flex flex-column gap-2">
 
-                <div class="d-flex align-items-center justify-content-between p-2 rounded-3 border bg-white horario-item--activo shadow-sm">
+                <!-- Fila de ejemplo estandarizada para Lunes a Domingo -->
+                <div class="d-flex align-items-center justify-content-between p-2 rounded-3 border bg-white horario-fila horario-item--activo shadow-sm" data-dia="lunes">
                     <div class="form-check form-switch mb-0">
-                        <input class="form-check-input" type="checkbox" id="h-lunes" checked>
-                        <label class="form-check-label fw-bold ms-2" for="h-lunes" style="color: var(--ink);">Lunes</label>
+                        <input class="form-check-input check-horario" type="checkbox" id="h-lunes" checked>
+                        <label class="form-check-label fw-bold ms-2 dia-label" for="h-lunes" style="color: var(--ink);">Lunes</label>
                     </div>
-                    <div class="d-flex align-items-center gap-1">
+                    <div class="horas-wrap d-flex align-items-center gap-1">
                         <input type="time" class="form-control form-control-sm border-0 bg-light text-center px-2" value="08:00" style="width: 95px;">
                         <span class="text-muted small px-1">-</span>
                         <input type="time" class="form-control form-control-sm border-0 bg-light text-center px-2" value="17:00" style="width: 95px;">
                     </div>
+                    <span class="badge bg-secondary-subtle text-secondary px-3 py-1 rounded-pill badge-cerrado d-none">Cerrado</span>
                 </div>
-
-                <div class="d-flex align-items-center justify-content-between p-2 rounded-3 border bg-white horario-item--activo shadow-sm">
+    
+                <div class="d-flex align-items-center justify-content-between p-2 rounded-3 border bg-white horario-fila horario-item--activo shadow-sm" data-dia="martes">
                     <div class="form-check form-switch mb-0">
-                        <input class="form-check-input" type="checkbox" id="h-martes" checked>
-                        <label class="form-check-label fw-bold ms-2" for="h-martes" style="color: var(--ink);">Martes</label>
+                        <input class="form-check-input check-horario" type="checkbox" id="h-martes" checked>
+                        <label class="form-check-label fw-bold ms-2 dia-label" for="h-martes" style="color: var(--ink);">Martes</label>
                     </div>
-                    <div class="d-flex align-items-center gap-1">
+                    <div class="horas-wrap d-flex align-items-center gap-1">
                         <input type="time" class="form-control form-control-sm border-0 bg-light text-center px-2" value="08:00" style="width: 95px;">
                         <span class="text-muted small px-1">-</span>
                         <input type="time" class="form-control form-control-sm border-0 bg-light text-center px-2" value="17:00" style="width: 95px;">
                     </div>
+                    <span class="badge bg-secondary-subtle text-secondary px-3 py-1 rounded-pill badge-cerrado d-none">Cerrado</span>
                 </div>
-
-                <div class="d-flex align-items-center justify-content-between p-2 rounded-3 border bg-white horario-item--activo shadow-sm">
+    
+                <div class="d-flex align-items-center justify-content-between p-2 rounded-3 border bg-white horario-fila horario-item--activo shadow-sm" data-dia="miercoles">
                     <div class="form-check form-switch mb-0">
-                        <input class="form-check-input" type="checkbox" id="h-miercoles" checked>
-                        <label class="form-check-label fw-bold ms-2" for="h-miercoles" style="color: var(--ink);">Miércoles</label>
+                        <input class="form-check-input check-horario" type="checkbox" id="h-miercoles" checked>
+                        <label class="form-check-label fw-bold ms-2 dia-label" for="h-miercoles" style="color: var(--ink);">Miércoles</label>
                     </div>
-                    <div class="d-flex align-items-center gap-1">
+                    <div class="horas-wrap d-flex align-items-center gap-1">
                         <input type="time" class="form-control form-control-sm border-0 bg-light text-center px-2" value="08:00" style="width: 95px;">
                         <span class="text-muted small px-1">-</span>
                         <input type="time" class="form-control form-control-sm border-0 bg-light text-center px-2" value="17:00" style="width: 95px;">
                     </div>
+                    <span class="badge bg-secondary-subtle text-secondary px-3 py-1 rounded-pill badge-cerrado d-none">Cerrado</span>
                 </div>
-
-                <div class="d-flex align-items-center justify-content-between p-2 rounded-3 border bg-white horario-item--activo shadow-sm">
+    
+                <div class="d-flex align-items-center justify-content-between p-2 rounded-3 border bg-white horario-fila horario-item--activo shadow-sm" data-dia="jueves">
                     <div class="form-check form-switch mb-0">
-                        <input class="form-check-input" type="checkbox" id="h-jueves" checked>
-                        <label class="form-check-label fw-bold ms-2" for="h-jueves" style="color: var(--ink);">Jueves</label>
+                        <input class="form-check-input check-horario" type="checkbox" id="h-jueves" checked>
+                        <label class="form-check-label fw-bold ms-2 dia-label" for="h-jueves" style="color: var(--ink);">Jueves</label>
                     </div>
-                    <div class="d-flex align-items-center gap-1">
+                    <div class="horas-wrap d-flex align-items-center gap-1">
                         <input type="time" class="form-control form-control-sm border-0 bg-light text-center px-2" value="08:00" style="width: 95px;">
                         <span class="text-muted small px-1">-</span>
                         <input type="time" class="form-control form-control-sm border-0 bg-light text-center px-2" value="17:00" style="width: 95px;">
                     </div>
+                    <span class="badge bg-secondary-subtle text-secondary px-3 py-1 rounded-pill badge-cerrado d-none">Cerrado</span>
                 </div>
-
-                <div class="d-flex align-items-center justify-content-between p-2 rounded-3 border bg-white horario-item--activo shadow-sm">
+    
+                <div class="d-flex align-items-center justify-content-between p-2 rounded-3 border bg-white horario-fila horario-item--activo shadow-sm" data-dia="viernes">
                     <div class="form-check form-switch mb-0">
-                        <input class="form-check-input" type="checkbox" id="h-viernes" checked>
-                        <label class="form-check-label fw-bold ms-2" for="h-viernes" style="color: var(--ink);">Viernes</label>
+                        <input class="form-check-input check-horario" type="checkbox" id="h-viernes" checked>
+                        <label class="form-check-label fw-bold ms-2 dia-label" for="h-viernes" style="color: var(--ink);">Viernes</label>
                     </div>
-                    <div class="d-flex align-items-center gap-1">
+                    <div class="horas-wrap d-flex align-items-center gap-1">
                         <input type="time" class="form-control form-control-sm border-0 bg-light text-center px-2" value="08:00" style="width: 95px;">
                         <span class="text-muted small px-1">-</span>
                         <input type="time" class="form-control form-control-sm border-0 bg-light text-center px-2" value="17:00" style="width: 95px;">
                     </div>
+                    <span class="badge bg-secondary-subtle text-secondary px-3 py-1 rounded-pill badge-cerrado d-none">Cerrado</span>
                 </div>
-
-                <div class="d-flex align-items-center justify-content-between p-2 rounded-3 border bg-white horario-item--activo shadow-sm">
+    
+                <div class="d-flex align-items-center justify-content-between p-2 rounded-3 border bg-white horario-fila horario-item--activo shadow-sm" data-dia="sabado">
                     <div class="form-check form-switch mb-0">
-                        <input class="form-check-input" type="checkbox" id="h-sabado" checked>
-                        <label class="form-check-label fw-bold ms-2" for="h-sabado" style="color: var(--ink);">Sábado</label>
+                        <input class="form-check-input check-horario" type="checkbox" id="h-sabado" checked>
+                        <label class="form-check-label fw-bold ms-2 dia-label" for="h-sabado" style="color: var(--ink);">Sábado</label>
                     </div>
-                    <div class="d-flex align-items-center gap-1">
+                    <div class="horas-wrap d-flex align-items-center gap-1">
                         <input type="time" class="form-control form-control-sm border-0 bg-light text-center px-2" value="08:00" style="width: 95px;">
                         <span class="text-muted small px-1">-</span>
                         <input type="time" class="form-control form-control-sm border-0 bg-light text-center px-2" value="17:00" style="width: 95px;">
                     </div>
+                    <span class="badge bg-secondary-subtle text-secondary px-3 py-1 rounded-pill badge-cerrado d-none">Cerrado</span>
                 </div>
-
-                <div class="d-flex align-items-center justify-content-between p-2 rounded-3 border bg-white opacity-75">
+    
+                <div class="d-flex align-items-center justify-content-between p-2 rounded-3 border bg-white horario-fila opacity-75" data-dia="domingo">
                     <div class="form-check form-switch mb-0">
-                        <input class="form-check-input" type="checkbox" id="h-domingo">
-                        <label class="form-check-label fw-bold ms-2 text-muted" for="h-domingo">Domingo</label>
+                        <input class="form-check-input check-horario" type="checkbox" id="h-domingo">
+                        <label class="form-check-label fw-bold ms-2 dia-label text-muted" for="h-domingo">Domingo</label>
                     </div>
-                    <span class="badge bg-secondary-subtle text-secondary px-3 py-1 rounded-pill">Cerrado</span>
+                    <div class="horas-wrap d-flex align-items-center gap-1 d-none">
+                        <input type="time" class="form-control form-control-sm border-0 bg-light text-center px-2" value="08:00" style="width: 95px;">
+                        <span class="text-muted small px-1">-</span>
+                        <input type="time" class="form-control form-control-sm border-0 bg-light text-center px-2" value="17:00" style="width: 95px;">
+                    </div>
+                    <span class="badge bg-secondary-subtle text-secondary px-3 py-1 rounded-pill badge-cerrado">Cerrado</span>
                 </div>
 
                 <div class="admin-form-actions mt-3 text-end">
