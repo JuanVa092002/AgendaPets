@@ -251,7 +251,7 @@ function renderizarDetalleCita(id) {
     const nombreDueno = cita.dueno || "Cliente";
     const correoDueno = cita.correo || "Sin correo";
     const celularDueno = (cita.celularDueno || cita.celular || "").trim() || "No especificado";
-    const observacionesText = (cita.observaciones && cita.observaciones.trim()) ? cita.observaciones : "Sin observaciones registradas.";
+    const observacionesText = (cita.notas || cita.observaciones || "").trim() || "Sin observaciones registradas.";
 
     const esExpirada = evaluarEstadoExpirado(cita);
     let textoEstado = (cita.estado || "PENDIENTE").toUpperCase();
@@ -261,10 +261,13 @@ function renderizarDetalleCita(id) {
         textoEstado = "EXPIRADA";
         claseEstado = "etiqueta-estado etiqueta-estado--expirada";
     } else {
-        if (textoEstado === "PENDIENTE") claseEstado += " bg-warning text-dark";
+        if (textoEstado === "PENDIENTE") claseEstado += " etiqueta-estado--oculto";
         if (textoEstado === "CANCELADA") claseEstado += " bg-danger text-white";
         if (textoEstado === "COMPLETADA") claseEstado += " bg-success text-white";
+        if (textoEstado === "CONFIRMADA") claseEstado += " bg-success text-white";
     }
+
+    const botonesDeshabilitados = esExpirada ? 'disabled opacity-50 style="cursor: not-allowed;"' : '';
 
     panel.innerHTML = `
         <div class="detalle-reserva-content">
@@ -272,7 +275,7 @@ function renderizarDetalleCita(id) {
             <div class="p-3 mb-3 rounded-4" style="background-color: #F8F5EE; border: 1px solid #EBE5D8;">
                 <div class="d-flex justify-content-between align-items-center mb-1">
                     <h3 class="m-0 fw-bold fs-5" style="color: var(--ink, #2C3E50);">${nombreMascota} <small class="text-muted fw-normal">(${razaMascota})</small></h3>
-                    <span class="${claseEstado} px-3 py-1 rounded-pill small">${textoEstado}</span>
+                    <span class="${claseEstado} text-center">${textoEstado}</span>
                 </div>
                 
                 <p class="small text-muted mb-3"><i class="bi bi-bounding-box-circles me-1"></i>${tamanoMascota}</p>
@@ -291,7 +294,7 @@ function renderizarDetalleCita(id) {
                 </div>
             </div>
 
-            <!-- Datos del Cliente (Estilo Lista de la captura) -->
+            <!-- Datos del Cliente -->
             <div class="px-1 mb-3">
                 <div class="d-flex justify-content-between py-1 border-bottom">
                     <span class="text-muted">Dueño:</span>
@@ -307,23 +310,26 @@ function renderizarDetalleCita(id) {
                 </div>
             </div>
 
-            <!-- Sección de Observaciones -->
+            <!-- Sección de Observaciones (Notas de la mascota) -->
             <div class="mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <span class="text-muted small fw-bold">Observaciones:</span>
                     <i class="bi bi-pencil-square text-muted small"></i>
                 </div>
-                <div class="p-3 rounded-3 text-muted small" style="background-color: #FAF8F5; border: 1px dashed #D3CBD", line-height: 1.4;">
+                <div class="p-3 rounded-3 text-muted small" style="background-color: #FAF8F5; border: 1px dashed #D3CBD2; line-height: 1.4;">
                     ${observacionesText}
                 </div>
             </div>
 
-            <!-- Botones de Acción al Final -->
+            <!-- Tres Botones de Acción (Completar | Pendiente | Cancelar) -->
             <div class="d-flex gap-2 pt-1">
-                <button type="button" class="btn btn-success flex-fill rounded-pill py-2" onclick="cambiarEstadoCita(${cita.id}, 'COMPLETADA')">
+                <button type="button" class="btn btn-success flex-fill rounded-pill py-2" ${botonesDeshabilitados} onclick="cambiarEstadoCita(${cita.id}, 'COMPLETADA')">
                     <i class="bi bi-check-circle me-1"></i> Completar
                 </button>
-                <button type="button" class="btn btn-outline-danger flex-fill rounded-pill py-2" onclick="cambiarEstadoCita(${cita.id}, 'CANCELADA')">
+                <button type="button" class="btn btn-warning text-dark flex-fill rounded-pill py-2" ${botonesDeshabilitados} onclick="cambiarEstadoCita(${cita.id}, 'PENDIENTE')">
+                    <i class="bi bi-clock me-1"></i> Pendiente
+                </button>
+                <button type="button" class="btn btn-outline-danger flex-fill rounded-pill py-2" ${botonesDeshabilitados} onclick="cambiarEstadoCita(${cita.id}, 'CANCELADA')">
                     <i class="bi bi-x-circle me-1"></i> Cancelar
                 </button>
             </div>
