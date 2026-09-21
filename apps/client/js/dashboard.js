@@ -12,7 +12,7 @@ let citaSeleccionadaId = null;
 document.addEventListener("DOMContentLoaded", async () => {
     inicializarFechasFiltro();
     enlazarEventosFiltros();
-    enlazarEventosSeleccionCita(); // Escuchador de clics para Detalles de Cita
+    enlazarEventosSeleccionCita();
     await cargarDashboard();
 });
 
@@ -80,8 +80,8 @@ function renderizarHistorialReservas(reservas) {
     const ordenadas = [...reservas].sort((a, b) => new Date(`${b.fecha}T${b.hora}`) - new Date(`${a.fecha}T${a.hora}`));
 
     contenedor.innerHTML = ordenadas.map(r => {
-        const nombreMascota = r.mascota || r.nombre || "Mascota";
-        const nombreDueno = r.dueno || "Cliente";
+        const nombreMascota = r.mascotaNombre || (r.mascota && r.mascota.nombre) || r.mascota || r.nombre || "Mascota";
+        const nombreDueno = r.duenoNombre || r.dueno || "Cliente";
         const servicioNombre = r.servicio || (r.servicios && r.servicios.map(s => s.nombre).join(" + ")) || "Servicio de peluquería";
         const esExpirada = evaluarEstadoExpirado(r);
         
@@ -107,7 +107,7 @@ function renderizarHistorialReservas(reservas) {
                 <div class="info-servicio">
                     <h3>${nombreMascota} <small class="text-muted fs-6">de ${nombreDueno}</small></h3>
                     <p class="mb-1">${servicioNombre} | ${formatearFechaEspanol(r.fecha)} ${ampm(r.hora)}</p>
-                    <span class="small text-muted"><i class="bi bi-envelope me-1"></i>${r.correo || "Sin correo"}</span>
+                    <span class="small text-muted"><i class="bi bi-envelope me-1"></i>${r.correoDueno || r.correo || "Sin correo"}</span>
                 </div>
                 <div class="acciones-servicio">
                     <span class="${claseEstado} text-center">${textoEstado}</span>
@@ -248,16 +248,23 @@ function renderizarDetalleCita(id) {
         return;
     }
 
-    const nombreMascota = cita.mascota || cita.nombre || "Mascota";
-    const razaMascota = (cita.raza && cita.raza.trim()) ? cita.raza : "Raza no especificada";
-    const tamanoMascota = cita.tamano ? `Tamaño: ${cita.tamano}` : "Tamaño no especificado";
+    const objMascota = cita.mascota && typeof cita.mascota === "object" ? cita.mascota : {};
+
+    const nombreMascota = cita.mascotaNombre || objMascota.nombre || (typeof cita.mascota === "string" ? cita.mascota : "") || cita.nombre || "Mascota";
+    const razaMascota = (objMascota.raza || cita.raza || "").trim() || "Raza no especificada";
+    const tamanoMascota = (objMascota.tamano || cita.tamano) ? `Tamaño: ${objMascota.tamano || cita.tamano}` : "Tamaño no especificado";
     
     const servicioNombre = cita.servicio || (cita.servicios && cita.servicios.map(s => s.nombre).join(" + ")) || "Servicio General";
-    const nombreDueno = cita.dueno || "Cliente";
-    const correoDueno = cita.correo || "Sin correo";
-    
-    const celularDueno = (cita.celularDueno || cita.celular || (cita.mascota && cita.mascota.celularDueno) || (cita.mascota && cita.mascota.celular) || "").toString().trim() || "No especificado";
-    const observacionesText = (cita.notas || cita.observaciones || "").trim() || "Sin observaciones registradas.";
+    const nombreDueno = cita.duenoNombre || cita.dueno || "Cliente";
+    const correoDueno = cita.correoDueno || cita.correo || "Sin correo";
+
+    const celBruto = cita.celularDueno || cita.celular || objMascota.celularDueno || objMascota.celular || (objMascota.usuario && objMascota.usuario.celular);
+    const celularDueno = (celBruto && String(celBruto).trim() !== "null") ? String(celBruto).trim() : "No especificado";
+
+    const notasBrutas = objMascota.notas || cita.notas || cita.observaciones;
+    const observacionesText = (notasBrutas && String(notasBrutas).trim() !== "null" && String(notasBrutas).trim() !== "EMPTY_STRING") 
+        ? String(notasBrutas).trim() 
+        : "Sin observaciones registradas.";
 
     const esExpirada = evaluarEstadoExpirado(cita);
     let textoEstado = (cita.estado || "PENDIENTE").toUpperCase();
@@ -283,7 +290,6 @@ function renderizarDetalleCita(id) {
 
     panel.innerHTML = `
         <div class="detalle-reserva-content">
-            <!-- Contenedor Superior (Fondo crema tenue) -->
             <div class="p-3 mb-3 rounded-4" style="background-color: #F8F5EE; border: 1px solid #EBE5D8;">
                 <div class="d-flex justify-content-between align-items-center mb-1">
                     <h3 class="m-0 fw-bold fs-5" style="color: var(--ink, #2C3E50);">${nombreMascota} <small class="text-muted fw-normal">(${razaMascota})</small></h3>
@@ -292,7 +298,6 @@ function renderizarDetalleCita(id) {
                 
                 <p class="small text-muted mb-3"><i class="bi bi-bounding-box-circles me-1"></i>${tamanoMascota}</p>
 
-                <!-- Pastillas de Información (Servicio, Fecha, Hora) -->
                 <div class="d-flex flex-wrap gap-2">
                     <span class="bg-white px-2 py-1 rounded-3 border small text-dark d-flex align-items-center gap-1 shadow-sm">
                         <i class="bi bi-scissors text-success"></i> ${servicioNombre}
@@ -306,7 +311,6 @@ function renderizarDetalleCita(id) {
                 </div>
             </div>
 
-            <!-- Datos del Cliente -->
             <div class="px-1 mb-3">
                 <div class="d-flex justify-content-between py-1 border-bottom">
                     <span class="text-muted">Dueño:</span>
@@ -322,7 +326,6 @@ function renderizarDetalleCita(id) {
                 </div>
             </div>
 
-            <!-- Sección de Observaciones -->
             <div class="mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <span class="text-muted small fw-bold">Observaciones:</span>
@@ -333,7 +336,6 @@ function renderizarDetalleCita(id) {
                 </div>
             </div>
 
-            <!-- Botones de Acción (Sin íconos, ajustados para caber en una sola fila) -->
             <div class="d-flex gap-2 pt-1">
                 <button type="button" class="btn btn-success flex-fill rounded-pill py-2 px-1 small" ${btnCompletarDisabled} onclick="cambiarEstadoCita(${cita.id}, 'COMPLETADA')">
                     Completar
