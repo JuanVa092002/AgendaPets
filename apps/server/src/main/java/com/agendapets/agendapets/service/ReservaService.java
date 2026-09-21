@@ -249,6 +249,7 @@ public class ReservaService {
                 .mascotaNombre(r.getMascota() != null ? r.getMascota().getNombre() : "")
                 .duenoNombre(r.getMascota() != null && r.getMascota().getUsuario() != null ? r.getMascota().getUsuario().getNombre() : "")
                 .correoDueno(r.getMascota() != null && r.getMascota().getUsuario() != null ? r.getMascota().getUsuario().getCorreo() : "")
+                .celularDueno(r.getMascota() != null && r.getMascota().getUsuario() != null ? r.getMascota().getUsuario().getCelular() : "")
                 .servicios(serviciosDTO)
                 .servicio(nombreServicio)
                 .precioTotal(total)
