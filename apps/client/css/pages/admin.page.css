@@ -605,3 +605,165 @@ textarea.form-control { resize: vertical; min-height: 88px; }
     }
     .admin-brand small { display: none; }
 }
+
+@media (max-width: 991.98px) {
+
+    .admin-header, 
+    header.d-flex,
+    .navbar-admin {
+        flex-direction: column !important;
+        gap: 1rem !important;
+        padding: 1rem !important;
+        text-align: center;
+    }
+
+    .nav-tabs-custom,
+    .nav-pills,
+    header nav {
+        width: 100% !important;
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+        gap: 0.5rem !important;
+    }
+
+    .nav-tabs-custom .nav-link,
+    header nav a,
+    header nav button {
+        padding: 0.5rem 1rem !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .servicios-stats,
+    .tarjetas-resumen-servicios {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 0.75rem !important;
+    }
+
+    .servicios-container,
+    .servicios-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1.5rem !important;
+    }
+
+    .col-formulario-servicio,
+    .col-catalogo-servicio {
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .servicios-stats,
+    .tarjetas-resumen-servicios {
+        grid-template-columns: repeat(1, 1fr) !important;
+    }
+
+    .item-servicio,
+    .card-servicio {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.75rem !important;
+    }
+
+    .item-servicio .acciones,
+    .card-servicio .btn-group {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: flex-end !important;
+        gap: 0.5rem !important;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .mi-info-container,
+    .mi-info-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1.5rem !important;
+    }
+
+    .col-datos-negocio,
+    .col-horarios-disponibles {
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .fila-horario,
+    .horario-item {
+        flex-wrap: wrap !important;
+        gap: 0.5rem !important;
+        padding: 0.75rem 0.5rem !important;
+    }
+
+    .fila-horario .inputs-hora {
+        width: 100% !important;
+        justify-content: space-between !important;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .dashboard-grid, 
+    .main-layout {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1.5rem !important;
+    }
+
+    #panelDetalleCita {
+        width: 100% !important;
+        position: static !important;
+    }
+
+    .grid-estadisticas,
+    .contenedor-estadisticas {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.75rem !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .filtros-fecha,
+    .rango-fechas {
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 0.5rem !important;
+    }
+
+    .filtros-fecha input[type="date"],
+    .rango-fechas input[type="date"] {
+        width: 100% !important;
+    }
+
+    #filtros-estado {
+        display: flex !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+        padding-bottom: 0.5rem !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #filtros-estado button {
+        flex: 0 0 auto !important;
+    }
+
+    .servicio {
+        padding: 0.85rem !important;
+        gap: 0.75rem !important;
+    }
+}
+
+@media (max-width: 479.98px) {
+    #panelDetalleCita .d-flex.gap-2 {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+
+    #panelDetalleCita button {
+        width: 100% !important;
+    }
+}
