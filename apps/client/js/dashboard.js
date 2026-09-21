@@ -256,7 +256,7 @@ function renderizarDetalleCita(id) {
     const nombreDueno = cita.dueno || "Cliente";
     const correoDueno = cita.correo || "Sin correo";
     
-    const celularDueno = (cita.celularDueno || cita.celular || "").trim() || "No especificado";
+    const celularDueno = (cita.celularDueno || cita.celular || (cita.mascota && cita.mascota.celularDueno) || (cita.mascota && cita.mascota.celular) || "").toString().trim() || "No especificado";
     const observacionesText = (cita.notas || cita.observaciones || "").trim() || "Sin observaciones registradas.";
 
     const esExpirada = evaluarEstadoExpirado(cita);
