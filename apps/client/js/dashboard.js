@@ -26,12 +26,17 @@ async function cargarDashboard() {
 }
 
 function inicializarFechasFiltro() {
-    const hoyIso = new Date().toISOString().split("T")[0];
+    const hoy = new Date();
+    const yyyy = hoy.getFullYear();
+    const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+    const dd = String(hoy.getDate()).padStart(2, '0');
+    const hoyLocalIso = `${yyyy}-${mm}-${dd}`;
+
     const inputDesde = document.getElementById("filtro-fecha-desde");
     const inputHasta = document.getElementById("filtro-fecha-hasta");
 
-    if (inputDesde) inputDesde.value = hoyIso;
-    if (inputHasta) inputHasta.value = hoyIso;
+    if (inputDesde) inputDesde.value = hoyLocalIso;
+    if (inputHasta) inputHasta.value = hoyLocalIso;
 }
 
 function ampm(horaStr) {
@@ -250,6 +255,7 @@ function renderizarDetalleCita(id) {
     const servicioNombre = cita.servicio || (cita.servicios && cita.servicios.map(s => s.nombre).join(" + ")) || "Servicio General";
     const nombreDueno = cita.dueno || "Cliente";
     const correoDueno = cita.correo || "Sin correo";
+    
     const celularDueno = (cita.celularDueno || cita.celular || "").trim() || "No especificado";
     const observacionesText = (cita.notas || cita.observaciones || "").trim() || "Sin observaciones registradas.";
 
@@ -267,7 +273,13 @@ function renderizarDetalleCita(id) {
         if (textoEstado === "CONFIRMADA") claseEstado += " bg-success text-white";
     }
 
-    const botonesDeshabilitados = esExpirada ? 'disabled opacity-50 style="cursor: not-allowed;"' : '';
+    const esPendiente = textoEstado === "PENDIENTE";
+    const esCompletada = textoEstado === "COMPLETADA" || textoEstado === "CONFIRMADA";
+    const esCancelada = textoEstado === "CANCELADA";
+
+    const btnCompletarDisabled = (esExpirada || esCompletada) ? 'disabled' : '';
+    const btnPendienteDisabled = (esExpirada || esPendiente) ? 'disabled' : '';
+    const btnCancelarDisabled = (esExpirada || esCancelada) ? 'disabled' : '';
 
     panel.innerHTML = `
         <div class="detalle-reserva-content">
@@ -310,7 +322,7 @@ function renderizarDetalleCita(id) {
                 </div>
             </div>
 
-            <!-- Sección de Observaciones (Notas de la mascota) -->
+            <!-- Sección de Observaciones -->
             <div class="mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <span class="text-muted small fw-bold">Observaciones:</span>
@@ -321,16 +333,16 @@ function renderizarDetalleCita(id) {
                 </div>
             </div>
 
-            <!-- Tres Botones de Acción (Completar | Pendiente | Cancelar) -->
+            <!-- Botones de Acción (Sin íconos, ajustados para caber en una sola fila) -->
             <div class="d-flex gap-2 pt-1">
-                <button type="button" class="btn btn-success flex-fill rounded-pill py-2" ${botonesDeshabilitados} onclick="cambiarEstadoCita(${cita.id}, 'COMPLETADA')">
-                    <i class="bi bi-check-circle me-1"></i> Completar
+                <button type="button" class="btn btn-success flex-fill rounded-pill py-2 px-1 small" ${btnCompletarDisabled} onclick="cambiarEstadoCita(${cita.id}, 'COMPLETADA')">
+                    Completar
                 </button>
-                <button type="button" class="btn btn-warning text-dark flex-fill rounded-pill py-2" ${botonesDeshabilitados} onclick="cambiarEstadoCita(${cita.id}, 'PENDIENTE')">
-                    <i class="bi bi-clock me-1"></i> Pendiente
+                <button type="button" class="btn btn-outline-secondary flex-fill rounded-pill py-2 px-1 small" ${btnPendienteDisabled} onclick="cambiarEstadoCita(${cita.id}, 'PENDIENTE')">
+                    Pendiente
                 </button>
-                <button type="button" class="btn btn-outline-danger flex-fill rounded-pill py-2" ${botonesDeshabilitados} onclick="cambiarEstadoCita(${cita.id}, 'CANCELADA')">
-                    <i class="bi bi-x-circle me-1"></i> Cancelar
+                <button type="button" class="btn btn-outline-danger flex-fill rounded-pill py-2 px-1 small" ${btnCancelarDisabled} onclick="cambiarEstadoCita(${cita.id}, 'CANCELADA')">
+                    Cancelar
                 </button>
             </div>
         </div>
