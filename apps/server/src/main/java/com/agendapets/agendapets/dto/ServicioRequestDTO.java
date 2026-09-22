@@ -1,0 +1,51 @@
+package com.agendapets.agendapets.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class ServicioRequestDTO {
+    private String nombre;
+    private String descripcion;
+    private BigDecimal precio;
+    private Integer duracionServicio;
+    private String duracion;
+    private Boolean visible;
+
+    public Integer getDuracionServicioMinutos() {
+        if (duracionServicio != null) {
+            return duracionServicio;
+        }
+        if (duracion != null && !duracion.isBlank()) {
+            String texto = duracion.toLowerCase();
+            int minutos = 0;
+            java.util.regex.Matcher horas = java.util.regex.Pattern
+                    .compile("(\\d+(?:[.,]\\d+)?)\\s*(hora|horas|h)\\b").matcher(texto);
+            java.util.regex.Matcher mins = java.util.regex.Pattern
+                    .compile("(\\d+)\\s*(min|minuto|minutos)\\b").matcher(texto);
+            if (horas.find()) {
+                minutos += Math.round(Float.parseFloat(horas.group(1).replace(",", ".")) * 60);
+            }
+            if (mins.find()) {
+                minutos += Integer.parseInt(mins.group(1));
+            }
+            if (minutos > 0) {
+                return minutos;
+            }
+            String soloDigitos = duracion.replaceAll("\\D+", "");
+            if (!soloDigitos.isBlank()) {
+                try {
+                    return Integer.parseInt(soloDigitos);
+                } catch (NumberFormatException ignored) {}
+            }
+        }
+        return 30;
+    }
+}
