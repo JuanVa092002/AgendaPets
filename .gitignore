@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+secrets/
+backups/
+**/target/
+**/node_modules/
+**/dist/
+**/build/
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
