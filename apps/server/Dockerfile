@@ -12,6 +12,6 @@ WORKDIR /app
 RUN useradd -r -u 1001 appuser
 COPY --from=builder /app/target/agendapets.jar app.jar
 USER appuser
-ENV PORT=10000
-EXPOSE 10000
+ENV PORT=8080
+EXPOSE 8080
 ENTRYPOINT ["sh", "-c", "exec java -jar /app/app.jar --server.port=${PORT}"]
