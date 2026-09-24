@@ -1,4 +1,4 @@
-name: agendapets
+name: server
 
 services:
   api:
@@ -10,10 +10,9 @@ services:
     restart: unless-stopped
     env_file:
       - .env.production
-    expose:
-      - "8080"
+    ports:
+      - "127.0.0.1:8080:8080"
     networks:
-      - internal
       - edge
     healthcheck:
       test:
@@ -27,8 +26,6 @@ services:
       start_period: 45s
 
 networks:
-  internal:
-    name: agendapets_internal
   edge:
     external: true
     name: proovian_edge

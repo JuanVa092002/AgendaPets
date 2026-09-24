@@ -15,3 +15,6 @@ backups/
 *.iml
 .DS_Store
 Thumbs.db
+actions-runner/
+.firebase/
+.cursor/

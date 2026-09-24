@@ -1,0 +1,59 @@
+name: Deploy PC
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agendapets-production-pc
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del SHA que paso CI
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 1
+
+      - name: Revisar el script sin ejecutarlo
+        shell: bash
+        run: |
+          set -euo pipefail
+          script="scripts/deploy-production.sh"
+          test -f "$script"
+          test ! -L "$script"
+          grep -q 'flock' "$script"
+          grep -q 'api-agendapets.proovian.dpdns.org/health' "$script"
+          if grep -E -q 'compose down|docker rm|system prune|cloudflared-edge' "$script"; then
+            echo "El script contiene un comando prohibido."
+            exit 1
+          fi
+          if grep -E -q 'ghp_|github_pat_' "$script"; then
+            echo "El script contiene un token."
+            exit 1
+          fi
+
+  deploy:
+    needs: validate
+    # Bloqueado. El checkout de Actions no contiene .env.production.
+    # No quitar esta condicion hasta adaptar el script. Ver docs/deploy-pc.md.
+    if: false
+    runs-on: [self-hosted, linux, x64, agenda-pets-pc]
+    steps:
+      - name: Deploy automatico bloqueado
+        shell: bash
+        run: |
+          echo "Deploy automatico bloqueado. No se ejecuta el script de produccion."
+          exit 1
